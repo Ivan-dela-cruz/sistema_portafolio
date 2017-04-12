@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->integer('idRol')->unsigned();
             $table->index('idRol'); 
-            $table->foreign('idRol')->references('idRol')->on('rol')->onDelete('cascade');
+            $table->foreign('idRol')->references('id')->on('rol')->onDelete('cascade');
             $table->string('cedula',10)->unique();
             $table->string('apellido',200);
             $table->string('nombre',200);

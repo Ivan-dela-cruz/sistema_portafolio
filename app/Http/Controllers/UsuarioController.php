@@ -35,7 +35,7 @@ $idUsuarioActual=\Auth::user();
 $contador=count($idUsuarioActual);
 
 	if ($contador)
-	return view("docente.editarPerfilDocente")->with("usuario",$idUsuarioActual);
+	return view("Docente.editarPerfilDocente")->with("usuario",$idUsuarioActual);
 	else
 	return view("mensajes.msj_rechazado")->with("msj","El docente fue eliminado..");
 	}

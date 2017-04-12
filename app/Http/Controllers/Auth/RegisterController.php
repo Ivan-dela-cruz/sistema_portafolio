@@ -96,7 +96,47 @@ if (!count($ciclos)) {
    $ciclos->id=2;
    $ciclos->nombre="Segundo";
    $ciclos->save();
- 
+ $ciclos= new Ciclo;
+   $ciclos->id=3;
+   $ciclos->nombre="Tercero";
+   $ciclos->save();
+
+   $ciclos= new Ciclo;
+   $ciclos->id=4;
+   $ciclos->nombre="Cuarto";
+   $ciclos->save();
+
+
+$ciclos= new Ciclo;
+   $ciclos->id=5;
+   $ciclos->nombre="Quito";
+   $ciclos->save();
+
+   $ciclos= new Ciclo;
+   $ciclos->id=6;
+   $ciclos->nombre="Sexto";
+   $ciclos->save();
+
+   $ciclos= new Ciclo;
+   $ciclos->id=7;
+   $ciclos->nombre="Septimo";
+   $ciclos->save();
+
+   $ciclos= new Ciclo;
+   $ciclos->id=8;
+   $ciclos->nombre="Octavo";
+   $ciclos->save();
+
+$ciclos= new Ciclo;
+   $ciclos->id=9;
+   $ciclos->nombre="Noveno";
+   $ciclos->save();
+
+   $ciclos= new Ciclo;
+   $ciclos->id=10;
+   $ciclos->nombre="Decimo";
+   $ciclos->save();
+
  
 }
 

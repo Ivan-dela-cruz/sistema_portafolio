@@ -10,6 +10,7 @@ use App\Rol;
 use App\Ciclo;
 use App\Paralelo;
 use App\Periodo;
+use App\Parametro;
 
 class RegisterController extends Controller
 {
@@ -167,6 +168,25 @@ if (!count($periodo)) {
    $periodo->hasta="Agosto_2017";
    $periodo->save();
 }
+
+
+$parametro=Parametro::all();
+
+if (!count($parametro)) {
+   $parametro= new Parametro;
+   $parametro->id=1;
+   $parametro->nombre="Silabo";
+   $parametro->save();
+
+
+   $parametro= new Parametro;
+   $parametro->id=2;
+   $parametro->nombre="Nomina";
+   $parametro->save();
+
+}
+
+
 
 
 

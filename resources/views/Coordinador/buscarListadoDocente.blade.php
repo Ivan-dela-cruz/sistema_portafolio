@@ -25,6 +25,13 @@
 </tbody>
 
 </table>
+@else
+<legend class="text-center">Docente no Registrados o Portafolio no creado </legend>
+@endif
+
+</div>
+<div class="md-col-0"></div>
+
 
 
 <div class="row">
@@ -47,13 +54,6 @@
 </div>
 
 
-@else
-<legend class="text-center">Docente no Registrados o Portafolio no creado </legend>
-@endif
 
-
-
-</div>
-<div class="col-md-0"></div>
 
 

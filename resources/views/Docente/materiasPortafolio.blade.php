@@ -1,14 +1,14 @@
 @extends('principal')
 @section('title','Asignaturas Portafolio')
 @section('content')
-
+<div class="container">
 <section class="content" id="contenido_principal">
 
 
 <div class="row box box-success">
 
 
-<form method="post" action="agregar_materia_portafolio" id="frm_agregar_materia_portafolio" class="form-horizontal form_entrada" >
+<form method="post" action="agregar_materia_portafolio" id="frm_agregar_materia_portafolio" class="form-form form_entrada" >
 
   <input type="hidden" value="{{ $idPortafolioActual }}"  name="portafolio" id="portafolio"    >
   <input type="hidden" name="_token" value="{{ csrf_token() }}"> 
@@ -149,7 +149,7 @@
 </div>
 
 </div>
-
+</div>
 
 
 <script type="text/javascript">

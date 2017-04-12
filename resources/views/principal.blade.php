@@ -38,11 +38,11 @@
      <link rel="stylesheet" href="{{ asset('css/sistemalaravel.css') }}">
 
 </head>
+ <body class="hold-transition skin-purple sidebar-mini">
 
-<body class="hold-transition skin-purple sidebar-mini">
 
 
-<div class="wrapper">
+    <div class="wrapper">
 
 
 @if(Auth::user()->fotos)
@@ -55,14 +55,23 @@ $fotoUser=Auth::user()->fotos;
 
 
     @include('Pagina/encabezado')
-    <div class="content-wrapper" style="min-height:2000px;">
+
+
+    @include('Pagina/menu')
+        <div class="content-wrapper" style="min-height:500px;">
      @include('Pagina.subMenu')
 
-     @include('Pagina/menu')
+ 
    
       @yield('content')
 
     </div>
+
+
+
+</div>
+
+
 <!-- El icono de espera ......-->
 
   <div style="display: none;" id="cargando" align="center">
@@ -75,9 +84,6 @@ $fotoUser=Auth::user()->fotos;
          <hr style="color:#003" width="50%">
          <br>
        </div>
-
-
-</div>
 
 
 @yield('javascript')

@@ -26,6 +26,7 @@
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
+               <img id="" {{asset('js/jquery.min.js')}}  src="{{asset('imagenes/ciya.png')}}"  style="width:100%">
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
@@ -43,7 +44,7 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
 
-                <img id="" {{asset('js/jquery.min.js')}}  src="{{asset('imagenes/ciya.png')}}"  style="width:100%">
+             
 
 
 

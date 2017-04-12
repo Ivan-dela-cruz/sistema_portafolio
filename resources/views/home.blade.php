@@ -63,7 +63,7 @@ $fotoUser=Auth::user()->fotos;
     @include('Pagina/menu')
 
       <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper" style="min-height:2000px;">
+      <div class="content-wrapper" style="min-height:500px;">
         <!-- Content Header (Page header) -->
 
     @include('Pagina.subMenu')

@@ -6,6 +6,7 @@
 
 @section('content')
 
+
 <section class="content"  id="contenido_principal">
 
 <div class="row">

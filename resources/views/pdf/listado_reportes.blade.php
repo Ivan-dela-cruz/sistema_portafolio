@@ -1,3 +1,5 @@
+@extends('principal')
+@section('content')
 <div class="row">
             <div class="col-xs-12">
               <div class="box box-info">
@@ -14,7 +16,7 @@
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
                   <table class="table table-hover">
-                   
+
                     <thead><tr>
                       <th>ID</th>
                       <th>reporte</th>
@@ -28,11 +30,12 @@
                       <td>Reporte Perfil de Docente</td>
                       <td><a  href="{{URL::to('/getPDF').'/'. base64_encode(Auth::user()->id)}}" target="_blank" ><button id="tipo" name="tipo" value="1" class="btn btn-block btn-primary btn-xs">Ver</button></a></td>
                       <td><a  href="{{URL::to('/descargarPDF').'/'.base64_encode(Auth::user()->id) }}" target="_blank" ><button id="tipo" name="tipo" value="2" class="btn btn-block btn-success btn-xs">Descargar</button></a></td>
-                    
+
                     </tr>
-                   
+
                   </tbody></table>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
             </div>
  </div>
+ @endsection

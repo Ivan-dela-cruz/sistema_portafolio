@@ -57,7 +57,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Iniciar sesión</a></li>
+                            <li><a href="{{ url('/login') }}">Iniciar sesion</a></li>
                             <li><a href="{{ url('/register') }}">Registrarse</a></li>
                         @else
                             <li class="dropdown">

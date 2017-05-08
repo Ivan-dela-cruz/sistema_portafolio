@@ -19,7 +19,7 @@
 
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="{{ url($fotoUser) }}"  alt="User Image"  style="width:20px;height:20px;">
+                  <img src="{{ url($fotoUser) }}"  alt="User Image"  class="img-circle"  style="width:20px;height:20px;">
                   <span class="hidden-xs"> {{ Auth::user()->usuario }} <span class="caret"></span>
                   </span>
                 </a>
@@ -27,7 +27,7 @@
                   <!-- User image -->
                   <li class="user-header">
 
-                      <img src="{{url($fotoUser)}}"  alt="User Image"  style="width:50px;height:50px;">               
+                      <img src="{{url($fotoUser)}}"  class="img-circle"  alt="User Image"  style="width:50px;height:50px;">               
                     <p>
                      <legend><b>{{Auth::user()->rol}}</b></legend>
                       <small> <?php echo date("d-M-Y"); ?></small>

@@ -1,151 +1,160 @@
 @extends('principal')
-
-
 @section('title','Parametros Asignatura')
 @section('content')
-<section class="content" id="contenido_principal">
-	
-<div class="row">
+<input id="idPorMat" name="idPorMat" type="hidden" value="{{$idPorMat }}">
+    <section class="container-fluid spark-screen" id="contenido_principal">
+    
+   
+<div class="box box-primary">
 
-<div class="col-md-12">
+<div class="box-header text-center"><legend><label>LISTADO DE PARÁMETROS ASIGNATURA</label></legend>
+</div><!-- Cierre del box header-->
 
-<div class="box box-danger" style="height:550px">
-
-
-<div class="row">
-<div class="col-md-4"></div>  
-<div class="col-md-4 text-center">
-
- <div class="form-group">
-  <legend><b>Parametros </b></legend>
-
-
-<div id="consolidar" class="text-center">  
-
-<button type="button"  onclick="generar()"  target="_blank"  class="btn btn-primary btn-xs">Generar Portafolio Consolidado</button>
-
-
-</div>
-
-<input type="hidden" name="idPorMat" id="idPorMat"   value="{{$idPorMat }}">
-</div>
-
-</div>
-
-
-<div class="col-md-4"></div>
-</div> <!-- Cierre primer row-->
-
-
+<div class="box-body">
 
 <div class="row">
-  
-<div class="col-md-1"></div>
-<div class="col-md-10">
-  
+<div class="col-md-9">
 
+    <div class="row">
+     <div class="col-md-3 text-left"> <h4><label >PERÍODO ACADÉMICO:</label></h4></div> 
+     <div class="col-md-9"> <h4><span>{{ $portafolio->desde }}-{{ $portafolio->hasta }}</span></h4></div>
+     </div>
 
+     <div class="row">
+     <div class="col-md-3 text-left"> <h4><label >CARRERA:</label></h4></div> 
+     <div class="col-md-9"> <h4><span>{{ $portafolio->carrera }}</span></h4></div>
+     </div>
 
-@php 
-$n= count($parametrosMateria);
-$cont=1;
-@endphp
-
-
-
-<table class="table" style="width: 100%;">
-
-
-<tr>
-@foreach($parametrosMateria as $paraMate)
-
-<th class="text-center"> 
-<div class="panel panel-info" style="">
-   <div class="panel panel-warning"">
-        <h4 class="modal-title"><b>{{ $paraMate->nombre }}</b> </h4>
-   </div>
-  
-  <div class="panel-body">
-  @if($paraMate->urlArchivo)
-             <a  href="{{url($paraMate->urlArchivo)}}"  target="_blank"><img style="width:80px; height:100px;" src="{!! url("imagenes/pdf2.png") !!}"></a> 
-  @else
-  <a onclick="" href="javascript:void(0);" target="_blank"> <img style="width:80px; height:100px;"  src="{!! url("imagenes/pdf.png") !!}"></a> 
-  @endif
+<div class="row">
+  <div class="col-md-7"> 
+  <div class="row">
+      <div class="col-md-5 text-left"><h4><label>CICLO:</label></h4></div>
+      <div class="col-md-7"><h4><span>{{ $membrete->ciclo }}</span></h4></div>
 
   </div>
+  </div>
+  <div class="col-md-5">
+      <div class="row">
+          <div class="col-md-5 text-left"> <h4><label>PARALELO:</label></h4></div>
+          <div class="col-md-7"><h4><span>{!! $membrete->paralelo !!}</span></h4></div>
 
-  
- <div class="panel-footer">
- @if(!$paraMate->urlArchivo) 
-<input type="button" class="btn btn-primary btn-xs" onclick="getIdParametro('{{$paraMate->id }}', '{{ $paraMate->nombre }}')" data-toggle="modal"  data-target="#modalSubirPdf" value="Subir">
-@else
-<input type="button" class="btn btn-primary btn-xs" onclick="getIdParametro('{{$paraMate->id }}', '{{ $paraMate->nombre }}')" data-toggle="modal"  data-target="#modalSubirPdf" value="Actualizar">
-@endif
+      </div>
+  </div>  
+</div>
 
-@if($paraMate->urlArchivo)
- 
- <a class="btn btn-success btn-xs" href="{{ url('descargar_pdf/'.$paraMate->id) }}">Descargar</a> 
-
+</div>
 
 
-@endif 
 
- 
- </div>
+<div class="col-md-3">
+    
+    <div class="row">
+<div class="col-md-12">
 
- </div> 
-</th>
+<div class="panel panel-default">
+  <div class="panel-heading text-center"><b>{{ $membrete->materia }}</b></div>
+  <div class="panel-body text-center">
+
+ <img src="/imagenes/materia.png">
+  </div>
+
+<div class="panel-footer text-center "  id="consolidar">
+
+<a  href="{{ url('generar_pdf/'.base64_encode($idPorMat)) }}"  class="btn btn-info btn-xs" target="_blank" ><i class="glyphicon glyphicon-import">Generar Portafolio Consolidado</i></a>
 
 
-<!-- Permite claificar en columnas de 4-->
 
-@if($cont==4)
-</tr><tr>
-@php $cont=0; @endphp
-@endif
+                
+</div>
+
+</div>
+               </div> <!-- Cierre del col-md-12-->
+                            
+    </div> <!-- Cierre del row-->
+
+</div> <!--Cierre del col-3-->
+
+
+
+</div> <!--Cierre de row-->
+
+</div><!--Cierre del box Body-->
+
+<div class="box-footer"> 
+
+</div><!-- Cierre box pie-->
+
+
+</div><!--Cierre del box Primary-->
+
+
+
+
+
 
 @php 
-$cont++;
+$cont=0;
 @endphp
-@endforeach
-</tr>
-</table>
+                    
+                        
 
+                        @foreach($parametrosMateria as $paraMate)
 
+@php$cont++ @endphp
+@if($cont==1)
+<div class="row from-group">
+@endif
+                        <div class="col-md-3 text-center form-group">     
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h4 class="modal-title">
+                                        <b style="font-size:13px">
+                                            {{ $paraMate->nombre }}
+                                        </b>
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    @if($paraMate->urlArchivo)
+        <a href="{{url($paraMate->urlArchivo)}}" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
+                                    @else 
+          <a href="javascript:void(0);"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
+                                    @endif
+                                
+                                </div>
 
+                                
+                                <div class="panel-footer">
+                                    @if(!$paraMate->urlArchivo)
+                                    <button class="btn btn-primary btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMate->id }}', '{{ $paraMate->nombre }}')" type="button">
+                                        <span class="glyphicon glyphicon-open">
+                                            _Subir
+                                        </span>
+                                    </button>
+                                    @else
+                                    <button class="btn btn-success btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMate->id }}', '{{ $paraMate->nombre }}')">
+                                        <b class="glyphicon glyphicon-open">
+                                            Modificar
+                                        </b>
+                                    </button>
+                                    @endif
 
+                                    @if($paraMate->urlArchivo)
+                                    <a class="glyphicon glyphicon-save" href="{{ url('descargar_pdf/'.$paraMate->id) }}">Descargar
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+         
 
+                        </div>
 
-
-
-
-
-
-
-
+@if($cont==4)
 </div>
-
-
-<div class="col-md-1">     
+@php $cont=0 @endphp
+@endif
+                        @endforeach
+                    </div>
+    </section>
 
     @include('Docente/modal') 
-           
-
- </div>
-
-
-</div>
-
-
-
-
-
-
-
-</div>
-
-</div>
-</div>
-</section>
-
 @endsection

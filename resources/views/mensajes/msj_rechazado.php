@@ -1,5 +1,7 @@
 
 
-<div class='rechazado text-center'><label style='color:#FA206A'>
-              <?php  echo $msj; ?>  
-</div>
+
+        <div class="alert alert-danger text-center">
+        <label>
+              <?php echo $msj; ?></label>
+            </div>

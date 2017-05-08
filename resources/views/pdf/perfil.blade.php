@@ -26,7 +26,7 @@
 		                <div><img align="left" id="" src="imagenes/iconutc.png"  style="width:15%"></div>
 		                <h2>Universidad Tecnica de Cotopaxi</h2>
 
-		                <button type="submit" class="btn btn-info">Actualizar Datos</button>
+		
 
 		                <u><h3>Datos Informativos personal Docente</h3></u>
 		                </div><!-- /.box-header -->

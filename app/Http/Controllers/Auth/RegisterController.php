@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Rol;
-use App\Ciclo;
-use App\Paralelo;
-use App\Periodo;
-use App\Parametro;
+use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -23,7 +19,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -39,10 +35,9 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('guest');
-
-
 
     }
 
@@ -53,157 +48,40 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
 
- protected function validator(array $data)
+    protected function validator(array $data)
     {
 
-
-
-$rols=Rol::all();
+        $rols = Rol::all();
 //dd($rol);
 
-if (!count($rols)) {
-   $rols= new Rol;
+        if (!count($rols)) {
+            $rols = new Rol;
 
-   $rols->id=1;
-   $rols->nombre="DOCENTE";
-   $rols->save();
-   $rols= new Rol;
+            $rols->id     = 1;
+            $rols->nombre = "DOCENTE";
+            $rols->save();
+            $rols = new Rol;
 
-   $rols->id=2;
-   $rols->nombre="COORDINADOR";
-   $rols->save();
+            $rols->id     = 2;
+            $rols->nombre = "COORDINADOR";
+            $rols->save();
 
-      $rols= new Rol;
+            $rols = new Rol;
 
-   $rols->id=3;
-   $rols->nombre="DECANO";
-   $rols->save();
+            $rols->id     = 3;
+            $rols->nombre = "DECANO";
+            $rols->save();
 
-}
-
-
-
-
-$ciclos=Ciclo::all();
-//dd($rol);
-
-if (!count($ciclos)) {
-   $ciclos= new Ciclo;
-   $ciclos->id=1;
-   $ciclos->nombre="Primero";
-   $ciclos->save();
-
-   $ciclos= new Ciclo;
-   $ciclos->id=2;
-   $ciclos->nombre="Segundo";
-   $ciclos->save();
- $ciclos= new Ciclo;
-   $ciclos->id=3;
-   $ciclos->nombre="Tercero";
-   $ciclos->save();
-
-   $ciclos= new Ciclo;
-   $ciclos->id=4;
-   $ciclos->nombre="Cuarto";
-   $ciclos->save();
-
-
-$ciclos= new Ciclo;
-   $ciclos->id=5;
-   $ciclos->nombre="Quito";
-   $ciclos->save();
-
-   $ciclos= new Ciclo;
-   $ciclos->id=6;
-   $ciclos->nombre="Sexto";
-   $ciclos->save();
-
-   $ciclos= new Ciclo;
-   $ciclos->id=7;
-   $ciclos->nombre="Septimo";
-   $ciclos->save();
-
-   $ciclos= new Ciclo;
-   $ciclos->id=8;
-   $ciclos->nombre="Octavo";
-   $ciclos->save();
-
-$ciclos= new Ciclo;
-   $ciclos->id=9;
-   $ciclos->nombre="Noveno";
-   $ciclos->save();
-
-   $ciclos= new Ciclo;
-   $ciclos->id=10;
-   $ciclos->nombre="Decimo";
-   $ciclos->save();
-
- 
-}
-
-
-
-$para=Paralelo::all();
-//dd($rol);
-
-if (!count($para)) {
-   $para= new Paralelo;
-   $para->id=1;
-   $para->nombre="A";
-   $para->save();
-
-   $para= new Paralelo;
-   $para->id=2;
-   $para->nombre="B";
-   $para->save();
-
-}
-
-$periodo=Periodo::all();
-
-if (!count($periodo)) {
-   $periodo= new Periodo;
-   $periodo->id=1;
-   $periodo->desde="Abril_2017";
-   $periodo->hasta="Agosto_2017";
-   $periodo->save();
-}
-
-
-$parametro=Parametro::all();
-
-if (!count($parametro)) {
-   $parametro= new Parametro;
-   $parametro->id=1;
-   $parametro->nombre="Silabo";
-   $parametro->save();
-
-
-   $parametro= new Parametro;
-   $parametro->id=2;
-   $parametro->nombre="Nomina";
-   $parametro->save();
-
-}
-
-
-
-
-
-
-
-
-
+        }
 
         return Validator::make($data, [
-            'cedula' => 'required|max:10|unique:users|min:10|regex:/^[0-9]+$/',
-            'apellido'=> 'required|max:100',
-            'nombre'=> 'required|max:100',
-            'email' => 'required|email|max:255|unique:users',
+            'cedula'   => 'required|max:10|unique:users|min:10|regex:/^[0-9]+$/',
+            'apellido' => 'required|max:100|min:3',
+            'nombre'   => 'required|max:100|min:3',
+            'email'    => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
     }
-
 
     /**
      * Create a new user instance after a valid registration.
@@ -214,28 +92,25 @@ if (!count($parametro)) {
     protected function create(array $data)
     {
 
-
-
         return User::create([
-            'idRol'=>"1",
-            'cedula' => $data['cedula'],
-            'apellido'=>$data['apellido'],
-            'nombre' => $data['nombre'],
-            'lugarNacimiento'=>"",
-            'fechaNacimiento'=>date('Y-m-d'),
-            'celular'=>null,
-            'telefono'=>null,
-            'direccion'=>"",
-            'sexo'=>0,
-            'foto'=>"",
-            'fechaIngresoUtc'=>"",
-            'nacionalidad'=>0,
-            'cargaFamiliar'=>0,
-            'estadoCivil'=>0,
-            'facultad'=>0,
-            'email'=> $data['email'],
-            'password' => bcrypt($data['password']),
-
+            'idRol'           => "1",
+            'cedula'          => $data['cedula'],
+            'apellido'        => $data['apellido'],
+            'nombre'          => $data['nombre'],
+            'lugarNacimiento' => "",
+            'fechaNacimiento' => date('Y-m-d'),
+            'celular'         => null,
+            'telefono'        => null,
+            'direccion'       => "",
+            'sexo'            => 0,
+            'foto'            => "",
+            'fechaIngresoUtc' => "",
+            'nacionalidad'    => 0,
+            'cargaFamiliar'   => 0,
+            'estadoCivil'     => 0,
+            'facultad'        => 0,
+            'email'           => $data['email'],
+            'password'        => bcrypt($data['password']),
 
         ]);
     }

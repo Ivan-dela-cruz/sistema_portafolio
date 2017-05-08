@@ -1,29 +1,35 @@
-
-
-<table class="table table-striped">
-
-<tr> 
-@foreach($materiaRegistradaPortafolio as $mat)
-<th class="text-center"> 
-<small>{{ $mat->ciclo }} '{{ $mat->paralelo }}'</small>
 <br>
-<a href="{{ url('parametros_asignatura/'.$mat->idMatPor) }}"> <img src="{!! url("imagenes/Materia.png") !!}"></a> 
+    <div class="row form-group">
+        @foreach($materiaRegistradaPortafolio as $mat)
+        <div class="col-md-3 text-center">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <b style="color:#000000">
+                        {{$mat->ciclo  }} '{{ $mat->paralelo}}'
+                    </b>
+                </div>
+                <div class="panel-body">
+                    <a href="{{ url('parametros_asignatura/'.$mat->idMatPor) }}">
+                        <img src="{{ url('imagenes/materia.png') }}">
 
-</th>
-@endforeach
-</tr>
-<tr>
-@foreach($materiaRegistradaPortafolio as $mat)
-<th class="text-center"><span style="font-size:10px">{{$mat->nombreMateria}}</span></th>
-@endforeach
-</tr>
+                    </a>        
+                    <br>
+                        {{$mat->nombreMateria}}
+                
+                </div>
+                
+                <div class="panel-footer">
+                    <a class="glyphicon glyphicon-trash" href="#">
+                        <br>
+                            <b style="color:red; font-size:12px">
+                                Eliminar
+                            </b>
+                    
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+</div>
 
-<tr>
-<!--Para eliminar -->
-@foreach($materiaRegistradaPortafolio as $mat)
-<th class="text-center"><a href="#" class="btn btn-warning btn-xs">Eliminar</a></th>
-@endforeach
 
-</tr>
-
-</table>

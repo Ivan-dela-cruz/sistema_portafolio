@@ -1,6 +1,8 @@
 
-<div class='aprobado text-center'><label style='color:#177F6B'>
-              <?php  echo $msj; ?>  
-</div>
-            
-       
+
+        <div class="alert alert-info text-center">
+
+        <label >
+              <?php echo $msj; ?></label>
+         </div>
+

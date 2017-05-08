@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Portafolio extends Model
 {
-      protected $table='portafolio';
+    protected $table = 'portafolio';
 
-     
 }

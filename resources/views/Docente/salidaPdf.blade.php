@@ -84,4 +84,3 @@ $pdf->concat();
 $pdf->Output('storage/archivo/Paginas.pdf','F');
 
 @endphp
-

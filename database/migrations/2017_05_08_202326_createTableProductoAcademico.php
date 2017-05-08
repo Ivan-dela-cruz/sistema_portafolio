@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableParametro extends Migration
+class CreateTableProductoAcademico extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateTableParametro extends Migration
      */
     public function up()
     {
-        Schema::create('parametro', function (Blueprint $table) {
+        Schema::create('producto_academico', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre', 200);
-            $table->integer('idTipPar')->unsigned();
-            $table->index('idTipPar');
-            $table->foreign('idTipPar')->references('id')->on('tipo_parametro')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateTableParametro extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parametro');
+        Schema::dropIfExists('producto_academico');
     }
 }

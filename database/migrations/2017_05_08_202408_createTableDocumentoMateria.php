@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CrearTableDocumento extends Migration
+class CreateTableDocumentoMateria extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CrearTableDocumento extends Migration
      */
     public function up()
     {
-        Schema::create('documento', function (Blueprint $table) {
+        Schema::create('documento_materia', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('idPorMat')->unsigned();
@@ -23,10 +23,6 @@ class CrearTableDocumento extends Migration
             $table->integer('idPar')->unsigned();
             $table->index('idPar');
             $table->foreign('idPar')->references('id')->on('parametro')->onDelete('cascade');
-
-            $table->integer('idProAca')->unsigned();
-            $table->index('idProAca');
-            $table->foreign('idProAca')->references('id')->on('producto_academico')->onDelete('cascade');
 
             $table->string('descripcion', 200);
             $table->string('urlArchivo', 500);
@@ -42,6 +38,6 @@ class CrearTableDocumento extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documento');
+        Schema::dropIfExists('documento_portafolio');
     }
 }

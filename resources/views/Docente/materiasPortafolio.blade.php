@@ -201,7 +201,12 @@
    </form><!--CIERRE DEL FORM-->
 
 
+<div class="box box-info">
+    <div class="box-header text-center">
+        <label>PARÁMETROS PORTAFOLIO</label>
+    </div>
 
+</div><!--CIERRE BOX-INFO-->
 
 
 

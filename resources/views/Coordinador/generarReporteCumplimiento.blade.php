@@ -173,7 +173,7 @@ border-bottom-color: #A4C4D0;
 @foreach($parametro as $parame)
  @php $cont2++ @endphp
  <tr  class="modo1">
-  <td align="center"><b>{!! $cont2 !!}</b></td> <td align="left" ><small style="font-size:15px;">{{ $parame->nombre}}</small></td> <td align="center"><img style="height:17px; width:18px;" src="imagenes/no.png"></td>
+  <td align="center"><b>{!! $cont2 !!}</b></td> <td align="left" ><small style="font-size:15px;">{{ $parame->nombre}}</small></td><td></td> <td align="center"><img style="height:17px; width:18px;" src="imagenes/no.png"></td>
  </tr>
 @endforeach
 

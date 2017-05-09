@@ -88,17 +88,103 @@
 </div><!--Cierre del box Primary-->
 
 
+<div class="box box-success text-center">
+ <div class="box-header"><legend><label>PARÁMETROS ASIGNATURA</label></legend></div> 
+<div class="box-body">
+@php 
+$cont2=0;
+@endphp
+
+
+  @foreach($parametrosMateria as $paraMat)
+
+
+@php$cont2++ @endphp
+@if($cont2==1)
+<div class="row from-group">
+@endif
+                        <div class="col-md-3 text-center form-group">     
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h4 class="modal-title">
+                                        <b style="font-size:13px">
+                                            {{ $paraMat->nombre }}
+                                        </b>
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    @if($paraMat->urlArchivo)
+        <a href="{{url($paraMat->urlArchivo)}}" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
+                                    @else 
+          <a href="javascript:void(0);"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
+                                    @endif
+                                
+                                </div>
+
+                                
+                                <div class="panel-footer">
+                                    @if(!$paraMat->urlArchivo)
+                                    <button class="btn btn-primary btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMat->id }}', '{{ $paraMat->nombre }}')" type="button">
+                                        <span class="glyphicon glyphicon-open">
+                                            _Subir
+                                        </span>
+                                    </button>
+                                    @else
+                                    <button class="btn btn-success btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMat->id }}', '{{ $paraMat->nombre }}')">
+                                        <b class="glyphicon glyphicon-open">
+                                            Modificar
+                                        </b>
+                                    </button>
+                                    @endif
+
+                                    @if($paraMat->urlArchivo)
+                                    <a class="glyphicon glyphicon-save" href="{{ url('descargar_pdf/'.$paraMat->id) }}">Descargar
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+         
+
+                        </div>
+
+@if($cont2==4)
+</div>
+@php $cont2=0 @endphp
+@endif
+
+  @endforeach
+
+</div> <!--Cierre box body-->
+
+
+</div>
 
 
 
+
+
+
+
+
+@foreach($productosAll as $proAll)
+<div class="box box-info">
+<div class="box-header text-center">
+ <legend><label><b> PARÁMETROS {{ $proAll->nombre }}</b> </label></legend>
+</div>
+
+
+<div class="box-body">
+  
 
 @php 
 $cont=0;
 @endphp
                     
-                        
+                    
 
-                        @foreach($parametrosMateria as $paraMate)
+                        @foreach($parametrosProducto as $paraProduc)
+
+@if($proAll->id==$paraProduc->idProAca)<!--Para clasificar pro productos academicos-->
 
 @php$cont++ @endphp
 @if($cont==1)
@@ -109,13 +195,13 @@ $cont=0;
                                 <div class="panel-heading">
                                     <h4 class="modal-title">
                                         <b style="font-size:13px">
-                                            {{ $paraMate->nombre }}
+                                            {{ $paraProduc->nombre }}
                                         </b>
                                     </h4>
                                 </div>
                                 <div class="panel-body">
-                                    @if($paraMate->urlArchivo)
-        <a href="{{url($paraMate->urlArchivo)}}" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
+                                    @if($paraProduc->urlArchivo)
+        <a href="{{url($paraProduc->urlArchivo)}}" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
                                     @else 
           <a href="javascript:void(0);"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
                                     @endif
@@ -124,22 +210,22 @@ $cont=0;
 
                                 
                                 <div class="panel-footer">
-                                    @if(!$paraMate->urlArchivo)
-                                    <button class="btn btn-primary btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMate->id }}', '{{ $paraMate->nombre }}')" type="button">
+                                    @if(!$paraProduc->urlArchivo)
+                                    <button class="btn btn-primary btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraProduc->id }}', '{{ $paraProduc->nombre }}')" type="button">
                                         <span class="glyphicon glyphicon-open">
                                             _Subir
                                         </span>
                                     </button>
                                     @else
-                                    <button class="btn btn-success btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMate->id }}', '{{ $paraMate->nombre }}')">
+                                    <button class="btn btn-success btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraProduc->id }}', '{{ $paraProduc->nombre }}')">
                                         <b class="glyphicon glyphicon-open">
                                             Modificar
                                         </b>
                                     </button>
                                     @endif
 
-                                    @if($paraMate->urlArchivo)
-                                    <a class="glyphicon glyphicon-save" href="{{ url('descargar_pdf/'.$paraMate->id) }}">Descargar
+                                    @if($paraProduc->urlArchivo)
+                                    <a class="glyphicon glyphicon-save" href="{{ url('descargar_pdf/'.$paraProduc->id) }}">Descargar
                                     </a>
                                     @endif
                                 </div>
@@ -152,9 +238,47 @@ $cont=0;
 </div>
 @php $cont=0 @endphp
 @endif
-                        @endforeach
-                    </div>
+
+
+@endif
+
+
+
+
+                        @endforeach <!--Cierre del segundo foreach-->
+
+
+
+
+
+
+
+</div> <!--Cierre del box body-->
+
+
+
+
+</div><!--cierre del box sucess -->
+
+@endforeach<!-- Cierre del primer foreach-->
+
+
+
+
+
+
+
+
+
+
+                   
     </section>
 
+<!--Modal para subir archivo PDF para metros productos-->
     @include('Docente/modal') 
+
+
+    @include('Docente/modalParametroMat')
+
+
 @endsection

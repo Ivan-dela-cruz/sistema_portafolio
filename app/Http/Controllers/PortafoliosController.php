@@ -6,10 +6,12 @@ use App\Carrera;
 use App\Carrera_Ciclo;
 use App\Ciclo;
 use App\Documento;
+use App\Documento_Materia;
 use App\Materia;
 use App\Parametro;
 use App\Portafolio;
 use App\Portafolio_Materia;
+use App\Producto_Academico;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -1764,27 +1766,77 @@ class PortafoliosController extends Controller
     {
 //dd("Codigo materia Portafolio".$idMatPor)
         //Consultar todos los parametro para  registrarles con la materia correspondiente
-        $parametros = Parametro::all();
-        foreach ($parametros as $par) {
-            $idPar = $par->id;
-            //Verifica  que la materia seleccionada conste con todos los parametros  se actualizan automaticamente los parametros
-            $actualizarParametro = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->where("documento.idPar", "=", $idPar)->select("documento.*")->get();
+        // $parametros = Parametro::all();
 
-            if (!count($actualizarParametro)) {
-                $documento              = new Documento;
-                $documento->idPorMat    = $idPorMat;
-                $documento->idPar       = $idPar;
-                $documento->descripcion = "";
-                $documento->urlArchivo  = "";
-                $documento->tipo        = "";
-                $documento->save();
+        //dd($parametros);
+
+        //Consulta los parametros que pertenece a las materias
+        $parametrosMate = DB::table("tipo_parametro")->join("parametro", "tipo_parametro.id", "=", "parametro.idTipPar")->where("parametro.idTipPar", "=", 2)->get();
+
+        //dd($parametrosMate);
+
+        foreach ($parametrosMate as $parMat) {
+
+//id del parametro
+            $idParMat = $parMat->id;
+            //Verifica  que la materia seleccionada conste con todos los parametros  se actualizan automaticamente los parametros de la Asignatura
+            $actualizarParametroMate = DB::table("portafolio_materia")->join("documento_materia", "portafolio_materia.id", "=", "documento_materia.idPorMat")->join("parametro", "parametro.id", "=", "documento_materia.idPar")->where("documento_materia.idPorMat", "=", $idPorMat)->join("tipo_parametro", "tipo_parametro.id", "=", "parametro.idTipPar")->where("documento_materia.idPar", "=", $idParMat)->select("documento_materia.*")->get();
+
+            if (!count($actualizarParametroMate)) {
+                $documentoMat              = new Documento_Materia;
+                $documentoMat->idPorMat    = $idPorMat;
+                $documentoMat->idPar       = $idParMat;
+                $documentoMat->descripcion = "";
+                $documentoMat->urlArchivo  = "";
+                $documentoMat->tipo        = "";
+                $documentoMat->save();
+            }
+        }
+
+//Consultar todos los paramtros que poseen las Asignatura
+
+        $parametroMateria = DB::table("portafolio_materia")->join("documento_materia", "portafolio_materia.id", "=", "documento_materia.idPorMat")->join("parametro", "parametro.id", "=", "documento_materia.idPar")->where("documento_materia.idPorMat", "=", $idPorMat)->select("documento_materia.*", "parametro.nombre")->get();
+
+        //dd($parametroMateria);
+
+        // dd($actualizarParametroMate);
+
+        //El parametro tipo 3 que es solo parametros productos
+        $parametrosProd = DB::table("tipo_parametro")->join("parametro", "tipo_parametro.id", "=", "parametro.idTipPar")->where("parametro.idTipPar", "=", 3)->get();
+
+        $productosAca = Producto_Academico::all();
+
+        //Asignar a los cuatro Productos
+
+        foreach ($productosAca as $prodAca) {
+
+            $idProdAca = $prodAca->id;
+
+            // dd($idProdAca);
+            foreach ($parametrosProd as $par) {
+
+//id del parametro
+                $idPar = $par->id;
+                //Verifica  que todos los productos tenga todos los parametros  se actualizan automaticamente los parametros
+                $actualizarParametro = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->join("tipo_parametro", "tipo_parametro.id", "=", "parametro.idTipPar")->join("producto_academico", "producto_academico.id", "=", "documento.idProAca")->where("documento.idPar", "=", $idPar)->where("documento.idProAca", "=", $idProdAca)->select("documento.*")->get();
+
+                if (!count($actualizarParametro)) {
+                    $documento              = new Documento;
+                    $documento->idPorMat    = $idPorMat;
+                    $documento->idPar       = $idPar;
+                    $documento->idProAca    = $prodAca->id;
+                    $documento->descripcion = "";
+                    $documento->urlArchivo  = "";
+                    $documento->tipo        = "";
+                    $documento->save();
+                }
             }
 
         }
 
-//Consultar todos los paramtros que poseen la asignatura
+//Consultar todos los paramtros que poseen los productos
 
-        $parametroMate = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->select("documento.*", "parametro.nombre")->get();
+        $parametroProducto = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->select("documento.*", "parametro.nombre")->get();
 
 //Para el membrete
 
@@ -1801,8 +1853,8 @@ class PortafoliosController extends Controller
 
         //  dd($portaDatos->desde . "-" . $portaDatos->hasta . "-" . $portaDatos->carrera);
 
-        if (count($parametroMate)) {
-            return view("Docente.parametrosAsignatura")->with("idPorMat", $idPorMat)->with("parametrosMateria", $parametroMate)->with("membrete", $materiasCreadas)->with("portafolio", $portaDatos);
+        if (count($parametroProducto)) {
+            return view("Docente.parametrosAsignatura")->with("idPorMat", $idPorMat)->with("parametrosProducto", $parametroProducto)->with("parametrosMateria", $parametroMateria)->with("membrete", $materiasCreadas)->with("portafolio", $portaDatos)->with("productosAll", $productosAca);
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "No existen ningun parametro:");
         }

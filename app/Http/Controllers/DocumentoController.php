@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Documento;
+use App\Producto_Academico;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -67,6 +68,11 @@ class DocumentoController extends Controller
 
     public function generarPdfConsolidado($idPorMats)
     {
+
+        //Consultar los cuatro productos Academicos
+        $productosAcademicos = Producto_Academico::all();
+
+        //  dd($productosAcademicos);
         //Para deseccripar
         $idPorMat = base64_decode($idPorMats);
 
@@ -84,7 +90,7 @@ class DocumentoController extends Controller
 //Documentos de cada parametro que poseen los portafolio
         $documentoPortafolio = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->select("documento.*", "parametro.nombre as parametro")->get();
         //dd($documentoPortafolio);
-        return view("Docente.generar")->with('portada', $portadaPortafolio)->with("asignatura", $asignatura)->with('documento', $documentoPortafolio)->with('idPortafolio', $idPorMat);
+        return view("Docente.generar")->with('portada', $portadaPortafolio)->with("asignatura", $asignatura)->with('documento', $documentoPortafolio)->with('idPortafolio', $idPorMat)->with("productoAll", $productosAcademicos);
     }
 
     public function descargarPdf($idDocu)

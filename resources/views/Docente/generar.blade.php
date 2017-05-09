@@ -17,17 +17,43 @@ header('Content-type: application/pdf');
     {
         var $archivos = array();
         var $parametros=array();
-        function setFiles($archivos, $parametros)
+        var $productos=array();
+        var $separadorProducto;
+
+        function setFiles($archivos, $parametros, $productos)
         {
             $this->archivos = $archivos;
             $this->parametros=$parametros;
+            $this->productos=$productos;
+           
+//Divide el total de archivos por el numero de productos para realizar los separadode de cada producto
+           $this->separadorProducto= count($parametros)/count($productos);
         }
         function concat()
         {       
             $j=0;
+            $p=0;
+
+
+//Obtine el nuenro de productos 
+ $sepa=$this->separadorProducto;
+ //$this->$separadorProducto;
+     
             foreach ($this->archivos as $archivo) {
-                //En esta funcion se crean la nueva hoja con los parametros corrspondiente
+                
+if ($sepa==$this->separadorProducto) {
+
+    //Agrega el seprador del producto correspondiente
+    agregarPortadaProducto($this, $this->productos[$p]);
+    $p++;
+ $sepa=0;
+}
+           $sepa++;      
+                   //En esta funcion se crean la nueva hoja con los parametros corrspondiente     
                   agregarParametro($this, $this->parametros[$j]);
+
+                
+
             $j++;
              //Debe exitir el archivo a hacer subido para comcatener archivos
 if ($archivo!="") {
@@ -58,10 +84,25 @@ function agregarParametro($this,$archivo){
          $pdf->SetFont('Arial','I',40);
          // Movernos a la derecha
          $pdf->Cell(15);
-         $pdf->Cell(0,70,$archivo,1,1,'C');
-     
-
+         $pdf->Cell(0,70,$archivo,1,1,'C');    
 }
+
+
+function agregarPortadaProducto($this,$producto){
+      
+       $pdf=$this;
+       $pdf->AddPage('P','A4');
+         $pdf->Ln(90);
+         //Negro
+        $pdf->SetTextColor(0, 0, 0);
+         $pdf->SetFont('Arial','I',52);
+         // Movernos a la derecha
+         $pdf->Cell(15);
+         $pdf->Cell(0,70,$producto,0,1,'C');    
+}
+
+
+
 
 
 $pdf= new concat_pdf();
@@ -121,17 +162,34 @@ $pdf->Cell(190,15,$portada->desde.' - '. $portada->hasta ,0,1,'C');
 
 $vArchivo= array();
 $vParametro= array();
+$vProductoAcademico = array();
 
-//$vArchivo[]='storage/archivo/Portada-'.$idPortafolio.'.pdf';
+
+
+
+
+//Consultar todos los productos acdemicos  para des pue clasificar segun producto 1 , 2,3 ,4 
+foreach ($productoAll as $prodAll) {
+  //$vArchivo[]='storage/archivo/Portada-'.$idPortafolio.'.pdf';
+$vProductoAcademico[]=$prodAll->nombre;
+
 foreach($documento as $docu){ 
+
+    if ($prodAll->id==$docu->idProAca) {//Clasificar segun el parametr Acedemico
  $vParametro[]=$docu->parametro;
  $vArchivo[]=$docu->urlArchivo;  
-                          
+                           }    
 
                     }
 
+
+
+}
+
+
+
 //Envia la ruta del almacenamiento y los parametros
-$pdf->setFiles($vArchivo,$vParametro);
+$pdf->setFiles($vArchivo,$vParametro,$vProductoAcademico);
 //$pdf->setFiles(array('B.pdf', 'A.pdf','B.pdf'));
 $pdf->concat();
 // $pdf->Output('paginas.pdf','F');

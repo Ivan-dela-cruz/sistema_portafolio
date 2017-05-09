@@ -12,12 +12,12 @@
 
 <class="container">
             <!-- Modal -->
-            <div class="modal fade" id="modalSubirPdf" role="dialog">
+            <div class="modal fade" id="modalSubirParametroMat" role="dialog">
                 <div class="modal-dialog modal-xs ">
                     <div class="modal-content">
                         
                         <div class="modal-header text-center">
-                            <button class="close" data-dismiss="modal" onclick="limpiarModal()" type="button">
+                            <button class="close" data-dismiss="modal" onclick="limpiarModal2()" type="button">
                                 ×
                             </button>
                             <h4 class="modal-title">
@@ -32,7 +32,7 @@
                             <div class="row">
                                 <div class="col-md-1">
                                 </div>
-                                <div class="col-md-10 text-center" id="notaPdf">
+                                <div class="col-md-10 text-center" id="notaSubirParametroMat">
 
                                 </div>
                                 <div class="col-md-1">
@@ -43,11 +43,11 @@
                                 <div class="col-md-1">
                                 </div>
                                 <div class="col-md-10 text-center">
-                                    <form action="subir_archivoPdf" class="formarchivo" id="frm_subir_archivoPdf" method="post">
+                                    <form action="subir_ParametroMat" class="formarchivo" id="frm_subir_ParametroMat" method="post">
                                         <div class="form-group">
 
                                           <!-- Id del parametro a subir ao actualizar -->
-                                            <input id="documento" name="documento" type="hidden">
+                                            <input id="documento2" name="documento" type="hidden">
                                             <!--  El doque a enviar-->
                                                 <input id="_token" name="_token" type="hidden" value="{!! csrf_token(); !!}">
                                                     <h4>
@@ -55,7 +55,7 @@
                                                             Descripción:
                                                         </b>
                                                     </h4>
-                                                    <input class="form-control" id="descripcion" name="descripcion" readonly="" required="" type="text">
+                                                    <input class="form-control" id="descripcion2" name="descripcion" readonly="" required="" type="text">
                                         </div>
                                        
                                         <div class="form-group text-center">
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="limpiarModal()">
+                            <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="limpiarModal2()">
                                 Cerrar
                             </button>
 
@@ -98,11 +98,11 @@
         </div>
 
 <script type="text/javascript">
-    function limpiarModal(){
+    function limpiarModal2(){
         //Limpia el mensaje que aparece ala subir pdf
- document.getElementById("notaPdf").innerHTML="";
+ document.getElementById("notaSubirParametroMat").innerHTML="";
  //Limpia el formulario 
-$('#frm_subir_archivoPdf').trigger("reset");
+$('#frm_subir_ParametroMat').trigger("reset");
 
     }
 

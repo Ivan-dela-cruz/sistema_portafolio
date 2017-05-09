@@ -124,13 +124,13 @@ $cont2=0;
                                 
                                 <div class="panel-footer">
                                     @if(!$paraMat->urlArchivo)
-                                    <button class="btn btn-primary btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMat->id }}', '{{ $paraMat->nombre }}')" type="button">
+                                    <button class="btn btn-primary btn-xs" data-target="#modalSubirParametroMat" data-toggle="modal" onclick="getIdParametro2('{{$paraMat->id }}', '{{ $paraMat->nombre }}')" type="button">
                                         <span class="glyphicon glyphicon-open">
                                             _Subir
                                         </span>
                                     </button>
                                     @else
-                                    <button class="btn btn-success btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraMat->id }}', '{{ $paraMat->nombre }}')">
+                                    <button class="btn btn-success btn-xs" data-target="#modalSubirParametroMat" data-toggle="modal" onclick="getIdParametro2('{{$paraMat->id }}', '{{ $paraMat->nombre }}')">
                                         <b class="glyphicon glyphicon-open">
                                             Modificar
                                         </b>
@@ -273,12 +273,14 @@ $cont=0;
 
                    
     </section>
+<!--Agrerar parametro Asignatura-->
+      @include('Docente/modalParametroMat')
 
 <!--Modal para subir archivo PDF para metros productos-->
     @include('Docente/modal') 
 
 
-    @include('Docente/modalParametroMat')
+  
 
 
 @endsection

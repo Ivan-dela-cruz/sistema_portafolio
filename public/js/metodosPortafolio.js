@@ -59,6 +59,11 @@ function getIdParametro(idParametro, nombre) {
     document.getElementById("descripcion").value = nombre;
 }
 
+function getIdParametro2(idParametro, nombre) {
+    document.getElementById("documento2").value = idParametro;
+    document.getElementById("descripcion2").value = nombre;
+}
+
 function eliminarArchivo() {
     swal({
         title: "Estás Seguro?",

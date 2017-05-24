@@ -10,19 +10,75 @@
 </head>
 <body>
 
-    <class="container">
+    <div class="container">
+
+
+
+<script type="text/javascript">
+  
+  function obtenerFechaInicio2() {
+var fecha=document.getElementById("fechaInicio2").value;
+var elem= fecha.split('-');
+ var anio = elem[0];
+var mes=elem[1];
+var nombreMes="";
+if (mes=="01") {nombreMes="Enero";}
+if (mes=="02") {nombreMes="Febrero";}
+if (mes=="03") {nombreMes="Marzo";}
+if (mes=="04") {nombreMes="Abril";}
+if (mes=="05") {nombreMes="Mayo";}
+if (mes=="06") {nombreMes="Junio";}
+if (mes=="07") {nombreMes="Julio";}
+if (mes=="08") {nombreMes="Agosto";}
+if (mes=="09") {nombreMes="Septiembre";}
+if (mes=="10") {nombreMes="Octubre";}
+if (mes=="11") {nombreMes="Noviembre";}
+if (mes=="12") {nombreMes="Diciembre";}
+
+document.getElementById("mes_anio_inicio2").value=  nombreMes+"_"+anio;
+//alert(mes);
+  }
+
+
+
+
+
+  function obtenerFechaFin2() {
+var fecha=document.getElementById("fechaFin2").value;
+var elem= fecha.split('-');
+ var anio = elem[0];
+var mes=elem[1];
+var nombreMes="";
+if (mes=="01") {nombreMes="Enero";}
+if (mes=="02") {nombreMes="Febrero";}
+if (mes=="03") {nombreMes="Marzo";}
+if (mes=="04") {nombreMes="Abril";}
+if (mes=="05") {nombreMes="Mayo";}
+if (mes=="06") {nombreMes="Junio";}
+if (mes=="07") {nombreMes="Julio";}
+if (mes=="08") {nombreMes="Agosto";}
+if (mes=="09") {nombreMes="Septiembre";}
+if (mes=="10") {nombreMes="Octubre";}
+if (mes=="11") {nombreMes="Noviembre";}
+if (mes=="12") {nombreMes="Diciembre";}
+
+document.getElementById("mes_anio_fin2").value=  nombreMes+"_"+anio;
+//alert(mes);
+  }
+</script>
     <!-- Modal -->
-    <div class="modal fade" id="modalSubirPdf" role="dialog">
+
+    <div class="modal fade" id="modalActualizarPeriodo" role="dialog">
         <div class="modal-dialog modal-xs ">
             <div class="modal-content">
 
                 <div class="modal-header text-center">
-                    <button class="close" data-dismiss="modal" onclick="limpiarModal()" type="button">
+                    <button class="close" data-dismiss="modal" onclick="limpiarModalP()" type="button">
                         ×
                     </button>
                     <h4 class="modal-title">
                         <b>
-                            Editar Parametro
+                            Editar Período Académico
                         </b>
                     </h4>
                 </div>
@@ -32,7 +88,7 @@
                     <div class="row">
                         <div class="col-md-1">
                         </div>
-                        <div class="col-md-10 text-center" id="notaPdf">
+                        <div class="col-md-10 text-center" id="notaPeriodo">
 
                         </div>
                         <div class="col-md-1">
@@ -43,30 +99,71 @@
                         <div class="col-md-1">
                         </div>
                         <div class="col-md-10 text-center">
-                            <form action="actualizar_parametros" class="formarchivo" id="frm_actualizarPar" method="post">
+                            <form action="actualizar_periodo" class="form_entrada" id="frm_periodo" method="post">
                                 <div class="form-group">
 
-                                  <!-- Id del parametro a subir ao actualizar -->
-                                   <h4>
-                                    <b>
-                                    ID:
-                                    </b>
-                                    </h4>
-                                  <input class="text-center" id="documento" name="documento" type="text" readonly="" required="">
+                                  
+                                  <input class="text-center" id="idPeriodo" name="idPeriodo" type="hidden" readonly="" required="">
                                   <!--  El doque a enviar-->
                                   <input id="_token" name="_token" type="hidden" value="{!! csrf_token(); !!}">
-                                  <h4>
-                                    <b>
-                                        Descripción:
-                                    </b>
-                                </h4>
-                                <input class="form-control text-center" id="descripcion" name="descripcion" type="text">
+                   
+                            
+
+
+  <div class="row">
+
+    <div class="col-md-12">
+<div class="row">
+  <div class="col-md-4 text-left"><h4><label>Fecha Inicio<span class="text-danger">*</span> </label></h4> </div>
+<div class="col-md-8"><h4><input name="inicio" id="fechaInicio2" required="" type="month" onchange="obtenerFechaInicio2()"  class="form-control"> </h4></div>
+</div>
+    </div>
+
+  </div><!--cierre row-->
+  <div class="row">
+
+    <div class="col-md-12">
+     <div class="row">
+       <div class="col-md-4">
+     <h4><label>Fecha Fin<span class="text-danger">*</span> </label></h4>
+       </div>
+      <div class="col-md-8">
+        <h4><input type="month"  name="fin" id="fechaFin2" required=""  onchange="obtenerFechaFin2()" class="form-control"> </h4>
+
+      </div>
+     </div>
+
+    </div>
+  </div><!--cierre row-->
+
+
+
+
+
+
+
+
+ <div class="row">
+     <div class="col-md-6">
+     <h4><input type="hidden" readonly="" name="mes_anio_inicio2" id="mes_anio_inicio2" class="form-control"></h4>
+    </div>
+<div class="col-md-6">
+     <h4><input type="hidden" readonly="" name="mes_anio_fin2" id="mes_anio_fin2" class="form-control"></h4>
+    </div>
+  </div>
+
+
+
+
+
+
+
                             </div>
 
                            <div class="form-group">
                                 <button class="btn btn-success " type="subtmit" >
                                     <span class="glyphicon glyphicon-saved">
-                                        Guardar
+                                        Actualizar
                                     </span>
                                 </button>
                             </div>
@@ -78,7 +175,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="limpiarModal()">
+                <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="limpiarModalP()">
                     Cerrar
                 </button>
 
@@ -92,11 +189,11 @@
 </div>
 
 <script type="text/javascript">
-    function limpiarModal(){
+    function limpiarModalP(){
         //Limpia el mensaje que aparece ala subir pdf
-        document.getElementById("notificacion_crear_parametro").innerHTML="";
+        document.getElementById("notaPeriodo").innerHTML="";
  //Limpia el formulario
- $('#frm_actualizarPar').trigger("reset");
+ $('#frm_periodo').trigger("reset");
 
 }
 

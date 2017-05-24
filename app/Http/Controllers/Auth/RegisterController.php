@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Rol;
 use App\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -48,6 +51,25 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
 
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+//        dd($request->input('email'));
+        $emailInstitucional = substr($request->input('email'), -10);
+        if ($emailInstitucional == "utc.edu.ec") {
+            $this->validator($request->all())->validate();
+
+            event(new Registered($user = $this->create($request->all())));
+            $this->guard()->login($user);
+
+            return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+        } else {
+
+            return redirect('/register')->with("mensaje", "Por Favor ingrese correo Institucional");
+        }
+    }
+
     protected function validator(array $data)
     {
 
@@ -75,7 +97,9 @@ class RegisterController extends Controller
         }
 
         return Validator::make($data, [
-            'cedula'   => 'required|max:10|unique:users|min:10|regex:/^[0-9]+$/',
+
+            'cedula'   => 'required|numeric|digits:10|unique:users',
+            // 'cedula'   => 'required|max:10|unique:users|min:10|regex:/^[0-9]+$/',
             'apellido' => 'required|max:100|min:3',
             'nombre'   => 'required|max:100|min:3',
             'email'    => 'required|email|max:255|unique:users',
@@ -98,7 +122,7 @@ class RegisterController extends Controller
             'apellido'        => $data['apellido'],
             'nombre'          => $data['nombre'],
             'lugarNacimiento' => "",
-            'fechaNacimiento' => date('Y-m-d'),
+            'fechaNacimiento' => "",
             'celular'         => null,
             'telefono'        => null,
             'direccion'       => "",

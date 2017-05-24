@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Nivel;
 use App\Titulo;
 use App\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TitulosController extends Controller
 {
@@ -46,6 +48,7 @@ class TitulosController extends Controller
 
     public function actualizarEstudiosDocente()
     {
+
         $docenteActual = \Auth::user()->id;
 
         $nivel = Nivel::all();
@@ -59,6 +62,25 @@ class TitulosController extends Controller
 
     public function agregarTitulo(Request $request)
     {
+
+        $reglas = ['titulo' => 'required|regex:/^([a-zA-ZñÑáéíóúÁÉÍÓÚ_-])+((\s*)+([a-zA-ZñÑáéíóúÁÉÍÓÚ_-]*)*)+$/',
+            'fecha'             => 'required',
+            'codigoSnt'         => 'required',
+
+        ];
+        $mensajes = [
+            'titulo.required'    => 'Título es obligatorio.',
+            'titulo.regex'       => 'Título solo debe contener letras.',
+            'codigoSnt.required' => 'Código de registro Conesup o Senescyt es obligatorio.',
+            'fecha.required'     => 'Fecha de registro título es obligatorio.',
+
+        ];
+
+        $validator = Validator::make($request->all(), $reglas, $mensajes);
+        if ($validator->fails()) {
+            return new JsonResponse($validator->errors(), 422);
+        }
+
         $docenteActual          = \Auth::user()->id;
         $titulo                 = new titulo;
         $titulo->idDoc          = $docenteActual;

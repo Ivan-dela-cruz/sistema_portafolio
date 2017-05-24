@@ -13,15 +13,21 @@
                 <div class="box-header text-center">
                     <h3 class="box-title">
                         <b>
-                            ESTUDIOS REALIZADOS Y TÍTULOS OBTENIDOS
+                        TÍTULOS OBTENIDOS
                         </b>
                     </h3>
                 </div>
+
+
+
+
+
+
                 <div class="form-group">
                     <div id="notaEstudio">
                     </div>
                 </div>
-                <form action="frm_agregar_titulo" class="form-horizontal form_entrada" id="frm_agregar_titulo" method="post">
+                <form action="frm_agregar_titulo" class="form-horizontal form_entrada_validacion" id="frm_agregar_titulo" method="post">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                         <input name="idDoc" type="hidden" value="{{ $docente->id }}">
                             <div class="box-body ">
@@ -48,31 +54,49 @@
                                         </b>
                                     </b>
                                 </div>
-                                <div class="form-group col-xs-12">
+                            
+
+
+
+
+
+
+                                <div class="form-group col-xs-12" id="titulo_group">
                                     <label for="titulo">
                                         TITULO OBTENIDO
                                     </label>
-                                    <input class="form-control" id="titulo" name="titulo" required="" type="text" value="">
-                                    </input>
+                                      <span class="help-block" id="titulo_span"></span>
+                                    <input class="form-control" id="titulo" name="titulo" title="Ingrese nombre Título" type="text" value="">
+                                    
                                 </div>
-                                <div class="form-group col-xs-12">
-                                    <label for="registro">
+                            
+
+
+
+
+                                <div class="form-group col-xs-12" id="fecha_group">
+                                    <label for="fecha">
                                         FECHA DE REGISTRO
                                     </label>
-                                    <input class="form-control" id="fecha" name="fecha" required="" type="date" value="">
-                                    </input>
+                                      <span class="help-block" id="fecha_span"></span>
+                                    <input class="form-control" id="fecha" name="fecha" title="Ingrese fecha registro"  type="date" value="">
+                                    
                                 </div>
-                                <div class="form-group col-xs-12">
-                                    <label for="apellido">
+                                <div class="form-group col-xs-12" id="codigoSnt_group">
+                                    <label for="codigoSnt">
                                         CÓDIGO DEL REGISTRO  CONESUP O SENESCYT
                                     </label>
-                                    <input class="form-control" id="codigoSnt" name="codigoSnt" required="" type="text" value="">
-                                    </input>
+                                      <span class="help-block" id="codigoSnt_span"></span>
+                                    <input class="form-control" id="codigoSnt" name="codigoSnt" type="text" value="">
+                                    
                                 </div>
+
+
+
                             </div>
-                            <div class="box-footer">
-                                <button class="btn btn-primary" type="submit">
-                                    Actualizar Datos
+                            <div class="box-footer text-center">
+                                <button class="btn btn-success" type="submit">
+                                    Actualizar Títulos
                                 </button>
                             </div>
                         </input>
@@ -82,6 +106,16 @@
         </div>
         <div class="col-md-6">
             <div class="box box-primary">
+
+<div class="box-header text-center">
+                    <h3 class="box-title">
+                        <b>
+                       
+  ESTUDIOS REALIZADOS
+                        </b>
+                    </h3>
+                </div>
+
                 <div class="box-body box-profile">
                     @if($docente->foto)
                 @php

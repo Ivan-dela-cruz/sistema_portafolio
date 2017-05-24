@@ -12,12 +12,12 @@
 
 <class="container">
             <!-- Modal -->
-            <div class="modal fade" id="modalSubirParametroMat" role="dialog">
+            <div class="modal fade" id="modalSubirParametroPorta" role="dialog">
                 <div class="modal-dialog modal-xs ">
                     <div class="modal-content">
                         
                         <div class="modal-header text-center">
-                            <button class="close" data-dismiss="modal" onclick="limpiarModal2()" type="button">
+                            <button class="close" data-dismiss="modal" onclick="limpiarModal3()" type="button">
                                 ×
                             </button>
                             <h4 class="modal-title">
@@ -32,7 +32,7 @@
                             <div class="row">
                                 <div class="col-md-1">
                                 </div>
-                                <div class="col-md-10 text-center" id="notaSubirParametroMat">
+                                <div class="col-md-10 text-center" id="notaSubirParametroPorta">
 
                                 </div>
                                 <div class="col-md-1">
@@ -43,7 +43,7 @@
                                 <div class="col-md-1">
                                 </div>
                                 <div class="col-md-10 text-center">
-                 <form action="subir_ParametroMat" class="formarchivo" id="frm_subir_ParametroMat" method="post">
+                 <form action="subir_ParametroPorta" class="formarchivo" id="frm_subir_ParametroPorta" method="post">
                                         <div class="form-group">
 
                                           <!-- Id del parametro a subir ao actualizar -->
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="limpiarModal2()">
+                            <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="limpiarModal3()">
                                 Cerrar
                             </button>
 
@@ -98,11 +98,11 @@
         </div>
 
 <script type="text/javascript">
-    function limpiarModal2(){
+    function limpiarModal3(){
         //Limpia el mensaje que aparece ala subir pdf
- document.getElementById("notaSubirParametroMat").innerHTML="";
+ document.getElementById("notaSubirParametroPorta").innerHTML="";
  //Limpia el formulario 
-$('#frm_subir_ParametroMat').trigger("reset");
+$('#frm_subir_ParametroPorta').trigger("reset");
 
     }
 

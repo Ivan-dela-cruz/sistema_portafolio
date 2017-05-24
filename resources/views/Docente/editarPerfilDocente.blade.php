@@ -3,135 +3,196 @@
 @section('content')
 
 
-<script type="text/javascript">
-
-
-$(document).ready(function() {
-  alert("hola");// Instrucciones a ejecutar al terminar la carga
-});
-
-</script>
 
 <section class="content" id="contenido_principal" >
-    <div class="row">
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">
-                        Editar información Docente
-                    </h3>
+<div class="row">
+    <div class="col-md-7">
+
+
+
+   <div class="box box-primary">
+      
+<div class="box-header with-border text-center">
+                    <h4 class="box-title">
+                        Editar información personal
+                    </h4>
                 </div>
-                <!-- /.box-header -->
-                <div id="notificacion">
-                </div>
-                <!-- action  editor se pued utilizar directamente  pero se recarga toda la  pagina  podemos borrar el action igual funciona -->
-                <!-- En este caso utilizamos ajax con la clase Form_entrada para no recargar toda la pg -->
-                <form action="editar_docente" class="form-horizontal form_entrada" id="frm_editar_docente" method="post">
+
+
+
+
+<div class="box-body">
+
+   <form action="editar_docente" class="form-horizontal form_entrada_validacion" id="frm_editar_docente" method="post">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                         <input name="idDocente" type="hidden" value="{{$usuario->id}}">
-                            <div class="box-body ">
-                                <div class="form-group col-xs-12">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <label for="nombre">
-                                                Nombres*
-                                            </label>
-                                            <input class="form-control" id="nombre" name="nombre" required="" type="text" value="{!! $usuario->nombre !!}">
-                                                <label style="color:#8D8A8A; font-size:12px">
-                                                    Nombres completos
-                                                </label>
-                                            </input>
-                                        </div>
-                                        <div class="col-xs-0">
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <label for="apellido">
-                                                Apellidos*
-                                            </label>
-                                            <input class="form-control" id="apellido" name="apellido" required="" type="text" value="{!! $usuario->apellido !!}">
-                                                <label style="color:#8D8A8A; font-size:12px">
-                                                    Apellidos Completos
-                                                </label>
-                                            </input>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <label for="cedula">
-                                        Cedula*
-                                    </label>
-                                    <input class="form-control" id="cedula" name="cedula" readonly="" type="text" value="{{ $usuario->cedula }}">
-                                    </input>
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <label for="celular">
-                                                Número de Celular:*
-                                            </label>
-                                            <input class="form-control" id="celular" name="celular" pattern="[0-9]{10}" required="" title="Ingrese 10 Dígitos" type="tel" value="{{ $usuario->celular }}">
-                                                <label style="color:#8D8A8A; font-size:12px">
-                                                    Ejemplo. (0992266335) 10 dígitos
-                                                </label>
-                                            </input>
-                                        </div>
-                                        <div class="col-xs-0">
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <label for="telefono">
-                                                Número de Teléfono:
-  *
-                                            </label>
-                                            <input autocomplete="false" class="form-control" id="telefono" name="telefono" pattern="[0-9]{9}" required="" title="Ingrese 9 Dígitos" type="tel" value="{!! $usuario->telefono !!}">
-                                                <label style="color:#8D8A8A; font-size:12px">
-                                                    Ejemplo. (03)2266335  9 dígitos
-                                                </label>
-                                            </input>
-                                        </div>
-                                    </div>
-                                </div>
+<div class="row">
+ <div class="col-md-12">
+ <div id="notificacion">
+     
+                </div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+    <div class="form-group" id="nombre_group">
+         <label class="col-md-3" for="nombre"> Nombres* </label>
+      <div class="col-md-9">
+    <span class="help-block"  id="nombre_span" > </span>
+     <input type="text" class="form-control" id="nombre" value="{{ $usuario->nombre }}" name="nombre"  >
 
-                                <div class="form-group col-xs-12">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <label>
-                                                Lugar*
-                                            </label>
-                                            <input class="form-control" id="lugar" name="lugar" required="" type="text" value="{{$usuario->lugarNacimiento}}">
-                                                <label style="color:#8D8A8A; font-size:12px">
-                                                    Ejemplo Ciudad.
-                                                </label>
-                                            </input>
-                                        </div>
-                                        <div class="col-xs-0">
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <label>
-                                                Fecha de Nacimiento*
-                                            </label>
-                                            <input class="form-control" id="fecha" name="fecha" required="" type="date" value="{{ $usuario->fechaNacimiento}}">
-                                                <label style="color:#8D8A8A;font-size: 12px ">
-                                                    Seleccione Fecha.
-                                                </label>
-                                            </input>
-                                        </div>
-                                    </div>
-                                </div>
+      <label style="color:#8D8A8A; font-size:12px">Nombres completos</label>
+      </div><!--Cierre col 9-->
 
-                                <div class="form-group col-xs-12">
-                                    <label>
-                                        Dirección Domiciliaria*
-                                    </label>
-                                    <textarea class="form-control" id="direccionDomi" name="direccionDomi" required="" type="text">{{$usuario->direccion}}</textarea>
+    </div><!--Cierre from-group-->
+</div><!--Cierre col-6-->
+
+
+<div class="col-md-6">
+ <div class="form-group" id="apellido_group" >
+         <label class="col-md-3" for="apellido"> Apellidos* </label>
+      <div class="col-md-9">
+    <span class="help-block"  id="apellido_span" > </span>
+     <input type="text" class="form-control" id="apellido" value="{{ $usuario->apellido }}" name="apellido"  >
+ <label style="color:#8D8A8A; font-size:12px">Apellidos Completos </label>
+      </div><!--Cierre col 9-->
+    </div><!--Cierre from-group-->
+</div> <!--Cierre col6-->
+</div>   <!--Cierer row--> 
+
+
+
+<div class="row">
+<div class="col-md-12">
+  <div class="form-group" id="cedula_group" >
+         <label class="col-md-2" for="cedula">N° cédula* </label>
+      <div class="col-md-7">
+    <span class="help-block"  id="cedula_span" > </span>
+     <input type="text" class="form-control" id="cedula" value="{{ $usuario->cedula}}" readonly="" name="cedula"  >
+  <label style="color:#8D8A8A; font-size:12px">
+                                                    Ejemplo. (xxxxxxxxxx) 10 dígitos
+                                                </label>
+      </div><!--Cierre col 7-->
+
+<div class="col-md-3"></div>
+
+    </div><!--Cierre from-group-->  
+</div>    
+</div><!--Cierre row-->
+
+<div class="row">
+    <div class="col-md-6">
+         <div class="form-group" id="celular_group" >
+                            <label class="col-sm-3" for="celular">Celular*</label>
+                        <div class="col-sm-9" >
+                             <span class="help-block"  id="celular_span" > </span>
+                            <input type="text" class="form-control" id="celular" value="{{ $usuario->celular }}" name="celular"  >
+                             <label style="color:#8D8A8A; font-size:12px">
+                                                    Ejemplo. (xxxxxxxxxx) 10 dígitos
+                                                </label>
+                        </div>
+                   
+
+     </div><!-- /.form-group -->
+
+    </div>
+
+    <div class="col-md-6">
+        
+  <div class="form-group" id="telefono_group" >
+         <label class="col-md-3" for="telefono">Teléfono </label>
+      <div class="col-md-9">
+    <span class="help-block"  id="telefono_span" > </span>
+     <input type="text" class="form-control" id="telefono" value="{{ $usuario->telefono}}"  name="telefono"  >
+<label style="color:#8D8A8A; font-size:12px">
+                                                    Ejemplo. (xx)xxxxxx 9 dígitos
+                                                </label>
+      </div><!--Cierre col 9-->
+
+    </div><!--Cierre from-group-->  
+
+    </div>
+
+
+</div><!--Cierer row-->
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-md-6">
+         <div class="form-group" id="lugar_group" >
+                            <label class="col-sm-3" for="lugar">Lugar*</label>
+                        <div class="col-sm-9" >
+                             <span class="help-block"  id="lugar_span" > </span>
+                            <input type="text" class="form-control" id="lugar" value="{{ $usuario->lugarNacimiento }}" name="lugar"  >
+                             <label style="color:#8D8A8A; font-size:12px">
+                                                    Ejemplo. Ciudad (Latacunga)
+                                                </label>
+                        </div>
+                   
+
+     </div><!-- /.form-group -->
+
+    </div>
+
+    <div class="col-md-6">
+        
+  <div class="form-group" id="fecha_group" >
+         <label class="col-md-3" for="fecha">Fecha*</label>
+      <div class="col-md-9">
+    <span class="help-block"  id="fecha_span" > </span>
+     <input type="date" class="form-control" id="fecha" value="{{ $usuario->fechaNacimiento}}"  name="fecha"  >
+<label style="color:#8D8A8A; font-size:12px">
+                                                    Seleccione fecha Nacimiento.
+                                                </label>
+      </div><!--Cierre col 9-->
+
+    </div><!--Cierre from-group-->  
+
+    </div>
+
+
+</div><!--Cierer row-->
+
+
+
+
+<div class="row">
+  
+<div class="col-md-12">
+  <div class="form-group" id="direccionDomi_group" >
+         <label class="col-md-2" for="direccionDomi">Dirección Domiciliaria* </label>
+      <div class="col-md-10">
+    <span class="help-block"  id="direccionDomi_span" > </span>
+     <textarea class="form-control" id="direccionDomi" name="direccionDomi" type="text">{{$usuario->direccion}}</textarea>
                                     <label style="color:#8D8A8A;font-size: 12px ">
                                         Barrio, Calle Principal, Calle Secundaria, Número de Casa, donde vive actualmente
                                     </label>
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <label for="cargasFamiliar">
-                                        Número de cargas Familiares:*
-                                    </label>
-                                    <select class="form-control" id="cargasFamiliar" name="cargasFamiliar" required="">
+      </div><!--Cierre col 7-->
+
+
+
+    </div><!--Cierre from-group-->  
+  
+
+  </div>
+</div><!--Cierre row-->
+
+
+
+<div class="row">
+    
+<div class="col-md-12">
+ <div class="form-group" id="cargasFamiliar_group" >
+         <label class="col-md-4" for="cargasFamiliar">N° Cargas Familiares*</label>
+      <div class="col-md-8">
+    <span class="help-block"  id="cargasFamiliar_span" >  </span>
+    <select class="form-control" id="cargasFamiliar" name="cargasFamiliar" >
                                         <option value="">
                                             --SELECCIONE CARGAS FAMILIARES --
                                         </option>
@@ -172,12 +233,27 @@ $(document).ready(function() {
                                             Mayor a 10
                                         </option>
                                     </select>
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <label for="sexo">
-                                        Género*
-                                    </label>
-                                    <select class="form-control" id="sexo" name="sexo" required="">
+                               
+
+      </div><!--Cierre col 8-->
+
+    </div><!--Cierre from-group-->  
+</div>
+</div> <!--cierre row-->
+
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+ <div class="form-group" id="sexo_group" >
+         <label class="col-md-4" for="sexo">Género*</label>
+      <div class="col-md-8">
+    <span class="help-block"  id="sexo_span" >  </span>
+
+       <select class="form-control" id="sexo" name="sexo">
                                         <option value="">
                                             -- SELECCIONE GÉNERO --
                                         </option>
@@ -187,13 +263,24 @@ $(document).ready(function() {
                                         <option value="2 ">
                                             MASCULINO
                                         </option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <label for="nacionalidad">
-                                        Nacionalidad:*
-                                    </label>
-                                    <select class="form-control" id="nacionalidad" name="nacionalidad" required="">
+                                    </select>                                                         
+
+      </div><!--Cierre col 8-->
+
+    </div><!--Cierre from-group-->  
+</div>
+</div> <!--cierre row-->
+
+
+<div class="row">
+    <div class="col-md-12">
+ <div class="form-group" id="nacionalidad_group" >
+         <label class="col-md-4" for="nacionalidad">Nacionalidad*</label>
+      <div class="col-md-8">
+    <span class="help-block"  id="nacionalidad_span" >  </span>
+
+
+<select class="form-control" id="nacionalidad" name="nacionalidad" >
                                         <option value="">
                                             --SELECCIONE NACIONALIDAD --
                                         </option>
@@ -233,13 +320,26 @@ $(document).ready(function() {
                                         <option value="12">
                                             VENEZOLANA
                                         </option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <label for="estado">
-                                        Estado Civil:*
-                                    </label>
-                                    <select class="form-control" id="estado" name="estado" required="">
+                                    
+   </select>                                                            
+
+      </div><!--Cierre col 8-->
+
+    </div><!--Cierre from-group-->  
+</div>
+</div> <!--cierre row-->
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+ <div class="form-group" id="estado_group" >
+         <label class="col-md-4" for="estado">Estado Civil*</label>
+      <div class="col-md-8">
+    <span class="help-block"  id="estado_span" >  </span>
+
+            <select class="form-control" id="estado" name="estado" >
                                         <option value="">
                                             -- SELECCIONE ESTADO CIVIL --
                                         </option>
@@ -261,30 +361,65 @@ $(document).ready(function() {
                                         <option value="6">
                                             VIUDO(A)
                                         </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="box-footer text-center">
-                                <button class="btn btn-primary" type="submit">
+                                    </select>                                                     
+
+      </div><!--Cierre col 8-->
+
+    </div><!--Cierre from-group-->  
+</div>
+</div> <!--cierre row-->
+
+<div class="row">
+    <br>
+    <div class="col-md-12 text-center">
+         <button class="btn btn-success" type="submit">
                                     Actualizar Datos
                                 </button>
-                            </div>
-                        </input>
-                    </input>
-                </form>
-            </div>
-        </div>
-        <!-- end col mod 6 -->
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">
-                        Cambiar Fotografia
-                    </h3>
-                </div>
-                <!-- /.box-header -->
+
+    </div>
+
+</div>
+
+<br>
+<br><br><br>
+<div class="row">
+    <div class="col-md-12 text-center">
+<a  href="{{URL::to('/getPDF').'/'. base64_encode(Auth::user()->id)}}" target="black" class="btn btn-lg btn-danger">Generar PDF Perfil </a>
+    </div>
+</div>
+
+
+
+
+
+
+</div> <!--Cierre box body-->
+
+   </form>
+   
+   <div class="box-footer"></div>
+
+   </div><!--Cierre box Primary-->
+
+
+
+
+    </div><!--Cierre col-6-->
+<div class="col-md-5">
+    
+
+
+
+    <div class="box box-primary">
+        <div class="box-header text-center"><h4>Cambiar Fotografia</h4></div> 
+               <div class="row"> 
+               <!-- /.box-header -->
+               <div class="col-md-12">
                 <div id="notificacionImagen">
                 </div>
+                </div>
+                </div>
+
                 <form action="subir_imagen" class="formarchivo text-center" enctype="multipart/form-data" id="frm_subir_imagen" method="post" name="frm_subir_imagen">
                     <input name="id_usuario_foto" type="hidden" value="{!!$usuario->id!!}">
                         <input id="_token" name="_token" type="hidden" value="{{ csrf_token()}}">
@@ -297,7 +432,7 @@ $(document).ready(function() {
     @endif
                                     <img alt="User Image" class="img-circle" id="fotografia_usuario" name="fotografia_usuario" src="{{ url($fotoUser) }}" style="width:130px;height:135px;">
                                         <!-- User image -->
-                                    </img>
+                                
                                 </div>
                                 <div class="form-group col-xs-12">
                                     <label>
@@ -311,18 +446,29 @@ $(document).ready(function() {
                                     </button>
                                 </div>
                             </div>
-                        </input>
-                    </input>
+                     
                 </form>
             </div>
-        </div>
-        <!-- end col mod 6 -->
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <div class="box box-primary">
+                <div class="box-header with-border text-center">
+                    <h4>
                         Historial Personal
-                    </h3>
+                    </h4>
                 </div>
                 <!-- /.box-header -->
                 <div id="notificacion_cambiarHistorial">
@@ -350,7 +496,6 @@ $(document).ready(function() {
                                         Fecha ingreso a la UTC:
                                     </label>
                                     <input class="form-control" id="ingresoUtc" name="ingresoUtc" required="" type="month" value="{!! $usuario->fechaIngresoUtc !!}">
-                                    </input>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -359,18 +504,19 @@ $(document).ready(function() {
                                     Cambiar Datos
                                 </button>
                             </div>
-                        </input>
-                    </input>
                 </form>
             </div>
-        </div>
-        <!-- end col mod 6 -->
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">
-                        Cambiar Password
-                    </h3>
+
+
+
+
+
+
+  <div class="box box-primary">
+                <div class="box-header with-border text-center">
+                    <h4 class="box-title">
+                        Cambiar Contraseña
+                    </h4>
                 </div>
                 <!-- /.box-header -->
                 <div id="notificacion_cambiarClave">
@@ -385,13 +531,13 @@ $(document).ready(function() {
                                         Correo Electrónico
                                     </label>
                                     <input class="form-control" id="email_usuario" name="email" placeholder="Entrar email" readonly="" type="email" value="{{ $usuario->email}}">
-                                    </input>
+                                
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">
                                     </label>
-                                    <input class="form-control" id="clave" name="clave" placeholder="Password" required="" type="password">
-                                    </input>
+                                    <input class="form-control" id="clave" name="clave" placeholder="Password"  type="password">
+                                  
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -400,20 +546,17 @@ $(document).ready(function() {
                                     Cambiar Datos
                                 </button>
                             </div>
-                        </input>
-                    </input>
                 </form>
             </div>
-        </div>
-        <!-- end col mod 6 -->
-    </div>
-    <!-- end row -->
 
-<div class="row">
-    <div class="col-md-12 text-center">
-<a  href="{{URL::to('/getPDF').'/'. base64_encode(Auth::user()->id)}}" target="black" class="btn btn-lg btn-danger">Generar PDF Perfil </a>
-    </div>
-</div>
+
+
+
+</div><!--Cierre col-6-->
+
+</div> <!--Cierre ror-->
+
+
 
 
 <body onload="cargarCombox()"></body>

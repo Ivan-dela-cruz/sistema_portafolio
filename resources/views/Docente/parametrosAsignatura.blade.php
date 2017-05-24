@@ -114,9 +114,9 @@ $cont2=0;
                                 </div>
                                 <div class="panel-body">
                                     @if($paraMat->urlArchivo)
-        <a href="{{url($paraMat->urlArchivo)}}" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
+        <a href="{{url($paraMat->urlArchivo)}}" title="Visualizar archivo Pdf" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
                                     @else 
-          <a href="javascript:void(0);"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
+          <a href="javascript:void(0);"  title="No existe archivo Pdf"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
                                     @endif
                                 
                                 </div>
@@ -130,15 +130,17 @@ $cont2=0;
                                         </span>
                                     </button>
                                     @else
-                                    <button class="btn btn-success btn-xs" data-target="#modalSubirParametroMat" data-toggle="modal" onclick="getIdParametro2('{{$paraMat->id }}', '{{ $paraMat->nombre }}')">
+                                   
+                                  <!--  <button class="btn btn-success btn-xs" data-target="#modalSubirParametroMat" data-toggle="modal" onclick="getIdParametro2('{{$paraMat->id }}', '{{ $paraMat->nombre }}')">
                                         <b class="glyphicon glyphicon-open">
                                             Modificar
                                         </b>
-                                    </button>
+                                    </button> -->
+                                   
                                     @endif
 
                                     @if($paraMat->urlArchivo)
-                                    <a class="glyphicon glyphicon-save" href="{{ url('descargar_pdf/'.$paraMat->id) }}">Descargar
+                                    <a class="glyphicon glyphicon-save" href="{{ url('descargar_pdf_Mate/'.$paraMat->id) }}">Descargar
                                     </a>
                                     @endif
                                 </div>
@@ -163,11 +165,11 @@ $cont2=0;
 
 
 
-
+<div class="box box-info">
 
 
 @foreach($productosAll as $proAll)
-<div class="box box-info">
+
 <div class="box-header text-center">
  <legend><label><b> PARÁMETROS {{ $proAll->nombre }}</b> </label></legend>
 </div>
@@ -201,9 +203,9 @@ $cont=0;
                                 </div>
                                 <div class="panel-body">
                                     @if($paraProduc->urlArchivo)
-        <a href="{{url($paraProduc->urlArchivo)}}" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
+        <a href="{{url($paraProduc->urlArchivo)}}" title="Visualizar archivo Pdf" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
                                     @else 
-          <a href="javascript:void(0);"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
+          <a href="javascript:void(0);" title="No existe archivo Pdf"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
                                     @endif
                                 
                                 </div>
@@ -217,11 +219,12 @@ $cont=0;
                                         </span>
                                     </button>
                                     @else
+                                  <!--
                                     <button class="btn btn-success btn-xs" data-target="#modalSubirPdf" data-toggle="modal" onclick="getIdParametro('{{$paraProduc->id }}', '{{ $paraProduc->nombre }}')">
                                         <b class="glyphicon glyphicon-open">
                                             Modificar
                                         </b>
-                                    </button>
+                                    </button> -->
                                     @endif
 
                                     @if($paraProduc->urlArchivo)
@@ -258,7 +261,6 @@ $cont=0;
 
 
 
-</div><!--cierre del box sucess -->
 
 @endforeach<!-- Cierre del primer foreach-->
 
@@ -266,6 +268,7 @@ $cont=0;
 
 
 
+</div><!--cierre del box sucess -->
 
 
 

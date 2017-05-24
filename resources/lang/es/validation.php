@@ -11,7 +11,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | such as the size rules. Feel free to tweak each of these messages.
     |
-    */
+     */
 
     'accepted'             => ':attribute debe ser aceptado.',
     'active_url'           => ':attribute no es una URL válida.',
@@ -32,7 +32,7 @@ return [
     'date'                 => ':attribute no es una fecha válida.',
     'date_format'          => ':attribute no corresponde al formato :format.',
     'different'            => ':attribute y :other deben ser diferentes.',
-    'digits'               => ':attribute debe tener :digits dígitos.',
+    'digits'               => 'El campo :attribute debe tener :digits dígitos.',
     'digits_between'       => ':attribute debe tener entre :min y :max dígitos.',
     'dimensions'           => 'Las dimensiones de la imagen :attribute no son validas.',
     'distinct'             => 'El campo :attribute contiene un valor duplicado.',
@@ -61,7 +61,7 @@ return [
         'array'   => ':attribute debe tener al menos :min elementos.',
     ],
     'not_in'               => ':attribute es inválido.',
-    'numeric'              => ':attribute debe ser numérico.',
+    'numeric'              => 'El campo :attribute debe ser numérico.',
     'present'              => 'El campo :attribute debe estar presente.',
     'regex'                => 'El formato de :attribute es inválido.',
     'required'             => 'El campo :attribute es obligatorio.',
@@ -94,7 +94,7 @@ return [
     | convention "attribute.rule" to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
     |
-    */
+     */
 
     'custom'               => [
         'attribute-name' => [
@@ -111,7 +111,7 @@ return [
     | with something more reader friendly such as E-Mail Address instead
     | of "email". This simply helps us make messages a little cleaner.
     |
-    */
+     */
 
     'attributes'           => [
         'name'                  => 'nombre',

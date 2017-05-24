@@ -2,6 +2,27 @@
 
 @section('content')
 <div class="container">
+
+<div class="row">
+    
+<div class="col-md-2"></div>
+<div class="col-md-8 text-center">
+    
+@if(Session::has('mensaje'))
+
+<div class="alert alert-warning">
+ <b> <strong>{{ Session::get('mensaje') }}</strong></b> 
+</div>
+@endif
+</div>
+
+
+<div class="col-md-2"></div>
+
+</div>
+
+
+
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">

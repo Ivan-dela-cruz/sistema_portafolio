@@ -182,7 +182,7 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-4">
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit">
                                         Agregar Asignaturas
                                     </button>
                                 </div>
@@ -201,11 +201,60 @@
    </form><!--CIERRE DEL FORM-->
 
 
+
+
+
+
 <div class="box box-info">
     <div class="box-header text-center">
-        <label>PARÁMETROS PORTAFOLIO</label>
-    </div>
+        <label>PORTADA GENERAL</label></div>
 
+<input type="hidden" name="idPorta"  id="idPorta" value="{{ $idPortafolioActual }}">
+
+
+
+
+<!--Se actualiza nuevamente al subir archivo PDF DEL PARAMETRO-->
+ 
+<div class="box-body" class="text-center" id="rsParametroPorta">
+
+
+
+<table class="table" class="text-center">
+<thead>
+    <tr>
+
+        <th class="text-center">PARÁMETROS</th>
+       <th class="text-center">ACCIÓN</th>
+    </tr>
+
+</thead>
+
+  @foreach($parametrosPorta as $paraPorta)
+    <tr>
+    <td class="text-center"><br> <b style="font-size:13px"> {{ $paraPorta->parametro }} </b></td>
+    @if($paraPorta->urlArchivo)
+     <td class="text-center"> <a  title="Visualizar archivo Pdf" href="{{url($paraPorta->urlArchivo)}}" target="_blank"> <img src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a> 
+          <br> <a class="glyphicon glyphicon-save" href="{{ url('descargar_pdf_Porta/'.$paraPorta->id) }}">Descargar </a>
+     </td> 
+@else
+<td class="text-center">
+  <a title="No existe Archivo" href="javascript:void(0);"><img src="{{ url('imagenes/pdf.png')}}" style="width:45px; height:55px";> </a>
+<br>
+ <button class="btn btn-primary btn-xs" data-target="#modalSubirParametroPorta" data-toggle="modal" onclick="getIdParametro3('{{$paraPorta->id }}', '{{ $paraPorta->parametro }}')" type="button">
+                                        <span class="glyphicon glyphicon-open">
+                                            _Subir
+                                        </span>
+                                    </button>
+
+  </td>
+    @endif
+
+</tr>
+@endforeach
+
+</table>
+</div> <!--Cierre box body-->
 </div><!--CIERRE BOX-INFO-->
 
 
@@ -215,12 +264,10 @@
 
 
 <div class="box box-success">
-    
 <div class="box-header text-center">
 <label>ASIGNATURAS REGISTRADAS EN EL PORTAFOLIO</label>    
 </div>
-<div class="box-body text-center"  id="notificacionAgregarMateria">
-    
+<div class="box-body text-center"  id="notificacionAgregarMateria">    
                     <button class="btn btn-success" onclick="materiasCreadas()" type="button">
                         <span class="glyphicon glyphicon-eye-open">
                         </span>
@@ -228,8 +275,6 @@
 </div> <!--Cierre box-body-->
 
 </div> <!-- Cierre del box success-->
-
-
 
 
 
@@ -246,3 +291,7 @@
 <!--<script type="text/javascript">
     setTimeout("materiasCreadas()",500);
 </script>-->
+
+
+<!-- Incluye el modal para subir los parametros de los portafolio-->
+  @include('Docente/modalParametroPortafolio')

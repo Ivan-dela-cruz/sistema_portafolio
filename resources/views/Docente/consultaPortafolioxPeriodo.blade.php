@@ -1,23 +1,18 @@
-<div class="col-md-12">
-    <br>
+<div class="row">
+
+    <div class="col-md-12">
         @if(!count($portafolios))
-        <div align="center" class="form-group ">
-            <b>
-                <legend style="color:#6A0888;">
-                    Favor crear su  portafolio
-                </legend>
-            </b>
-        </div>
+        <div class="alert alert-warning text-center">
+        <label>Portafolio no creado para el Período seleccionado</label>
+            </div>
+
         @else
 
-  @php 
-  $cont=0;
-  @endphp
-        <table class="table" style="width: 100%;">
-            <tr>
-                @foreach($portafolios as $porta)
-                <th>
-                    <div class="panel panel-primary">
+<div class="row">
+@foreach($portafolios as $porta)
+
+<div class="col-md-6"> 
+                <div class="panel panel-primary">
                         <div class="panel-heading text-center">
                             <b style="font-size:11px;">
                                 {{ $porta->nombre }}
@@ -31,22 +26,20 @@
                                 <img src="{!!url('imagenes/Portafolios.png')!!}" style="height:60px"/>
                             </a>
                             <input id="idPortafolio" name="idPortafolio" type="hidden" value="{{$porta->id}}">
-                            </input>
-                        </div>
+                            </div>
                     </div>
-                </th>
-                @php
-  $cont++;
-  @endphp
-
-  @if($cont==2)
-            </tr>
-            <tr>
-                @php $cont=0; @endphp
-  @endif
-  @endforeach
-            </tr>
-        </table>
-        @endif
-    </br>
 </div>
+       
+@endforeach
+
+</div>
+
+        @endif
+
+    </div>
+   
+</div>
+
+
+
+

@@ -3,8 +3,8 @@
   <br>
   <div class="row" >
     <div class="col-sm-4 text-center">
-      <h3><span class="label label-default">Portafolio Docente</span></h3>
-      <a href="{{url('consultar_portafolio')}}"" ><img src="{{url('imagenes/logoportafolio.png')}}" style="height:70%; width: 70%;"></a>
+      <h3><span class="label label-default">Reportes</span></h3>
+      <a href="{{url('lista_docente')}}" ><img src="{{url('imagenes/report.png')}}" style="height:50%; width: 50%;"></a>
     </div>
 
     <div class="col-sm-4 text-center" >

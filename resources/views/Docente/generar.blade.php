@@ -10,15 +10,29 @@ header('Content-type: application/pdf');
 //$pdf=new FPDF('L','mm','A4')
 //$pdf->Output('storage/archivo/Portada-'.$idPortafolio.'.pdf','F');
 
-
-
-
    class concat_pdf extends FPDI
     {
         var $archivos = array();
         var $parametros=array();
         var $productos=array();
         var $separadorProducto;
+
+
+//Para los parametros de las mataeria
+        var $archivosMat = array();
+        var $parametrosMat=array();
+
+//Para fucionar los parametros asignatura al inicio
+
+ function setParametroMat($archivosMat, $parametrosMat)
+        {
+            $this->archivosMat = $archivosMat;
+            $this->parametrosMat=$parametrosMat;
+        }
+
+
+
+//Para funcionar los archivo de los paramtros x productos
 
         function setFiles($archivos, $parametros, $productos)
         {
@@ -29,6 +43,13 @@ header('Content-type: application/pdf');
 //Divide el total de archivos por el numero de productos para realizar los separadode de cada producto
            $this->separadorProducto= count($parametros)/count($productos);
         }
+
+
+
+
+
+
+
         function concat()
         {       
             $j=0;
@@ -69,9 +90,40 @@ if ($archivo!="") {
 
             }
         }
-    }
 
 
+//Para concatenar los parametros asignatura
+
+ function concat2()
+        {       
+            $j=0;
+            foreach ($this->archivosMat as $archivo) {
+                //En esta funcion se crean la nueva hoja con los parametros corrspondiente
+                  agregarParametro($this, $this->parametrosMat[$j]);
+            $j++;
+             //Debe exitir el archivo a hacer subido para comcatener archivos
+if ($archivo!="") {
+   $pagecount = $this->setSourceFile($archivo);
+                for ($i = 1; $i <= $pagecount; $i++) {
+                    $tplidx = $this->ImportPage($i);
+                    $s      = $this->getTemplatesize($tplidx);
+                    $this->AddPage($s['h'] > $s['w'] ? 'P' : 'L');
+                    $this->useTemplate($tplidx);
+                }
+
+}
+
+            }
+        }//Cerrar segundo concat
+
+
+
+
+
+    }//Cerra la clase concat_pdf 
+
+
+//Para agragar los separadores
 function agregarParametro($this,$archivo){
       
        $pdf=$this;
@@ -88,6 +140,8 @@ function agregarParametro($this,$archivo){
 }
 
 
+
+//Para la portada por cada producto academico
 function agregarPortadaProducto($this,$producto){
       
        $pdf=$this;
@@ -95,7 +149,7 @@ function agregarPortadaProducto($this,$producto){
          $pdf->Ln(90);
          //Negro
         $pdf->SetTextColor(0, 0, 0);
-         $pdf->SetFont('Arial','I',52);
+         $pdf->SetFont('Arial','I',38);
          // Movernos a la derecha
          $pdf->Cell(15);
          $pdf->Cell(0,70,$producto,0,1,'C');    
@@ -105,9 +159,9 @@ function agregarPortadaProducto($this,$producto){
 
 
 
+//Crear un objeto
 $pdf= new concat_pdf();
 //Para guardar el ruta de la imagen
-
 
 //Para la portada
 $pdf->AddPage();
@@ -160,11 +214,35 @@ $pdf->SetFont('Arial','I',15);
 $pdf->Cell(190,15,$portada->desde.' - '. $portada->hasta ,0,1,'C');
 
 
+//pARA LOS PARAMETROS DE LOS PRODUCTOS
 $vArchivo= array();
 $vParametro= array();
+
+//pRA LOS PRODUCTOS ACADEMICOS
 $vProductoAcademico = array();
 
 
+//pARA LOS PARAMETROS DE LAS ASIGNATURA
+$vArchivoMat=array();
+$vParametroMat=array();
+
+
+
+
+
+
+
+
+
+//Todos los documentos que poseen los paramertos Asignaturas
+
+foreach ( $documentosAsiPara as $docParMat) {
+    //Los parametros
+    $vParametroMat[]=$docParMat->parametroMat;
+
+    //Los archivos
+ $vArchivoMat[]=$docParMat->urlArchivo;   
+}
 
 
 
@@ -173,10 +251,14 @@ foreach ($productoAll as $prodAll) {
   //$vArchivo[]='storage/archivo/Portada-'.$idPortafolio.'.pdf';
 $vProductoAcademico[]=$prodAll->nombre;
 
-foreach($documento as $docu){ 
+foreach($documento as $docu){ //Todos los documetos que poseen esos parametros para luego clasificarlo
 
     if ($prodAll->id==$docu->idProAca) {//Clasificar segun el parametr Acedemico
- $vParametro[]=$docu->parametro;
+ 
+ //Los parametros
+        $vParametro[]=$docu->parametro;
+//Los archivos
+
  $vArchivo[]=$docu->urlArchivo;  
                            }    
 
@@ -186,6 +268,14 @@ foreach($documento as $docu){
 
 }
 
+
+
+
+
+//Envia la ruta del almacenamiento y los parametros
+$pdf->setParametroMat($vArchivoMat,$vParametroMat);
+//$pdf->setFiles(array('B.pdf', 'A.pdf','B.pdf'));
+$pdf->concat2();
 
 
 //Envia la ruta del almacenamiento y los parametros

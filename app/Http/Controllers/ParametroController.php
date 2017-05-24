@@ -2,132 +2,88 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Carrera;
-use App\Carrera_Ciclo;
-use App\Ciclo;
-use App\Documento;
-use App\Materia;
 use App\Parametro;
-use App\Portafolio;
-use App\Portafolio_Materia;
-use App\User;
+use App\Tipo_Parametro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ParametroController extends Controller
 {
-	public function __construct()
-	{
-		$this->middleware('auth');
+    public function __construct()
+    {
+        $this->middleware('auth');
 
-	}
+    }
 
-
-	public function crearParametro(Request $request)
-	{
+    public function crearParametro(Request $request)
+    {
 //User es un metodo declarado para obtener todos los campos del docente logueado
 
+        $tipo_parametro   = $request->input("tipo_parametro");
+        $nombre_parametro = $request->input("nombre_parametro");
+        //    $comparar = $request->input("nombreParametro");
 
+//Verificar si se encuentra creado el parametro
+        $verificarParametroPortafolio = DB::table('parametro')->where('parametro.nombre', '=', $nombre_parametro)->where("parametro.idTipPar", "=", $tipo_parametro)->select('parametro.nombre')->get();
 
-		$comparar = $request->input("nombreParametro");
+        if (!count($verificarParametroPortafolio)) {
+            $parametro           = new Parametro;
+            $parametro->nombre   = $nombre_parametro;
+            $parametro->idTipPar = $tipo_parametro;
+            $parametro->save();
 
-		$verificaAsignaturaPorta = DB::table('parametro')->where('parametro.nombre','=',$comparar)->select('parametro.nombre')->get();
+            return view("mensajes.msj_correcto")->with("msj", "Parámetro registrado correctamente en el portafolio.");
 
-
-		if (!count($verificaAsignaturaPorta)) {
-			$parametro = new Parametro;
-			$parametro->nombre = $request->input("nombreParametro");
-			$parametro->save();
-			echo "<div class='alert alert-info'>
-			<strong>Parametro </strong>registrado correctamente en el portafolio Docente..
-		</div>";
-
-
-	}else{
-		echo "<div class='alert alert-danger'>
-		<strong>Parametro</strong> ya registrado en el portafolio Docente.. </div> ";
-
-
-
-	}
-
-	$parametro = Parametro::all();
-	return view("Decano.gestionDecano")->with("parametro", $parametro);
-
-
-}
-
-public function consultarParametro()
-{
-
-	return view("Decano.parametrosDecano");
-
-}
-
-public function parametroRegistradaPortafolio()
-{
-
-	$parametro = Parametro::all();
-	return view("Decano.gestionDecano")->with("parametro", $parametro);
-
-}
-
-		public function delete($id)
-		{
-
-			$parametro = Parametro::find($id);
-			$parametro->delete();
-
-		if ($parametro) {
-
-			echo "<div class='alert alert-info'>
-			<strong>Parametro </strong>eliminado correctamente en el portafolio Docente..
-		</div>";
-
-
-		}else{
-			echo "<div class='alert alert-danger'>
-			<strong>Parametro</strong>no eliminado en el portafolio Docente.. </div> ";
-		}
-		$parametro = Parametro::all();
-
-		return view("Decano.gestionDecano")->with("parametro", $parametro);
-
-
-		}
-
- 		public function update(Request $request,$id)
-        {
-        	$comparar = $id;
-
-
-		$name = $request->input("descripcion") ;
-
-        $repiteparametro = DB::select('select * from parametro where nombre = ?',[$name]) ;
-        //dd($repiteparametro);
-
-
-
-		if (!count($repiteparametro)) {
-			DB::update('update parametro set nombre = ? where id = ?',[$name,$id]) ;
-
-			echo "<div class='alert alert-info'>
-			<strong>Parametro </strong>actualizado correctamente en el portafolio Docente..
-		</div>";
-
-
-	}else{
-		echo "<div class='alert alert-danger'>
-		<strong>Parametro</strong> ya se encuentra registrado.. </div> ";
-
-	}
-
-        $parametro = Parametro::all();
-
-		return view("Decano.gestionDecano")->with("parametro", $parametro);
-
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "Parámetro ya se encuentra registrado en el portafolio.");
 
         }
+
+    }
+
+    public function consultarParametro()
+    {
+        $tipoParametro = Tipo_Parametro::all();
+        $parametro     = Parametro::all();
+
+        return view("Decano.parametrosDecano")->with("tipoParametros", $tipoParametro)->with("parametro", $parametro);
+
+    }
+
+    public function parametroRegistradaPortafolio()
+    {
+        $tipoParametro = Tipo_Parametro::all();
+        $parametros    = Parametro::all();
+        return view("Decano.listadoParametro")->with("tipoParametros", $tipoParametro)->with("parametro", $parametros);
+    }
+
+    public function delete($id)
+    {
+        $parametro = Parametro::find($id);
+        $parametro->delete();
+        $tipoParametro = Tipo_Parametro::all();
+        $parametros    = Parametro::all();
+        return view("Decano.listadoParametro")->with("tipoParametros", $tipoParametro)->with("parametro", $parametros);
+
+    }
+
+    public function update(Request $request)
+    {
+        $idParametro     = $request->input("idParametro");
+        $nombreParametro = $request->input("nombreParametro");
+
+//Verifica
+        $repiteparametro = DB::select('select * from parametro where nombre = ?', [$nombreParametro]);
+
+        if (!count($repiteparametro)) {
+            DB::update('update parametro set nombre = ? where id = ?', [$nombreParametro, $idParametro]);
+
+            return view("mensajes.msj_correcto")->with("msj", "Parámetro actualizado correctamente .");
+
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "Parámetro ya se encuentra registrado en el portafolio.");
+
+        }
+    }
 
 }

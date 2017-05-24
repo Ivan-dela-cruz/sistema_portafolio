@@ -64,23 +64,9 @@ border-bottom-color: #A4C4D0;
 }
 
 
-#section1 {
-    width:350px;
-    float:right;
-    padding:8px;
-   
-}
 
-#section2 {
-     width:350px;
-    float:left;
-    padding:8px;
- 
-
-   
-   }
       p { page-break-after: always; }
-      .footer { position: fixed; bottom: 30px; }
+      .footer { position: fixed; bottom: 100px; }
       .pagenum:before { content: counter(page); }
     
 
@@ -129,79 +115,140 @@ border-bottom-color: #A4C4D0;
 
 	<div align="center">
 		<b style="font-size:18px;">REPORTE CUMPLIMIENTO DOCENTE </b>
-	</div>
+	<br><br>
+  </div>
 
 
 
-   <table class="tabla">
-    <thead>
+<table class="tabla">
+ <thead>
       <tr  class="modo1">
         <th>N°</th>      
-        <th>PARAMETROS</th>
+        <th>PARÁMETRO PORTAFOLIO</th>
         <th>SI</th>
         <th>NO</th>
       </tr>
     </thead>
-
-<!-- Cuando el docente aun no haya creado los para metros se  se les asigna a todos en x -->
-      @if(count($parametros))
-      <tbody>
-      @php$cont=0; @endphp
-@foreach($parametros as $par)
-     @php$cont++; @endphp
-      <tr  class="modo1"> 
-        <td><b>{!! $cont !!}</b></td>
-
-        <td align="left"><small style="font-size:15px;">{{ $par->nombrePar}}</small></td>
-
-
-
-@if($par->url)
-<td align="center"><img style="height:16px; width:17px;" src="imagenes/si.png"></td> 
+@foreach($parametroPorta as $parPorta)
+<tr  class="modo1"> 
+        <td> <b>*</b></td>
+        <td align="left"><small style="font-size:15px;">{{ $parPorta->parametro}}</small></td>
+@if($parPorta->urlArchivo)
+<td align="center"><img style="height:16px; width:16px;" src="imagenes/si.png"></td> 
 <td align="center"></td>
   @else
 <td align="center"></td>
   <td align="center"><img style="height:17px; weight:18px" src="imagenes/no.png"></td>
   @endif
       </tr>
-@endforeach
-    </tbody>
-@else
-<tbody>
-  @php$cont2=0 @endphp
 
-@foreach($parametro as $parame)
- @php $cont2++ @endphp
- <tr  class="modo1">
-  <td align="center"><b>{!! $cont2 !!}</b></td> <td align="left" ><small style="font-size:15px;">{{ $parame->nombre}}</small></td><td></td> <td align="center"><img style="height:17px; width:18px;" src="imagenes/no.png"></td>
- </tr>
 @endforeach
 
+</table>
 
-</tbody>
+
+
+
+
+
+
+
+
+
+
+
+<table class="tabla">
+ <thead>
+      <tr  class="modo1">
+        <th>N°</th>      
+        <th>PARÁMETRO ASIGNATURA</th>
+        <th>SI</th>
+        <th>NO</th>
+      </tr>
+    </thead>
+@foreach($parametroMat as $parMat)
+<tr  class="modo1"> 
+        <td> <b>*</b></td>
+        <td align="left"><small style="font-size:15px;">{{ $parMat->nombre}}</small></td>
+@if($parMat->urlArchivo)
+<td align="center"><img style="height:16px; width:16px;" src="imagenes/si.png"></td> 
+<td align="center"></td>
+  @else
+<td align="center"></td>
+  <td align="center"><img style="height:17px; weight:18px" src="imagenes/no.png"></td>
+  @endif
+      </tr>
+
+@endforeach
+
+</table>
+
+
+
+
+
+
+@foreach($productoAcademicoALL as $proAca)
+<table class="tabla">
+ <thead>
+      <tr  class="modo1">
+        <th>N°</th>      
+        <th> PARÁMETROS {{$proAca->nombre }}  </th>
+        <th>SI</th>
+        <th>NO</th>
+      </tr>
+    </thead>
+@foreach($parametroPro as $par)
+
+@if($par->idProAca==$proAca->id)
+  <tr  class="modo1"> 
+        <td> <b>*</b></td>
+
+        <td align="left"><small style="font-size:15px;">{{ $par->nombrePar}}</small></td>
+
+
+
+@if($par->url)
+<td align="center"><img style="height:16px; width:16px;" src="imagenes/si.png"></td> 
+<td align="center"></td>
+  @else
+<td align="center"></td>
+  <td align="center"><img style="height:17px; weight:18px" src="imagenes/no.png"></td>
+  @endif
+      </tr>
 
 @endif
+@endforeach
+</table>
 
-  </table>
+@endforeach
 
 
-<div class="footer" align="center">
 
-<div id="section1" >
+
+
+<div class="footer">
+
+<div id="section1" align="center" >
   _________________________________
 <br>
 <b>Firma Decano(a)</b>
 </div> 
-
-<div  id="section2" >
-  _________________________________
 <br>
+
+<div  id="section2"  align="center">
+  _________________________________
+  <br>
 <b>Firma Coordinador(a)</b>
 </div>
+
+</body>
+
+
+
+
 
 <!-- Numero de pg<span class="pagenum"></span>
 -->
 </div>
-</body>
-
 </html>

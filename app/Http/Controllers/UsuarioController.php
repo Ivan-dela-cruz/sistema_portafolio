@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Carrera;
 use App\User;
-use Illuminate\Http\Request;
 //El disco que se va a ocupar
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -45,11 +46,100 @@ class UsuarioController extends Controller
 
     }
 
+    public function calculaedad($fechanacimiento)
+    {
+        list($ano, $mes, $dia) = explode("-", $fechanacimiento);
+        $ano_diferencia        = date("Y") - $ano;
+        $mes_diferencia        = date("m") - $mes;
+        $dia_diferencia        = date("d") - $dia;
+        if ($dia_diferencia < 0 || $mes_diferencia < 0) {
+            $ano_diferencia--;
+        }
+
+        return $ano_diferencia;
+    }
+
     public function editarDocente(Request $request)
     {
+        $edad = $this->calculaedad($request->input('fecha'));
 
-        $dato = $request->all();
+        if ($edad > 20 && $edad <= 70) {
 
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "Fecha de nacimiento no valida su edad actual es : " . $edad . " años.");
+
+        }
+
+        //  $reglas = ['nombres' => 'required',
+        //            'apellidos'          => 'required',
+        //          'telefono'           => 'required|numeric',
+        //        'password'           => 'required|min:8',
+        //      'email'              => 'required|email|unique:users'];
+
+        //     $mensajes = ['nombres.required' => 'es obligatorio',
+        //     'apellidos.required'            => 'el apellido es obligatorio',
+        //   'telefono.numeric'              => 'el telefono debe contener solo numeros',
+        // 'password.min'                  => 'El password debe tener al menos 8 caracteres',
+        //'email.unique'                  => 'El email ya se encuentra registrado en la base de datos'];
+
+        $reglas = ['nombre' => 'required|regex:/^([a-zA-ZñÑáéíóúÁÉÍÓÚ_-])+((\s*)+([a-zA-ZñÑáéíóúÁÉÍÓÚ_-]*)*)+$/',
+            'apellido'          => 'required|regex:/^([a-zA-ZñÑáéíóúÁÉÍÓÚ_-])+((\s*)+([a-zA-ZñÑáéíóúÁÉÍÓÚ_-]*)*)+$/',
+            'celular'           => 'required|digits:10|numeric',
+            'telefono'          => 'digits:9|numeric',
+            'lugar'             => 'required',
+            'fecha'             => 'required',
+            'direccionDomi'     => 'required',
+
+            'cargasFamiliar'    => 'required',
+            'sexo'              => 'required',
+            'nacionalidad'      => 'required',
+            'estado'            => 'required',
+
+        ];
+        $mensajes = [
+            'nombre.required'         => 'Nombre es obligatorio.',
+            'nombre.regex'            => 'Nombre solo debe contener letras.',
+
+            'apellido.required'       => 'Apellido es obligatorio.',
+            'apellido.regex'          => 'Apellido solo debe contener letras.',
+
+            'celular.required'        => 'Número celular es obligatorio.',
+            'celular.digits'          => 'Número celular debe tener 10 dígitos.',
+            'celular.numeric'         => 'Número celular debe ser numérico.',
+
+            'telefono.digits'         => 'Número teléfono  debe tener 9 dígitos.',
+            'telefono.numeric'        => 'Número teléfono debe ser numérico.',
+
+            'lugar.required'          => 'Lugar de nacimiento es obligatorio.',
+
+            'fecha.required'          => 'Fecha de nacimiento es obligatorio.',
+            'direccionDomi.required'  => 'Dirección domiciliaria  es obligatorio.',
+
+            'cargasFamiliar.required' => ' Seleccione N° de cargas familiar  es obligatorio.',
+
+            'sexo.required'           => 'Seleccione género es obligatorio.',
+            'nacionalidad.required'   => 'Seleccione nacionalidad es obligatorio.',
+
+            'estado.required'         => ' Seleccione estado civil es obligatorio.',
+
+        ];
+
+        $validator = Validator::make($request->all(), $reglas, $mensajes);
+        if ($validator->fails()) {
+            return new JsonResponse($validator->errors(), 422);
+        }
+
+        //    $celular = $request->input('celular');
+        //   $input   = array('celular' => $celular);
+        //  $reglas  = array('celular' => 'required|digits:10|numeric');
+
+        //  $validacion = Validator::make($input, $reglas);
+        //  if ($validacion->fails()) {
+        // return view("mensajes.msj_rechazado")->with("msj","El archivo no es una imagen valida"):
+        //    return new JsonResponse($validacion->errors(), 422);
+        //}
+
+        $dato                     = $request->all();
         $idDoc                    = $dato['idDocente'];
         $usuario                  = User::find($idDoc);
         $usuario->nombre          = $dato["nombre"];
@@ -94,10 +184,12 @@ class UsuarioController extends Controller
 
     public function subirImagen(Request $request)
     {
-        $id         = $request->input('id_usuario_foto');
-        $archivo    = $request->file('archivo');
-        $input      = array('image' => $archivo);
-        $reglas     = array('image' => 'required|image|mimes:jpeg,jpg|max:100|min:10');
+        $id      = $request->input('id_usuario_foto');
+        $archivo = $request->file('archivo');
+        //No comprobado
+        //'avatar' => 'dimensions:min_width=100,min_height=200'
+        $input      = array('imagen' => $archivo);
+        $reglas     = array('imagen' => 'required|image|mimes:jpeg,jpg|max:100|min:10');
         $validacion = Validator::make($input, $reglas);
         if ($validacion->fails()) {
             // return view("mensajes.msj_rechazado")->with("msj","El archivo no es una imagen valida"):
@@ -117,7 +209,7 @@ class UsuarioController extends Controller
             $usuario       = User::find($id);
             $usuario->foto = $rutadelaimagen;
             $r2            = $usuario->save();
-            return view("mensajes.msj_correcto")->with("msj", "Imagen agregada correctamente");
+            return view("mensajes.msj_correcto")->with("msj", "Fotografía actualizada correctamente");
         } else {
             return view("mensajes.msj_rechazado")->with("msj", " Error no se cargo la imagen");
         }
@@ -131,11 +223,14 @@ class UsuarioController extends Controller
 
         $reglas = ['clave' => 'required|min:6'];
 
-        $mensajes  = ['clave.min' => 'El password debe tener al menos 6 caracteres'];
+        $mensajes = ['clave.min' => 'El password debe tener al menos 6 caracteres'];
+
         $validator = Validator::make($request->all(), $reglas, $mensajes);
+
         if ($validator->fails()) {
             return view("mensajes.mensaje_error")->withErrors($validator->errors());
         }
+
         $id                = $request->input("idUsu");
         $email             = $request->input("email");
         $clave             = $request->input("clave");

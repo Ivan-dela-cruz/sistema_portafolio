@@ -39,8 +39,8 @@ Route::get('estudios_docente', 'TitulosController@estudiosDocente');
 
 Route::get('actualizar_estudios_docente', 'TitulosController@actualizarEstudiosDocente');
 
-//Ruta para actualizar parametros
-Route::post('actualizar_parametros/{id}', 'ParametroController@update');
+//Ruta para actualizar parametro que óseen en P.A. Silabo
+Route::post('actualizar_parametro', 'ParametroController@update');
 
 //Ruta para procesar el actualizado de los datos
 
@@ -85,7 +85,7 @@ Route::post('/agregar_materia_portafolio', 'PortafoliosController@agregarMateria
 Route::get('materia_registrada_portafolio/{idPor}', 'PortafoliosController@materiaRegistradaPortafolio');
 
 //Para mostrar los parametros que poseen el portafolio
-Route::get('/par', 'ParametroController@parametroRegistradaPortafolio');
+Route::get('/listado_parametro', 'ParametroController@parametroRegistradaPortafolio');
 
 //Para visualzar los parametros que contienen cada una de las materias
 Route::get('parametros_asignatura/{idMatPor}', 'PortafoliosController@parametrosAsignatura');
@@ -94,15 +94,28 @@ Route::get('parametros_asignatura/{idMatPor}', 'PortafoliosController@parametros
 
 Route::post('subir_archivoPdf', 'DocumentoController@subirArchivoPdf');
 
+//Subir archivoa parametros asignaturas
+
+Route::post("subir_ParametroMat", "DocumentoController@subirArchivoPdfParametro");
+
+//Subir parametro portafolio
+Route::post("subir_ParametroPorta", "DocumentoController@subirArchivoPdfParametroPorta");
+
 //Para generar el pdf Fucionado unir varios Pdf
 Route::get('generar_pdf/{idPorMat}', 'DocumentoController@generarPdfConsolidado');
 
 //Para la salida del pdf Fucionado
 Route::get('salida_pdf_fucionado/{idPorMat}', 'DocumentoController@salidaPdfFusionado');
 
-//Ruta que me permite descargar archivos Pdf
+//Ruta que me permite descargar archivos Pdf de los parametros Producto
 
 Route::get('descargar_pdf/{idDocu}', 'DocumentoController@descargarPdf');
+
+//Perimite Descargar los archivos Pdf de los parametrso Asignatura
+Route::get("descargar_pdf_Mate/{idDoc}", "DocumentoController@descargarPdfParametroMat");
+
+//Permite descargar los arcchivos PDF  de los parametros Portafolio
+Route::get("descargar_pdf_Porta/{idDoc}", "DocumentoController@descargarPdfParametroPorta");
 
 Route::get('reportes', 'PDFController@index');
 
@@ -127,15 +140,21 @@ Route::get('reporte_cumplimiento/{idPor}', 'PortafoliosController@reporteCumplim
 
 Route::get('generar_reporte_cumplimiento/{idPorta}/{idPorMat}', 'PDFController@generarReporteCumplimiento');
 
-//Ruta actualizar Parametro
+//Ruta actualizar Parametro es decir refresca la pagina para mostrar todos los parametros que poseen las asgnaturas al momento de subir
 
 Route::get('actualizar_parametro/{idPorMat}', 'PortafoliosController@actualizarParametro');
+
+//Ruta para actualizar los archvos PDF DE LOS PARAMETROS AL MOMENTO DE SUBIR ARCHIvO regfrecar  solo la parte de los parametros portafolio
+Route::get('actualizar_parametro_porta/{idPorta}', 'DocumentoController@actualizarParametroPorta');
 
 //Ruta para consultar el formulario de periodo
 Route::get('gestion_periodo', 'PeriodosController@index');
 
 //Para mostrar los periodoos que poseen el portafolio
-Route::get('/periodo', 'PeriodosController@periodoRegistradoPortafolio');
+Route::get('/periodo', 'PeriodosController@listaPeriodoRegistradoPortafolio');
+
+//Ruta para actulizar periodo Academicos
+Route::Post('actualizar_periodo', 'PeriodosController@actualizarPeriodo');
 
 //Controlador para Crear Periodo
 Route::post('crear_periodo', 'PeriodosController@crearPeriodo');
@@ -143,5 +162,11 @@ Route::post('crear_periodo', 'PeriodosController@crearPeriodo');
 
 Route::get('reporte_verificacion/{idPorta}/{idPorMat}', 'PDFController@reporteVerificacion');
 
-//Eliminar archivo del servidor del servidor
+//Eliminar archivo  paramemteros producuto  del servidor
 Route::get('/eliminar_Pdf/{idArchivo}', 'PDFController@eliminarPdf');
+
+//Elimina archivos Pdf de los parametros portafolio del servidro
+Route::get("/eliminar_Pdf_portafolio/{idArchivo}", "PDFController@eliminarPdfParametroPorta");
+
+//Eliminar Pdf de los parameros Asignaturas
+Route::get("/eliminar_Pdf_materia/{idArchivo}", "PDFController@eliminarPdfParametroMate");

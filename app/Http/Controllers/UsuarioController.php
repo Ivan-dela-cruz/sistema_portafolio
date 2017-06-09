@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Carrera;
 use App\User;
 //El disco que se va a ocupar
+use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
 //Para la validadcion de la imagen
 //use App\Http\Controllers\Controller;
 use Storage;
@@ -189,7 +189,7 @@ class UsuarioController extends Controller
         //No comprobado
         //'avatar' => 'dimensions:min_width=100,min_height=200'
         $input      = array('imagen' => $archivo);
-        $reglas     = array('imagen' => 'required|image|mimes:jpeg,jpg|max:100|min:10');
+        $reglas     = array('imagen' => 'required|image|mimes:jpeg,jpg|max:100|min:2');
         $validacion = Validator::make($input, $reglas);
         if ($validacion->fails()) {
             // return view("mensajes.msj_rechazado")->with("msj","El archivo no es una imagen valida"):
@@ -223,7 +223,7 @@ class UsuarioController extends Controller
 
         $reglas = ['clave' => 'required|min:6'];
 
-        $mensajes = ['clave.min' => 'El password debe tener al menos 6 caracteres'];
+        $mensajes = ['clave.min' => 'Contraseña debe tener al menos 6 caracteres'];
 
         $validator = Validator::make($request->all(), $reglas, $mensajes);
 
@@ -261,7 +261,7 @@ class UsuarioController extends Controller
 ///dd($idPer,$idCar,$dato);
         $docentes = DB::table("users")->join('portafolio', 'users.id', '=', 'portafolio.idDoc')->join('carrera', 'carrera.id', '=', 'portafolio.idCar')->join('periodo', 'periodo.id', '=', 'portafolio.idPer')->where('periodo.id', '=', $idPer)->where('carrera.id', '=', $idCar)->where(function ($q) use ($dato) {
             $q->where('users.cedula', 'like', '%' . $dato . '%')->orWhere('users.nombre', 'like', '%' . $dato . '%')->orWhere('users.apellido', 'like', '%' . $dato . '%')->orwhere(DB::raw('concat(users.nombre," ",users.apellido)'), 'LIKE', '%' . $dato . '%')->orwhere(DB::raw('concat(users.apellido," ", users.nombre)'), 'LIKE', '%' . $dato . '%');
-        })->select('users.*', 'portafolio.id as idPor')->orderBy('users.apellido', 'asc')->Paginate(12);
+        })->select('users.*', 'portafolio.id as idPor')->orderBy('users.apellido', 'asc')->Paginate(20);
 
 //select * from users where pais = $pais  and (nombres like %$dato% or apellidos like %$dato%  or email like  %$dato% )
         //  $resultado= $query->where("pais","=",$pais)
@@ -272,6 +272,137 @@ class UsuarioController extends Controller
         //             });
 
         return view("Coordinador.buscarListadoDocente")->with("docentes", $docentes);
+
+    }
+
+    public function listadoUsuario()
+    {
+        $roles = Role::all();
+
+        $usuarios = User::paginate(10);
+
+        return view('Decano.listadoUsuario')->with("usuarios", $usuarios)->with("rols", $roles);
+
+    }
+
+//Para visualizar los roles que tiene el usuario
+    public function rolUsuario($idUser)
+    {
+        $carrera = Carrera::all();
+        $usuario = User::find($idUser);
+        $roles   = Role::all();
+        return view("Decano.asignarRolUsuario")->with("usuario", $usuario)
+            ->with("roles", $roles)->with('carrera', $carrera);
+
+    }
+
+    public function asignarRolUsuario($idusu, $idrol)
+    {
+        $usuario = User::find($idusu);
+        $usuario->assignRole($idrol);
+        $usuario        = User::find($idusu);
+        $rolesasignados = $usuario->getRoles();
+        return json_encode($rolesasignados);
+
+    }
+
+    public function quitar_rol($idusu, $idrol)
+    {
+        $usuario = User::find($idusu);
+        $usuario->revokeRole($idrol);
+        $rolesasignados = $usuario->getRoles();
+        return json_encode($rolesasignados);
+
+    }
+
+    public function editarAcceso(Request $request)
+    {
+
+        //crea un nuevo usuario en el sistema
+
+        $reglas = ['password' => 'required|min:6'];
+
+        $mensajes = ['password.min' => 'Contraseña debe tener al menos 6 caracteres'];
+
+        $validator = Validator::make($request->all(), $reglas, $mensajes);
+
+        if ($validator->fails()) {
+            return view("mensajes.mensaje_error")->withErrors($validator->errors());
+        }
+
+        $id                = $request->input("idUsu");
+        $clave             = $request->input("password");
+        $usuario           = User::find($id);
+        $usuario->password = bcrypt($clave);
+        $rs                = $usuario->save();
+        if ($rs) {
+            return view("mensajes.msj_correcto")->with("msj", "Contraseña actualizada correctamente.");
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "...Hubo un error al agregar ; intentarlo nuevamente ...");
+        }
+
+    }
+
+    public function asignarDirectorCarrera(Request $request)
+    {
+
+        $dato             = $request->all();
+        $idDoc            = $dato['idUsu'];
+        $usuario          = User::find($idDoc);
+        $usuario->carrera = $dato["carrera"];
+        $rs               = $usuario->save();
+        if ($rs) {
+            return view("mensajes.msj_correcto")->with("msj", "Director de carrera asignado correctamente..");
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "Huvo un error vuelva a intentarlo..");
+        }
+
+    }
+
+    public function buscarUsuarioRol($idRol, $dato = "")
+    {
+        $roles = Role::all();
+
+        //Nota solo funciona con elusurio al frente para shinofi
+
+        $usuarios = User::join("role_user", "users.id", "=", "role_user.user_id")->join("roles", "roles.id", "=", "role_user.role_id")->where("roles.id", "=", $idRol)->where(function ($q) use ($dato) {
+            $q->where('users.cedula', 'like', '%' . $dato . '%')->orWhere('users.nombre', 'like', '%' . $dato . '%')->orWhere('users.apellido', 'like', '%' . $dato . '%')->orwhere(DB::raw('concat(users.nombre," ",users.apellido)'), 'LIKE', '%' . $dato . '%')->orwhere(DB::raw('concat(users.apellido," ", users.nombre)'), 'LIKE', '%' . $dato . '%');
+        })->select('users.*')->orderBy('users.apellido', 'asc')->Paginate(2);
+        return view('Decano.listaBusqueda')->with("usuarios", $usuarios)->with("rols", $roles);
+
+    }
+
+    public function buscarUsuarioInvitado($dato = "")
+    {
+        $roles = Role::all();
+
+        //Nota solo funciona con elusurio al frente para shinofi
+        // $usuarios = User::where("name", "like", "%" . $dato . "%")->orwhere("apellidos", "like", "%" . $dato . "%")->paginate(100);
+        //$users = DB::table('users')->distinct()->get();
+
+        //select idPro, descripcionPro,marcaPro,modeloPro,precioPro from producto where idPro not in (select distinct idPro from factura f, detallefactura d where f.numFac=d.numFac and  f.fechaFac>='"+fecha+"' and f.fechaFac<='"+fechaFin+"')";
+
+//Not in sirve para mirar si un registro no esta en una tabla.
+        $usuarios = User::whereRaw('users.id not in(select role_user.user_id  from users, role_user , roles where users.id=role_user.user_id and roles.id=role_user.role_id) ')->where(function ($q) use ($dato) {
+            $q->where('users.cedula', 'like', '%' . $dato . '%')->orWhere('users.nombre', 'like', '%' . $dato . '%')->orWhere('users.apellido', 'like', '%' . $dato . '%')->orwhere(DB::raw('concat(users.nombre," ",users.apellido)'), 'LIKE', '%' . $dato . '%')->orwhere(DB::raw('concat(users.apellido," ", users.nombre)'), 'LIKE', '%' . $dato . '%');
+        })->select('users.*')->orderBy('users.apellido', 'asc')->Paginate(10);
+
+        return view('Decano.listaBusqueda')->with("usuarios", $usuarios)->with("rols", $roles);
+
+    }
+
+    public function eliminarUsuario($idUsu)
+    {
+
+        $usuario = User::find($idUsu);
+        $rs      = $usuario->delete();
+        if ($rs) {
+            $this->buscarUsuarioInvitado("");
+
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "Huvo un error vuelva a intentar ");
+
+        }
 
     }
 

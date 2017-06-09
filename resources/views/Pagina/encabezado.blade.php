@@ -29,7 +29,15 @@
 
                       <img src="{{url($fotoUser)}}"  class="img-circle"  alt="User Image"  style="width:50px;height:50px;">               
                     <p>
-                     <legend><b>{{Auth::user()->rol}}</b></legend>
+<!--Asignar rol--> 
+@foreach(Auth::user()-> getNameRole() as $roles)
+{!! $roles."," !!}
+@endforeach
+
+                       </b>
+
+
+                     </legend>
                       <small> <?php echo date("d-M-Y"); ?></small>
                     </p>
                   </li>
@@ -50,8 +58,71 @@
                 </ul>
               </li>
               <!-- Control Sidebar Toggle Button -->
-              <li>
-                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+        <li class="dropdown user user-menu">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                 <i class="fa fa-question-circle">Ayuda</i>
+                 </a>
+  <ul class="dropdown-menu">
+    <!-- User image -->
+    <li class="user-footer">
+    
+
+
+ 
+    
+@role('docente')
+<h3>Manual de Usuario</h3> 
+@else
+   @role('director')
+<h3>Manual de Usuario</h3>   
+@else
+   @role('decano')
+<h3>Manual de Usuario</h3> 
+@else
+       <h3>Usuario Invitado</h3>
+@endrole
+@endrole
+@endrole  
+
+
+
+    </li>
+
+
+    <li class="user-body">
+    
+@role('docente')
+<a target="_blank" class="glyphicon glyphicon-book"  href="manual/manualDocente.pdf">&nbsp;<b>Manual Docente</b></a>
+@endrole
+@role('director')
+<a target="_blank" class="glyphicon glyphicon-book"  href="manual/manualDirector.pdf">&nbsp;<b>Manual Director</b></a>
+@endrole
+@role('decano')
+  <a target="_blank" class="glyphicon glyphicon-book"  href="manual/manualDecano.pdf">&nbsp;<b>Manual Decano</b></a>
+@endrole
+
+ 
+
+
+@role('docente')
+<b></b>   
+@else
+   @role('director')
+<b></b>   
+@else
+   @role('decano')
+<b></b>   
+@else
+    <span class="fa fa-info" ><h5 style="color:red;">Pongase en contacto con el administrador para que se le asignen privilegios.</h5>
+      </span> 
+@endrole
+@endrole
+@endrole
+
+
+    </li>
+  </ul>
+
               </li>
             </ul>
           </div>

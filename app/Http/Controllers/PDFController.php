@@ -93,11 +93,11 @@ class PDFController extends Controller
 
     }
 
-    public function index()
-    {
+    // public function index()
+    //{
 
-        return view("pdf.listado_reportes");
-    }
+    //  return view("pdf.listado_reportes");
+    //}
 
     public function reporteVerificacion($idPorta, $idPorMat)
     {

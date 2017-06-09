@@ -15,6 +15,15 @@
 </div><!--Cierre box header-->
 
 <div class="box-body">
+ 
+<div  class="row">
+    <div class="col-md-3"></div>
+      <div class="col-md-6 text-center" id="notificacionAgregarMateria"></div>
+      <div class="col-md-3"></div>
+</div>
+
+
+
  <div class="row">
      <div class="col-md-6">
          <div class="row">
@@ -148,7 +157,7 @@
 
 
 
-
+     
   <div class="row">
                                 <div class="col-md-3">
                                 </div>
@@ -267,7 +276,7 @@
 <div class="box-header text-center">
 <label>ASIGNATURAS REGISTRADAS EN EL PORTAFOLIO</label>    
 </div>
-<div class="box-body text-center"  id="notificacionAgregarMateria">    
+<div class="box-body text-center"  id="rsMateriaRegistrada">    
                     <button class="btn btn-success" onclick="materiasCreadas()" type="button">
                         <span class="glyphicon glyphicon-eye-open">
                         </span>
@@ -281,12 +290,10 @@
 
 
     </section>
-
-@endsection
 <body onload="materiasCreadas()">
-    
-
 </body>
+@endsection
+
 
 <!--<script type="text/javascript">
     setTimeout("materiasCreadas()",500);

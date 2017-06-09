@@ -65,25 +65,30 @@ border-bottom-color: #A4C4D0;
 
 
 
-      p { page-break-after: always; }
-      .footer { position: fixed; bottom: 100px; }
-      .pagenum:before { content: counter(page); }
-    
+#section1{
+  background-color:white;
+  width:390px;
+  height:20px;
+  float:left;
+  padding:5px;
+  text-align: center;
+  }
+  
+  #section2{
+  background-color:white;
+  width:390px;
+  height:20px;
+  float:right;
+  padding:5px;
+  text-align: center;
+  }
+
 
 </style>
-
-
-
 </head>
 
-
-
 <body>
-
 <br>
-
-
-
 <div   class="row">
 <div  align="center" ><img  class="imagen"  src="imagenes/ciyaN.png" style="height:100px; width:790px;"></div>
 </div>
@@ -145,15 +150,6 @@ border-bottom-color: #A4C4D0;
 @endforeach
 
 </table>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -227,28 +223,26 @@ border-bottom-color: #A4C4D0;
 
 
 
-<div class="footer">
+<br><br>
 
-<div id="section1" align="center" >
-  _________________________________
-<br>
-<b>Firma Decano(a)</b>
-</div> 
-<br>
+<br><br>
 
-<div  id="section2"  align="center">
-  _________________________________
+<div id="section1">
+ --------------------------------
+<br>
+<b>Firma Director(a)</b>
+</div>  
+
+<div id="section2">
+ ---------------------------------
   <br>
-<b>Firma Coordinador(a)</b>
+<b>Firma Decano(a)</b>
 </div>
+
+
+
 
 </body>
 
 
-
-
-
-<!-- Numero de pg<span class="pagenum"></span>
--->
-</div>
 </html>

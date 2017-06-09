@@ -15,9 +15,6 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idRol')->unsigned();
-            $table->index('idRol');
-            $table->foreign('idRol')->references('id')->on('rol')->onDelete('cascade');
             $table->string('cedula', 10)->unique();
             $table->string('apellido', 200);
             $table->string('nombre', 200);
@@ -33,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->integer('cargaFamiliar');
             $table->integer('estadoCivil');
             $table->integer('facultad');
+            $table->integer('carrera');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();

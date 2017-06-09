@@ -45,9 +45,13 @@ class DocumentoController extends Controller
         $nuevo_nombrePdf = "Parametro-" . $descripcion . "-" . $idDocumento . "." . $extension;
 
         //Nombre del disco creado en filesSytem
-        $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
+        // $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
 
-        $rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+        //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+
+        $r1 = Storage::disk('archivos')->put($nuevo_nombrePdf, \File::get($archivo));
+
+        $rutaPdf = "storage/archivos/" . $nuevo_nombrePdf;
 
         if ($r1) {
             $documentos              = Documento::find($idDocumento);
@@ -95,9 +99,13 @@ class DocumentoController extends Controller
         $nuevo_nombrePdf = "ParametroAsignatura-" . $descripcion . "-" . $idDocumento . "." . $extension;
 
         //Nombre del disco creado en filesSytem
-        $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
+        //$r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
 
-        $rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+        //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+
+        $r1 = Storage::disk('archivos')->put($nuevo_nombrePdf, \File::get($archivo));
+
+        $rutaPdf = "storage/archivos/" . $nuevo_nombrePdf;
 
         if ($r1) {
             $documentosAsignatura              = Documento_Materia::find($idDocumento);
@@ -138,9 +146,14 @@ class DocumentoController extends Controller
         $nuevo_nombrePdf = "ParametroPortafolio-" . $descripcion . "-" . $idDocumento . "." . $extension;
 
         //Nombre del disco creado en filesSytem
-        $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
 
-        $rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+        // $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
+
+        //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+
+        $r1 = Storage::disk('archivos')->put($nuevo_nombrePdf, \File::get($archivo));
+
+        $rutaPdf = "storage/archivos/" . $nuevo_nombrePdf;
 
         if ($r1) {
             $documentosPortafolio              = Documento_Portafolio::find($idDocumento);

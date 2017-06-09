@@ -26,13 +26,8 @@
 
                               <link href="{{ asset('plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}" rel="stylesheet">
     
-
-
 <!-- No borrar sirven para las alertas de titulos-->
 <link href="{{asset('sweetAlert/sweetalert.css')}}" rel="stylesheet" type="text/css">
-
-
-
 
 
 

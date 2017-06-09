@@ -45,26 +45,10 @@ class PortafoliosController extends Controller
         $verificaCarrera = Carrera::all();
 
         if (!count($verificaCarrera)) {
-            $carreras         = new Carrera;
-            $carreras->id     = 1;
-            $carreras->nombre = "INGENIERIA ELECTRICA";
-            $carreras->save();
-
-            $carreras         = new Carrera;
-            $carreras->id     = 2;
-            $carreras->nombre = "INGENIERIA INDUSTRIAL";
-            $carreras->save();
-
-            $carreras         = new Carrera;
-            $carreras->id     = 3;
-            $carreras->nombre = "INGENIERIA EN ELECTROMECANICA";
-            $carreras->save();
-
-            $carreras         = new Carrera;
-            $carreras->id     = 4;
-            $carreras->nombre = "INGENIERIA EN INFORMATICA Y SISTEMAS COMPUTACIONALES";
-            $carreras->save();
-
+            $this->registrarCarrera(1, "Ingeniería Eléctrica");
+            $this->registrarCarrera(2, "Ingeniería Industrial");
+            $this->registrarCarrera(3, "Ingeniería en Electromecánica");
+            $this->registrarCarrera(4, "Ingeniería en Informática y Sistemas Computacionales");
         }
 
         $carrera = Carrera::all();
@@ -75,6 +59,25 @@ class PortafoliosController extends Controller
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "No existe registrado ningun Período Académico .");
         }
+
+    }
+
+    public function viewactividades()
+    {
+
+        //Consultar el nombre de portafolio
+        //$portafolio = Portafolio::find($idPor);
+
+        return view("Docente.otrasactividadesPortafolio");
+
+    }
+
+    public function registrarCarrera($idCar, $nombreCar)
+    {
+        $carreras         = new Carrera;
+        $carreras->id     = $idCar;
+        $carreras->nombre = $nombreCar;
+        $carreras->save();
 
     }
 
@@ -128,63 +131,32 @@ class PortafoliosController extends Controller
 
     }
 
+    public function registrarCiclo($idCic, $nombreCic)
+    {
+        $ciclo         = new Ciclo;
+        $ciclo->id     = $idCic;
+        $ciclo->nombre = $nombreCic;
+        $ciclo->save();
+
+    }
+
     public function materiasPortafolio($idPor)
     {
-
         //  dd($idPor);
         //Verifica si ya se encuentran registrado los ciclos
         $ciclos = Ciclo::all();
 
         if (!count($ciclos)) {
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 1;
-            $ciclo->nombre = "PRIMERO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 2;
-            $ciclo->nombre = "SEGUNDO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 3;
-            $ciclo->nombre = "TERCERO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 4;
-            $ciclo->nombre = "CUARTO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 5;
-            $ciclo->nombre = "QUINTO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 6;
-            $ciclo->nombre = "SEXTO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 7;
-            $ciclo->nombre = "SEPTIMO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 8;
-            $ciclo->nombre = "OCTAVO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 9;
-            $ciclo->nombre = "NOVENO";
-            $ciclo->save();
-
-            $ciclo         = new Ciclo;
-            $ciclo->id     = 10;
-            $ciclo->nombre = "DECIMO";
-            $ciclo->save();
+            $this->registrarCiclo(1, "Primero");
+            $this->registrarCiclo(2, "Segundo");
+            $this->registrarCiclo(3, "Tercero");
+            $this->registrarCiclo(4, "Cuarto");
+            $this->registrarCiclo(5, "Quinto");
+            $this->registrarCiclo(6, "Sexto");
+            $this->registrarCiclo(7, "Séptimo");
+            $this->registrarCiclo(8, "Octavo");
+            $this->registrarCiclo(9, "Noveno");
+            $this->registrarCiclo(10, "Décimo");
         }
 
 //Consultar el nombre de portafolio
@@ -231,22 +203,24 @@ class PortafoliosController extends Controller
 
     }
 
+    public function registrarCarreraCiclo($idCarCic, $idCar, $idCic)
+    {
+        $carrera_ciclos        = new Carrera_ciclo;
+        $carrera_ciclos->id    = $idCarCic;
+        $carrera_ciclos->idCar = $idCar;
+        $carrera_ciclos->idCic = $idCic;
+        $carrera_ciclos->save();
+
+    }
+
     public function cargarMateria($idCic, $idCar)
     {
-
         $materia = Materia::all();
 //REGISTRAR MATERIA CORRESPONDIENTES A CADA CARRERA Y CICLO
         if (!count($materia)) {
 //MATERIAS PARA INGENIERIA EN SISTEMA CODIGO 4 SISTEMA
-
-//Upload Materias Electrica
-
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 11;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 1;
-            $carrera_ciclos->save();
-
+            //Upload Materias Electrica
+            $this->registrarCarreraCiclo(11, 1, 1);
 //upload materias
             $materias           = new Materia;
             $materias->idCarCic = 11;
@@ -283,11 +257,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "COMPUTACION BASICA";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 12;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 2;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(12, 1, 2);
 
             $materias           = new Materia;
             $materias->idCarCic = 12;
@@ -324,11 +294,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "ESTADISTICA";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 13;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 3;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(13, 1, 3);
 
             $materias           = new Materia;
             $materias->idCarCic = 13;
@@ -365,12 +331,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "PROGRAMACION";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 14;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 4;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(14, 1, 4);
             $materias           = new Materia;
             $materias->idCarCic = 14;
             $materias->nombre   = "CONTABILIDAD GENERAL Y COSTOS";
@@ -406,12 +367,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "ELECTRONICA II";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 15;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 5;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(15, 1, 5);
             $materias           = new Materia;
             $materias->idCarCic = 15;
             $materias->nombre   = "EMPRENDIMIENTO SOCIAL II";
@@ -447,11 +403,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "INGENIERIA ECONOMICA";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 16;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 6;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(16, 1, 6);
 
             $materias           = new Materia;
             $materias->idCarCic = 16;
@@ -493,11 +445,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "CENTRALES DE GENERACION";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 17;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 7;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(17, 1, 7);
 
             $materias           = new Materia;
             $materias->idCarCic = 17;
@@ -534,11 +482,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "SISTEMAS ELECTRICOS DE POTENCIA II";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 18;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 8;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(18, 1, 8);
 
             $materias           = new Materia;
             $materias->idCarCic = 18;
@@ -580,11 +524,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "DINÁMICA DE MAQUINAS";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 19;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 9;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(19, 1, 9);
 
             $materias           = new Materia;
             $materias->idCarCic = 19;
@@ -621,25 +561,16 @@ class PortafoliosController extends Controller
             $materias->nombre   = "DOMÓTICA";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 110;
-            $carrera_ciclos->idCar = 1;
-            $carrera_ciclos->idCic = 10;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(110, 1, 10);
 
             $materias           = new Materia;
             $materias->idCarCic = 110;
-            $materias->nombre   = "PROYECTO DE TITULACION I";
+            $materias->nombre   = "PROYECTO DE TITULACION II";
             $materias->save();
 
 //Upload Materias Industrial
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 21;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 1;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(21, 2, 1);
 //upload materias
             $materias           = new Materia;
             $materias->idCarCic = 21;
@@ -676,11 +607,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "GEOMETRIA PLANA Y ANALITICA";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 22;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 2;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(22, 2, 2);
 
 //upload materias
             $materias           = new Materia;
@@ -723,11 +650,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "ANALISIS MATEMATICO II";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 23;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 3;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(23, 2, 3);
 
 //upload materias
             $materias           = new Materia;
@@ -760,11 +683,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "DESARROLLO LOCAL Y EXTENSION";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 24;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 4;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(24, 2, 4);
 
 //upload materias
             $materias           = new Materia;
@@ -802,12 +721,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "TALLER MECANICO II";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 25;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 5;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(25, 2, 5);
 //upload materias
             $materias           = new Materia;
             $materias->idCarCic = 25;
@@ -839,11 +753,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "SEGURIDAD E HIGIENE INDUSTRIAL";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 26;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 6;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(26, 2, 6);
 
 //upload materias
             $materias           = new Materia;
@@ -871,12 +781,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "PROYECTO INTEGRADOR I";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 27;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 7;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(27, 2, 7);
 //upload materias
             $materias           = new Materia;
             $materias->idCarCic = 27;
@@ -911,11 +816,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "CONTROL INDUSTRIAL ";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 28;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 8;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(28, 2, 8);
 
 //upload materias
             $materias           = new Materia;
@@ -951,11 +852,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "PROGRAMADORES LÓGICOS PLC's";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 29;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 9;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(29, 2, 9);
 
 //upload materias
             $materias           = new Materia;
@@ -983,12 +880,7 @@ class PortafoliosController extends Controller
             $materias->idCarCic = 29;
             $materias->nombre   = "SART";
             $materias->save();
-
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 210;
-            $carrera_ciclos->idCar = 2;
-            $carrera_ciclos->idCic = 10;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(210, 2, 10);
 
 //upload materias
             $materias           = new Materia;
@@ -997,11 +889,8 @@ class PortafoliosController extends Controller
             $materias->save();
 
 //Upload Materias Electromecanica
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 31;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 1;
-            $carrera_ciclos->save();
+
+            $this->registrarCarreraCiclo(31, 3, 1);
 
 //upload materias
             $materias           = new Materia;
@@ -1037,12 +926,7 @@ class PortafoliosController extends Controller
             $materias->idCarCic = 31;
             $materias->nombre   = "ANALISIS SOCIOECONOMICO";
             $materias->save();
-
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 32;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 2;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(32, 3, 2);
 
 //upload materias
             $materias           = new Materia;
@@ -1073,12 +957,7 @@ class PortafoliosController extends Controller
             $materias->idCarCic = 32;
             $materias->nombre   = "PROBLEMAS DEL MUNDO CONTEMP";
             $materias->save();
-
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 33;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 3;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(33, 3, 3);
 
 //upload materias
             $materias           = new Materia;
@@ -1109,12 +988,7 @@ class PortafoliosController extends Controller
             $materias->idCarCic = 33;
             $materias->nombre   = "CONTABILIDAD GENERAL Y COSTOS";
             $materias->save();
-
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 34;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 4;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(34, 3, 4);
 
 //upload materias
             $materias           = new Materia;
@@ -1146,12 +1020,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "IDENTIDAD CULTURAL";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 35;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 5;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(35, 3, 5);
 //upload materias
             $materias           = new Materia;
             $materias->idCarCic = 35;
@@ -1182,11 +1051,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "EQUIDAD DE GENERO";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 36;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 6;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(36, 3, 6);
 
 //upload materias
             $materias           = new Materia;
@@ -1223,11 +1088,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "CONTROL INDUSTRAL";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 37;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 7;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(37, 3, 7);
 
 //upload materias
             $materias           = new Materia;
@@ -1264,12 +1125,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "LINEAS DE TRASMISION";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 38;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 8;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(38, 3, 8);
 //upload materias
             $materias           = new Materia;
             $materias->idCarCic = 38;
@@ -1302,12 +1158,7 @@ class PortafoliosController extends Controller
             $materias->idCarCic = 38;
             $materias->nombre   = "SUBESTACIONES Y CENTRALES ELECTRICAS";
             $materias->save();
-
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 39;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 9;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(39, 3, 9);
 
 //upload materias
             $materias           = new Materia;
@@ -1347,23 +1198,15 @@ class PortafoliosController extends Controller
             $materias->nombre   = "DISEÑO DE ANTEPROYECTO DE TESIS";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 310;
-            $carrera_ciclos->idCar = 3;
-            $carrera_ciclos->idCic = 10;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(310, 3, 10);
+
             $materias           = new Materia;
             $materias->idCarCic = 310;
             $materias->nombre   = "DESARROLLO DE TESIS";
             $materias->save();
 
 //Ingresar materias de primero ing Sistema
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 41;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 1;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(41, 4, 1);
             $materias           = new Materia;
             $materias->idCarCic = 41;
             $materias->nombre   = "GEOMETRIA Y TRIGONOMETRIA";
@@ -1394,11 +1237,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "COMPUTACION BASICA";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 42;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 2;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(42, 4, 2);
 
             $materias           = new Materia;
             $materias->idCarCic = 42;
@@ -1429,12 +1268,7 @@ class PortafoliosController extends Controller
             $materias->idCarCic = 42;
             $materias->nombre   = "DISEÑO DE PROYECTOS";
             $materias->save();
-
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 43;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 3;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(43, 4, 3);
 
             $materias           = new Materia;
             $materias->idCarCic = 43;
@@ -1466,11 +1300,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "METODOS NUMERICOS";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 44;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 4;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(44, 4, 4);
 
             $materias           = new Materia;
             $materias->idCarCic = 44;
@@ -1502,11 +1332,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "EMPRENDIMIENTO SOCIAL I";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 45;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 5;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(45, 4, 5);
 
             $materias           = new Materia;
             $materias->idCarCic = 45;
@@ -1538,12 +1364,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "INTEF. GRAFICA DE USUARIO";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 46;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 6;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(46, 4, 6);
             $materias           = new Materia;
             $materias->idCarCic = 46;
             $materias->nombre   = "PROYECTO INTEGRADOR I";
@@ -1579,12 +1400,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "PROGRAMACION MULTIMEDIA";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 47;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 7;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(47, 4, 7);
             $materias           = new Materia;
             $materias->idCarCic = 47;
             $materias->nombre   = "ADM.DE BASES DE DATOS ORACLE";
@@ -1620,12 +1436,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "SISTEMAS OPERATIVOS";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 48;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 8;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(48, 4, 8);
             $materias           = new Materia;
             $materias->idCarCic = 48;
             $materias->nombre   = "ADM. EMPRESARIAL Y DE PERSONAL";
@@ -1666,11 +1477,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "INGENIERIA DE SOFTWARE II";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 49;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 9;
-            $carrera_ciclos->save();
+            $this->registrarCarreraCiclo(49, 4, 9);
 
             $materias           = new Materia;
             $materias->idCarCic = 49;
@@ -1707,12 +1514,7 @@ class PortafoliosController extends Controller
             $materias->nombre   = "INTELIGENCIA ARTIFICIAL";
             $materias->save();
 
-            $carrera_ciclos        = new Carrera_ciclo;
-            $carrera_ciclos->id    = 410;
-            $carrera_ciclos->idCar = 4;
-            $carrera_ciclos->idCic = 10;
-            $carrera_ciclos->save();
-
+            $this->registrarCarreraCiclo(410, 4, 10);
             $materias           = new Materia;
             $materias->idCarCic = 410;
             $materias->nombre   = "PROYECTO DE TITULACION II";
@@ -1754,25 +1556,11 @@ class PortafoliosController extends Controller
 //Consulatar las materias regustradas en el poratafolio academico docente
             //$materiasCreadasPortafolio=Portafolio_Materia::find($portafolio);
 
-            echo "<div class='alert alert-info'>
-            <strong>Asignatura </strong>registrada correctamente en el portafolio Docente..
-        </div>";
+            return view("mensajes.msj_correcto")->with("msj", "Asignatura registrada correctamente en el portafolio Docente.");
 
         } else {
-            //Mesaje
-            echo "<div class='alert alert-danger'>
-        <strong>Asignatura</strong> ya registrada en el portafolio Docente.. </div> ";
+            return view("mensajes.msj_rechazado")->with("msj", "Asignatura ya registrada en el Portafolio Docente.");
         }
-
-        $materiasCreadasPortafolio = DB::table("portafolio")->join("portafolio_materia", "portafolio.id", "=", "portafolio_materia.idPor")->join('paralelo', 'paralelo.id', '=', 'portafolio_materia.idPar')->join('materia', 'materia.id', '=', 'portafolio_materia.idMat')->join('carrera_ciclo', 'carrera_ciclo.id', '=', 'materia.idCarCic')->join('ciclo', 'ciclo.id', '=', 'carrera_ciclo.idCic')->where("portafolio_materia.idPor", "=", $portafolio)->select('portafolio_materia.*', 'portafolio_materia.id as idMatPor', 'ciclo.nombre as ciclo', 'ciclo.id', 'paralelo.nombre as paralelo')->orderBy('ciclo.id', 'asc')->orderBy('paralelo', 'asc')->get();
-
-        if (count($materiasCreadasPortafolio)) {
-            return view("Docente.icon_materia_portafolio_existentes")->with("materiaRegistradaPortafolio", $materiasCreadasPortafolio);
-        } else {
-            echo "<div class='alert alert-danger'>
-        <strong>No existen Asignaturas</strong>registradas en el portafolio Docente.. </div> ";
-        }
-
     }
 
     public function materiaRegistradaPortafolio($idPor)
@@ -1883,7 +1671,7 @@ class PortafoliosController extends Controller
         if (count($parametroProducto)) {
             return view("Docente.parametrosAsignatura")->with("idPorMat", $idPorMat)->with("parametrosProducto", $parametroProducto)->with("parametrosMateria", $parametroMateria)->with("membrete", $materiasCreadas)->with("portafolio", $portaDatos)->with("productosAll", $productosAca);
         } else {
-            return view("mensajes.msj_rechazado")->with("msj", "No existen ningun parametro:");
+            return view("mensajes.msj_rechazado")->with("msj", "No existen ningun parámetro registrado :");
         }
     }
 
@@ -1981,7 +1769,7 @@ class PortafoliosController extends Controller
         if (count($parametroProducto)) {
             return view("Docente.actualizarParametro")->with("idPorMat", $idPorMat)->with("parametrosProducto", $parametroProducto)->with("parametrosMateria", $parametroMateria)->with("membrete", $materiasCreadas)->with("portafolio", $portaDatos)->with("productosAll", $productosAca);
         } else {
-            return view("mensajes.msj_rechazado")->with("msj", "No existen ningun parametro:");
+            return view("mensajes.msj_rechazado")->with("msj", "No existen ningun parámetro:");
         }
 
     }

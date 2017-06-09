@@ -7,7 +7,7 @@
 
 
 	<style>
-		<!--@php include(public_path().'/bootstrap/css/bootstrap.min.css');@endphp
+		@php include(public_path().'/bootstrap/css/bootstrap.min.css');@endphp
 
 		body {
 			font-family: "Times New Roman", serif;
@@ -17,7 +17,7 @@
 		html{
 			margin-top: 0mm;
 		}
-
+img { border: 2px solid black; }
 
 	</style>
 
@@ -25,8 +25,8 @@
 	<!-- Bootstrap 3.3.5 -->
 </head>
 
-<body  background="/imagenes/fondo.png">
-
+<body >
+<!--<body  background="/imagenes/fondo.png">-->
 <div class="row">
 	<div class="col-md-12 text-center "><img src="imagenes/ciyaN.png" style="height:104px; weight:350px"></div>
 </div>
@@ -36,7 +36,7 @@
 <div class="row">
 	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
 		<br>
-		<u><h4>Datos personales</h4></u>
+		<u><h4>Datos Personales</h4></u>
 
 		@if($users->foto)
 		@php
@@ -102,31 +102,35 @@ $numFamiliar=$users->cargaFamiliar-1;
 
 		<p><b>NÚMERO DE CARGAS FAMILIARES:</b> {!!$numFamiliar!!} <p>
 
+@if(!$users->fechaNacimiento=="")
 @php 
 $date = new DateTime($users->fechaNacimiento);
 //$fecha=  $date->format('Y-m-d H:i:s');
-
 $fechaNacimiento=  $date->format('d-m-Y');
-
 @endphp
+@else
+ @php $fechaNacimiento="";
+@endphp
+@endif
 
 
 			<p><b>LUGAR Y FECHA DE NACIMIENTO:</b> {!!$users->lugarNacimiento!!}, {!!$fechaNacimiento!!}<p>
 				<p><b>DIRECCIÓN DOMICILIARIA:</b> {!!$users->direccion!!} <p>
 					<p><b>CELULAR:</b> {!!$users->celular!!} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>TELÉFONO: </b> {!!$users->telefono!!}<p>
 						<p><b>EMAIL INSTITUCIONAL:</b> {!!$users->email!!}<p>
-							<br>
+							
 							<b><u>ESTUDIOS REALIZADOS Y TÍTULOS OBTENIDOS: </u> </b>
 
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 							<br><br>
-							<img border="2" align="" style="width: 120px; height:150px;" src="{{ $fotoUser }}" alt="User profile picture"></
+							<img border="2"  style="width: 120px; height:150px;" src="{{ $fotoUser }}" alt="User profile picture" >
 
 						</div>
 					</div>
-					<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+					
 					<div class="row">
+
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
 
@@ -180,7 +184,7 @@ $fechaNacimiento=  $date->format('d-m-Y');
 						</div>
 
 					</div>
-					<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+					<br><br><br><br><br><br><br><br>
 					<div class="row">
 								<div class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<p>......................................</p>

@@ -130,11 +130,11 @@
     function asignarNombrePortafolio(valor) {
   var carrera="";
   if(valor==1)
-  carrera= "PORTAFOLIO DE ING. ELECTRICA";
+  carrera= "PORTAFOLIO DE ING. ELÉCTRICA";
   if (valor==2)
     carrera="PORTAFOLIO DE ING. INDUSTRIAL";
   if(valor==3)
-  carrera="PORTAFOLIO DE ING. ELECTROMECANICA"
+  carrera="PORTAFOLIO DE ING. ELECTROMECÁNICA"
   if (valor==4)
   carrera="PORTAFOLIO DE ING. SISTEMAS";
      document.getElementById("nombrePortafolio").value=carrera;
@@ -238,18 +238,13 @@
 <div class="box-footer"></div>
 </div>
 
-
-
-
 </div> <!--Cierre del col-md-6-->
 
 
 </div><!--Cierre del primer row-->
 
-
-            <script type="text/javascript">
-                setTimeout( "buscarPortafolio()",300);
-            </script>
        
 </section>
+
+<body onload="buscarPortafolio()"></body>
 @endsection

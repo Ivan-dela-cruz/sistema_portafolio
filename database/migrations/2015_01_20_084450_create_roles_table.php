@@ -2,9 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-class CreateTableProductoAcademico extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +12,22 @@ class CreateTableProductoAcademico extends Migration
      */
     public function up()
     {
-        Schema::create('producto_academico', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre', 200);
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migration.
      *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('producto_academico');
+        Schema::drop('roles');
     }
 }

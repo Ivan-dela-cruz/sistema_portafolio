@@ -58,7 +58,7 @@
     <div class="col-md-3">
       <div class="input-group">
 
-        <input type="text" name="texto" id="texto" onkeyup="idCarreraAndTexto()" class="form-control" placeholder="Buscar">
+        <input type="text" name="texto" id="texto" onkeyup="idCarreraAndTexto()" class="form-control" placeholder="Cédula, Nombres,  Apellidos">
 
         <span class="input-group-btn">
 
@@ -94,7 +94,6 @@ $.get(url,function(rs){
 })
 
   //Para la Paginacion
-
   $(document).on("click",".pagination li a" ,function(e){
 //Para q no se vaya a la otra vista al hacer click no salga de la pagina
 e.preventDefault();
@@ -104,10 +103,12 @@ $.get(url, function(result){
   $("#mostrarDocentes").html(result);
 });
 });
+
+
 }
 
 
-setTimeout( "idCarreraAndTexto()",800);
+//setTimeout( "idCarreraAndTexto()",800);
 
 </script>
 
@@ -120,6 +121,7 @@ setTimeout( "idCarreraAndTexto()",800);
 
 </section>
 
+<body onload="idCarreraAndTexto()"></body>
 @endsection
 
 

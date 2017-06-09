@@ -18,9 +18,6 @@
                     </h4>
                 </div>
 
-
-
-
 <div class="box-body">
 
    <form action="editar_docente" class="form-horizontal form_entrada_validacion" id="frm_editar_docente" method="post">
@@ -146,7 +143,7 @@
          <label class="col-md-3" for="fecha">Fecha*</label>
       <div class="col-md-9">
     <span class="help-block"  id="fecha_span" > </span>
-     <input type="date" class="form-control" id="fecha" value="{{ $usuario->fechaNacimiento}}"  name="fecha"  >
+     <input type="date" class="form-control" id="fecha" required="" value="{{ $usuario->fechaNacimiento}}"  name="fecha"  >
 <label style="color:#8D8A8A; font-size:12px">
                                                     Seleccione fecha Nacimiento.
                                                 </label>

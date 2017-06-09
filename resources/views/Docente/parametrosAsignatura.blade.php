@@ -60,7 +60,7 @@
 
 <div class="panel-footer text-center "  id="consolidar">
 
-<a  href="{{ url('generar_pdf/'.base64_encode($idPorMat)) }}"  class="btn btn-info btn-xs" target="_blank" ><i class="glyphicon glyphicon-import">Generar Portafolio Consolidado</i></a>
+<a  href="{{ url('generar_pdf/'.base64_encode($idPorMat)) }}"  class="btn btn-info btn-xs" target="_blank">Generar el Portafolio Consolidado</a>
 
 
 

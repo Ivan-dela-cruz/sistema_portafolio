@@ -37,7 +37,7 @@
       </select> 
       @else
    <select required="" name="tipo_parametro" class="form-control"> 
-     <option value=" "> No existen tipos parámetros </option>
+     <option value=""> No existen tipos parámetros </option>
    </select>
       @endif
 
@@ -146,6 +146,6 @@
 @endif
 
 </div><!--Cierre box succes-->
-   @include('Decano/modalParametro');
+   @include('Decano/modalParametro')
 @endsection
 

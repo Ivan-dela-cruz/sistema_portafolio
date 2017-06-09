@@ -2,19 +2,29 @@
 @section('title','Inicio')
 @section('content')
 
-@if (Auth::user()->idRol==1) 
+
+ <section class="container-fluid spark-screen" >
+ 
+
+
+  <div class="col-md-6 text-center" >
+     <h3><span class="label label-default">Perfil Usuario</span></h3>
+     <a href="{!!url('editar_perfil_docente')!!}" ><img src="{{ url('imagenes/logoperfil.png')}}" style="height:30%; width: 30%;" > </a>
+   </div>
+
+
+@role('docente')
 @include('Rol/docente')
-@endif
-
-@if (Auth::user()->idRol==2) 
+@endrole
+@role('director')
 @include('Rol/coordinador')
-@endif
-
-@if (Auth::user()->idRol==3) 
-
+@endrole
+@role('decano')
 @include('Rol/decano')
-@endif
+@endrole
 
+
+</section>
 
 
 

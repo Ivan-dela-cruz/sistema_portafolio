@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Caffeinated\Shinobi\Traits\ShinobiTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -10,6 +11,7 @@ class User extends Authenticatable
     protected $table = 'users';
 
     use Notifiable;
+    use ShinobiTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'idRol', 'cedula', 'apellido', 'nombre', 'lugarNacimiento', 'fechaNacimiento', 'celular', 'telefono', 'direccion', 'sexo', 'foto', 'fechaIngresoUtc', 'nacionalidad', 'cargaFamiliar', 'estadoCivil', 'facultad', 'email', 'password'];
+        'cedula', 'apellido', 'nombre', 'lugarNacimiento', 'fechaNacimiento', 'celular', 'telefono', 'direccion', 'sexo', 'foto', 'fechaIngresoUtc', 'nacionalidad', 'cargaFamiliar', 'estadoCivil', 'facultad', 'carrera', 'email', 'password'];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -42,24 +44,24 @@ class User extends Authenticatable
 
     }
 
-    public function getRolAttribute()
-    {
-        $idRols    = $this->idRol;
-        $nombreRol = "";
-        if ($idRols == 1) {
-            $nombreRol = "DOCENTE";
-        }
+    // public function getRolAttribute()
+    //  {
+    //     $idRols    = $this->idRol;
+    //    $nombreRol = "";
+    //    if ($idRols == 1) {
+    //          $nombreRol = "DOCENTE";
+    //    }
 
-        if ($idRols == 2) {
-            $nombreRol = "COORDINADOR";
-        }
+    //   if ($idRols == 2) {
+    //      $nombreRol = "COORDINADOR";
+    //   }
 
-        if ($idRols == 3) {
-            $nombreRol = "DECANO";
-        }
+    //   if ($idRols == 3) {
+    //     $nombreRol = "DECANO";
+    //   }
 
-        return $nombreRol;
-    }
+    //   return $nombreRol;
+    //}
 
     public function getUsuarioAttribute()
     {

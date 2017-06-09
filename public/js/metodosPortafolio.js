@@ -13,9 +13,9 @@ function cargarMateria(idCic) {
 function materiasCreadas() {
     var idPortafolio = $("#portafolio").val();
     var url = "/materia_registrada_portafolio/" + idPortafolio;
-    $("#notificacionAgregarMateria").html($("#cargando").html());
+    $("#rsMateriaRegistrada").html($("#cargando").html());
     $.get(url, function(result) {
-        $("#notificacionAgregarMateria").html(result);
+        $("#rsMateriaRegistrada").html(result);
     });
 }
 
@@ -150,6 +150,61 @@ function eliminarArchivoParametroMat(idArchivo) {
                 $("#rsParametroMat").html(result);
             });
             swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
+        } else {
+            swal("Cancelado!", "Desea cancelar la operacion", "error");
+        }
+    });
+}
+
+function rolAndTexto() {
+    var url = "";
+    var codRol = document.getElementById("rol").value;
+    var texto = document.getElementById("dato_buscado").value;
+    //alert(codCarrera+texto);
+    if (codRol == 0) {
+        url = "/buscar_usuario_invitado/" + texto + "";
+    } else {
+        if (texto == "") {
+            url = "/buscar_usuario_rol/" + codRol;
+        } else {
+            url = "/buscar_usuario_rol/" + codRol + "/" + texto + "";
+        }
+    }
+    $("#rsMostrarUsuarioRol").html($("#cargando").html());
+    $.get(url, function(rs) {
+        $("#rsMostrarUsuarioRol").html(rs);
+    })
+    $(document).on("click", ".pagination li a", function(e) {
+        //Para q no se vaya a la otra vista al hacer click no salga de la pagina
+        e.preventDefault();
+        var url = $(this).attr("href");
+        $("#rsMostrarUsuarioRol").html($("#cargando").html());
+        $.get(url, function(result) {
+            $("#rsMostrarUsuarioRol").html(result);
+        });
+    });
+}
+
+function eliminarUsuario(idUsu) {
+    swal({
+        title: "Estás Seguro?",
+        text: "Desea eliminar usuario del sistema.!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Si, Borrar!",
+        cancelButtonText: "No, Cancelar!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }, function(isConfirm) {
+        if (isConfirm) {
+            var url = "/eliminar_usuario/" + idUsu;
+            $("#rsMostrarUsuarioRol").html($("#cargando").html());
+            $.get(url, function(result) {
+                $("#rsMostrarUsuarioRol").html(result);
+                rolAndTexto();
+            });
+            swal("Eliminado!", "Usuario se ha eliminado correctamente.", "success");
         } else {
             swal("Cancelado!", "Desea cancelar la operacion", "error");
         }

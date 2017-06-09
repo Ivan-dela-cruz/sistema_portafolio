@@ -1,20 +1,22 @@
-<div class="container">
 
-  <br>
-  <div class="row" >
-    <div class="col-sm-4 text-center">
-      <h4><span class="">Admin Periodo Aca.</span></h4>
-      <a href="{{url('gestion_periodo')}}" ><img src="{{url('imagenes/administracion.png')}}" style="height:50%; width: 50%;"></a>
+
+
+    <div class="col-md-6 text-center">
+           <h3><span class="label label-default">Admin Periodo Aca</span></h3>
+      <a href="{{url('gestion_periodo')}}" ><img src="{{url('imagenes/admiPeriodo.png')}}" style="height:45%; width: 45%;"></a>
     </div>
 
-    <div class="col-sm-4 text-center" >
-     <h4><span class="">Admin Parametros</span></h4>
-      <a href="{!!url('gestion_parametro')!!}" ><img src="{{ url('imagenes/administracion.png')}}" style="height:50%; width: 50%;" > </a>
+    <div class="col-md-6 text-center" >
+<h3><span class="label label-default">Admin Parametros</span></h3>
+    <a href="{!!url('gestion_parametro')!!}" ><img src="{{ url('imagenes/periodo.png')}}" style="height:40%; width: 40%;" > </a>
     </div>
 
+
+  <div class="col-md-6 text-center">
+    
+ <h3><span class="label label-default">Asignar Rol Usuarios</span></h3>
+    <a href="{{url('listado_usuario')}}" ><img src="{{url('imagenes/admin.png')}}" style="height:40%; width: 40%;"></a>
 
   </div>
 
 
-
-</div>

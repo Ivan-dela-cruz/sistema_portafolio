@@ -17,20 +17,19 @@ function estudiosRealizados() {
         $("#ventanaModificarEstudioDoc").html(rs);
     });
 }
-
-function get(listado) {
-    //funcion para cargar los diferentes  en general
-    if (listado == 3) {
-        var url = "reportes";
-    }
-    var idDoc = $("#docente").val();
-    var idTip = $("#tipo").val();
-    var url2 = url + "/" + idDoc + "/" + idTip;
-    $("#contenido_principal").html($("#cargando").html());
-    $.get(url, function(resul) {
-        $("#contenido_principal").html(resul);
-    })
-}
+//function get(listado) {
+//funcion para cargar los diferentes  en general
+//  if (listado == 3) {
+//    var url = "reportes";
+//}
+//var idDoc = $("#docente").val();
+//var idTip = $("#tipo").val();
+//var url2 = url + "/" + idDoc + "/" + idTip;
+//$("#contenido_principal").html($("#cargando").html());
+//$.get(url, function(resul) {
+//  $("#contenido_principal").html(resul);
+//})
+//}
 //Verificar estudios y titulos obtenidos
 function actualizarPagina(vUrl) {
     //Id Del Docente logueado
@@ -165,6 +164,10 @@ $(document).on("submit", ".form_entrada", function(e) {
         var varurl = "cambiar_clave";
         var divresul = "notificacion_cambiarClave";
     }
+    if (quien == "f_editar_acceso") {
+        var varurl = "/editar_acceso";
+        var divresul = "notificacion_editar_acceso";
+    }
     if (quien == "frm_agregar_titulo") {
         var varurl = "/agregar_titulo";
         var divresul = "notaEstudio";
@@ -183,6 +186,7 @@ $(document).on("submit", ".form_entrada", function(e) {
     if (quien == "frm_agregar_materia_portafolio") {
         var varurl = "/agregar_materia_portafolio";
         var divresul = "notificacionAgregarMateria";
+        cual = 10;
     }
     if (quien == "frm_crear_parametro") {
         var varurl = "crear_parametro";
@@ -203,6 +207,11 @@ $(document).on("submit", ".form_entrada", function(e) {
         var varurl = "/actualizar_parametro";
         var divresul = "notaParametro";
         cual = 4;
+    }
+    //Editar carrera director
+    if (quien == "f_asignar_director_carrera") {
+        var varurl = "/asignar_director_carrera";
+        var divresul = "rsCarreraDirector";
     }
     $("#" + divresul + "").html($("#cargando").html());
     $.ajax({
@@ -230,6 +239,9 @@ $(document).on("submit", ".form_entrada", function(e) {
             }
             if (cual == 6) {
                 parametrosCreados();
+            }
+            if (cual == 10) {
+                materiasCreadas();
             }
         }
     });
@@ -353,3 +365,41 @@ $(document).on("submit", ".formarchivo", function(e) {
     });
     irarriba();
 });
+//Asignar rol
+function asignar_rol(idusu) {
+    var idrol = $("#rol1").val();
+    //  var urlraiz = $("#url_raiz_proyecto").val();
+    $("#zona_etiquetas_roles").html($("#cargando").html());
+    var miurl = "/asignar_rol/" + idusu + "/" + idrol + "";
+    $.ajax({
+        url: miurl
+    }).done(function(resul) {
+        var etiquetas = "";
+        var roles = $.parseJSON(resul);
+        $.each(roles, function(index, value) {
+            etiquetas += '<span class="label label-success">' + value + '</span> ';
+        })
+        $("#zona_etiquetas_roles").html(etiquetas);
+    }).fail(function() {
+        $("#zona_etiquetas_roles").html('<span style="color:red;">...Error: Aun no ha agregado roles o revise su conexion...</span>');
+    });
+}
+//Quitar rol
+function quitar_rol(idusu) {
+    var idrol = $("#rol2").val();
+    // var urlraiz = $("#url_raiz_proyecto").val();
+    $("#zona_etiquetas_roles").html($("#cargando").html());
+    var miurl = "/quitar_rol/" + idusu + "/" + idrol + "";
+    $.ajax({
+        url: miurl
+    }).done(function(resul) {
+        var etiquetas = "";
+        var roles = $.parseJSON(resul);
+        $.each(roles, function(index, value) {
+            etiquetas += '<span class="label label-success" style="margin-left:10px;" >' + value + '</span> ';
+        })
+        $("#zona_etiquetas_roles").html(etiquetas);
+    }).fail(function() {
+        $("#zona_etiquetas_roles").html('<span style="color:red;">...Error: Aun no ha agregado roles  o revise su conexion...</span>');
+    });
+}

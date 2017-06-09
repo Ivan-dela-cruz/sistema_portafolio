@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Rol;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -66,35 +65,12 @@ class RegisterController extends Controller
             ?: redirect($this->redirectPath());
         } else {
 
-            return redirect('/register')->with("mensaje", "Por Favor ingrese correo Institucional");
+            return redirect('/register')->with("mensaje", "Por favor ingrese correo Institucional");
         }
     }
 
     protected function validator(array $data)
     {
-
-        $rols = Rol::all();
-//dd($rol);
-
-        if (!count($rols)) {
-            $rols = new Rol;
-
-            $rols->id     = 1;
-            $rols->nombre = "DOCENTE";
-            $rols->save();
-            $rols = new Rol;
-
-            $rols->id     = 2;
-            $rols->nombre = "COORDINADOR";
-            $rols->save();
-
-            $rols = new Rol;
-
-            $rols->id     = 3;
-            $rols->nombre = "DECANO";
-            $rols->save();
-
-        }
 
         return Validator::make($data, [
 
@@ -117,7 +93,6 @@ class RegisterController extends Controller
     {
 
         return User::create([
-            'idRol'           => "1",
             'cedula'          => $data['cedula'],
             'apellido'        => $data['apellido'],
             'nombre'          => $data['nombre'],
@@ -133,6 +108,7 @@ class RegisterController extends Controller
             'cargaFamiliar'   => 0,
             'estadoCivil'     => 0,
             'facultad'        => 0,
+            'carrera'         => 0,
             'email'           => $data['email'],
             'password'        => bcrypt($data['password']),
 

@@ -165,6 +165,10 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
 
+//pARA SHINOBI
+
+        Caffeinated\Shinobi\ShinobiServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -230,7 +234,8 @@ return [
         'PDF'          => Barryvdh\DomPDF\Facade::class,
         'Form'         => Collective\Html\FormFacade::class,
         'Html'         => Collective\Html\HtmlFacade::class,
-
+//para shinobi
+        'Shinobi'      => Caffeinated\Shinobi\Facades\Shinobi::class,
     ],
 
 ];

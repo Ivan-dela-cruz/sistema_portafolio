@@ -29,11 +29,11 @@
 
                       <img src="{{url($fotoUser)}}"  class="img-circle"  alt="User Image"  style="width:50px;height:50px;">               
                     <p>
-
-@foreach(Auth::user()-> nameRole() as $roles)
+<!--Asignar rol--> 
+@foreach(Auth::user()-> getNameRole() as $roles)
 {!! $roles."," !!}
 @endforeach
-zzz
+
                        </b>
 
 

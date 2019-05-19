@@ -8,16 +8,20 @@
 
 <div class="box box-primary">
 
+<div class="box-header"> 
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10 text-center">
 
-      <legend><b>DOCENTES REGISTRADOS</b></legend>
+      <legend><b>PORTAFOLIOS ACADÉMICOS DOCENTES REGISTRADOS</b></legend>
 
     </div>
     <div class="col-md-1"></div>
 
   </div>
+</div>
+
+<div class="box-body">
 
   <div class="row">
 
@@ -70,6 +74,11 @@
 
   </div>
 
+</div><!--Cierre box body-->
+
+<div class="box-footer">
+  
+</div>
 
 </div>
 
@@ -84,9 +93,9 @@
 
 //alert(codCarrera+texto);
 if (texto=="") {
-  url="/buscar_listado_docente/"+codPer+"/"+codCarrera;
+  url="buscar_listado_docente/"+codPer+"/"+codCarrera;
 }else{
-  url="/buscar_listado_docente/"+codPer+"/"+codCarrera+"/"+texto+"";
+  url="buscar_listado_docente/"+codPer+"/"+codCarrera+"/"+texto+"";
 }
 $("#mostrarDocentes").html($("#cargando").html());
 $.get(url,function(rs){

@@ -43,10 +43,9 @@
 @include('Rol.menuCoordinador')
 @endrole
 
-@role('decano')
+@role('vicedecano')
 @include('Rol.menuDecano')
 @endrole
-
 
 </ul>
 

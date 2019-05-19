@@ -1,0 +1,15 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class TareaPortafolio extends Model
+{
+    protected $table="tarea_portafolios";
+
+
+    public function periodo(){
+        $this->belongsTo('App\Periodo','id');
+    }
+}

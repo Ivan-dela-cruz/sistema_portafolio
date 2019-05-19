@@ -62,9 +62,10 @@
                                             <label for="apellido">
                                                 Archivo a subir (Formato: PDF)
                                             </label>
-                                            <p class="help-block">
-                                                Maximo 1MB
-                                            </p>
+                                         <p style="color:orange"  class="help-block">  Máximo 2MB <span class="fa fa-exclamation-triangle"> 
+                                               
+                                            </span> </p>
+                                            
                                             <input class="form-control" id="file" name="file" required="" type="file">
                                            
                                         </div>

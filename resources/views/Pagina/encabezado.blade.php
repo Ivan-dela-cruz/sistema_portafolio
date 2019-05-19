@@ -28,10 +28,14 @@
                   <li class="user-header">
 
                       <img src="{{url($fotoUser)}}"  class="img-circle"  alt="User Image"  style="width:50px;height:50px;">               
-                    <p>
+                  <p>
 <!--Asignar rol--> 
+@foreach(Auth::user()-> getNameRole() as $roles)
+{!! $roles."," !!}
+@endforeach
 
                        </b>
+
 
 
                      </legend>
@@ -41,7 +45,7 @@
             
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="/editar_perfil_docente" class="btn btn-default btn-flat">Perfil</a>
+                      <a href="{{url('editar_perfil_docente')}}" class="btn btn-default btn-flat">Perfil</a>
                     </div>
                     <div class="pull-right">
   <a href="{{ url('/logout') }}"  class="btn btn-default btn-flat"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> Salir </a>
@@ -57,7 +61,7 @@
               <!-- Control Sidebar Toggle Button -->
         <li class="dropdown user user-menu">
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                 <i class="fa fa-question-circle">Ayuda</i>
+                 Ayuda<i class="fa fa-question-circle"></i>
                  </a>
   <ul class="dropdown-menu">
     <!-- User image -->
@@ -73,7 +77,7 @@
    @role('director')
 <h3>Manual de Usuario</h3>   
 @else
-   @role('decano')
+   @role('vicedecano')
 <h3>Manual de Usuario</h3> 
 @else
        <h3>Usuario Invitado</h3>
@@ -84,22 +88,16 @@
 
 
     </li>
-
-
     <li class="user-body">
-    
 @role('docente')
-<a target="_blank" class="glyphicon glyphicon-book"  href="manual/manualDocente.pdf">&nbsp;<b>Manual Docente</b></a>
+<a target="_blank" class="glyphicon glyphicon-book"  href="{{ url('manual/manualDocente.pdf') }}">&nbsp;<b>Manual Docente</b></a>
 @endrole
 @role('director')
-<a target="_blank" class="glyphicon glyphicon-book"  href="manual/manualDirector.pdf">&nbsp;<b>Manual Director</b></a>
+<a target="_blank" class="glyphicon glyphicon-book"  href="{{url('manual/manualDirector.pdf')}} ">&nbsp;<b>Manual Director</b></a>
 @endrole
-@role('decano')
-  <a target="_blank" class="glyphicon glyphicon-book"  href="manual/manualDecano.pdf">&nbsp;<b>Manual Decano</b></a>
+@role('vicedecano')
+  <a target="_blank" class="glyphicon glyphicon-book"  href="{{url('manual/manualDecano.pdf')}}">&nbsp;<b>Manual Vicedecano</b></a>
 @endrole
-
- 
-
 
 @role('docente')
 <b></b>   
@@ -107,7 +105,7 @@
    @role('director')
 <b></b>   
 @else
-   @role('decano')
+   @role('vicedecano')
 <b></b>   
 @else
     <span class="fa fa-info" ><h5 style="color:red;">Pongase en contacto con el administrador para que se le asignen privilegios.</h5>
@@ -115,8 +113,6 @@
 @endrole
 @endrole
 @endrole
-
-
     </li>
   </ul>
 

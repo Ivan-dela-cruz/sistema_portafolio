@@ -53,9 +53,24 @@ return [
             'root'   => public_path('storage/fotografia'),
         ],
 
-        'archivos'   => [
+        'portafolio' => [
             'driver' => 'local',
-            'root'   => public_path('storage/archivos'),
+            'root'   => public_path('storage/portadaGeneral'),
+        ],
+
+        'asignatura' => [
+            'driver' => 'local',
+            'root'   => public_path('storage/parametroAsignatura'),
+        ],
+
+        'producto'   => [
+            'driver' => 'local',
+            'root'   => public_path('storage/parametroProducto'),
+        ],
+
+        'actividad'  => [
+            'driver' => 'local',
+            'root'   => public_path('storage/parametroActividad'),
         ],
 
         'archivo'    => [

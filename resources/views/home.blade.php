@@ -6,9 +6,9 @@
  <section class="container-fluid spark-screen" >
  
 
-
+<div class="row"> 
   <div class="col-md-6 text-center" >
-     <h3><span class="label label-default">Perfil Usuario</span></h3>
+     <h3><span class="">Perfil Usuario</span></h3>
      <a href="{!!url('editar_perfil_docente')!!}" ><img src="{{ url('imagenes/logoperfil.png')}}" style="height:30%; width: 30%;" > </a>
    </div>
 
@@ -19,10 +19,10 @@
 @role('director')
 @include('Rol/coordinador')
 @endrole
-@role('decano')
+@role('vicedecano')
 @include('Rol/decano')
 @endrole
-
+</div>
 
 </section>
 

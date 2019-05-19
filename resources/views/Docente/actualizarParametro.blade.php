@@ -50,14 +50,14 @@
   <div class="panel-heading text-center"><b>{{ $membrete->materia }}</b></div>
   <div class="panel-body text-center">
 
- <img src="/imagenes/materia.png">
+ <img src="{{ asset('imagenes/materia.png')}}">
   </div>
 
 <div class="panel-footer text-center "  id="consolidar">
 
 
 
-<a  href="{{ url('generar_pdf/'.base64_encode($idPorMat)) }}"  class="btn btn-info btn-xs" target="_blank">Generar el Portafolio Consolidado</a>
+<a  href="{{ url('generar_pdf/'.base64_encode($idPorMat)) }}"  class="btn btn-success btn-xs" target="_blank">Generar el Portafolio Consolidado</a>
 
                 
 </div>

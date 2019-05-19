@@ -86,7 +86,7 @@ class UsuarioController extends Controller
             'apellido'          => 'required|regex:/^([a-zA-ZñÑáéíóúÁÉÍÓÚ_-])+((\s*)+([a-zA-ZñÑáéíóúÁÉÍÓÚ_-]*)*)+$/',
             'celular'           => 'required|digits:10|numeric',
             'telefono'          => 'digits:9|numeric',
-            'lugar'             => 'required',
+            'lugar'             => 'required|regex:/^([a-zA-ZñÑáéíóúÁÉÍÓÚ_-])+((\s*)+([a-zA-ZñÑáéíóúÁÉÍÓÚ_-]*)*)+$/',
             'fecha'             => 'required',
             'direccionDomi'     => 'required',
 
@@ -111,10 +111,11 @@ class UsuarioController extends Controller
             'telefono.numeric'        => 'Número teléfono debe ser numérico.',
 
             'lugar.required'          => 'Lugar de nacimiento es obligatorio.',
+            'lugar.regex'     => 'Lugar solo debe contener letras.',
 
             'fecha.required'          => 'Fecha de nacimiento es obligatorio.',
             'direccionDomi.required'  => 'Dirección domiciliaria  es obligatorio.',
-
+            
             'cargasFamiliar.required' => ' Seleccione N° de cargas familiar  es obligatorio.',
 
             'sexo.required'           => 'Seleccione género es obligatorio.',
@@ -189,7 +190,7 @@ class UsuarioController extends Controller
         //No comprobado
         //'avatar' => 'dimensions:min_width=100,min_height=200'
         $input      = array('imagen' => $archivo);
-        $reglas     = array('imagen' => 'required|image|mimes:jpeg,jpg|max:100|min:2');
+        $reglas     = array('imagen' => 'required|image|mimes:jpeg,jpg|min:2');
         $validacion = Validator::make($input, $reglas);
         if ($validacion->fails()) {
             // return view("mensajes.msj_rechazado")->with("msj","El archivo no es una imagen valida"):
@@ -367,12 +368,12 @@ class UsuarioController extends Controller
 
         $usuarios = User::join("role_user", "users.id", "=", "role_user.user_id")->join("roles", "roles.id", "=", "role_user.role_id")->where("roles.id", "=", $idRol)->where(function ($q) use ($dato) {
             $q->where('users.cedula', 'like', '%' . $dato . '%')->orWhere('users.nombre', 'like', '%' . $dato . '%')->orWhere('users.apellido', 'like', '%' . $dato . '%')->orwhere(DB::raw('concat(users.nombre," ",users.apellido)'), 'LIKE', '%' . $dato . '%')->orwhere(DB::raw('concat(users.apellido," ", users.nombre)'), 'LIKE', '%' . $dato . '%');
-        })->select('users.*')->orderBy('users.apellido', 'asc')->Paginate(2);
+        })->select('users.*')->orderBy('users.apellido', 'asc')->Paginate(20);
         return view('Decano.listaBusqueda')->with("usuarios", $usuarios)->with("rols", $roles);
 
     }
 
-    public function buscarUsuarioInvitado($dato = "")
+    public function buscarUsuarioInvitado($idRol,$dato= "")
     {
         $roles = Role::all();
 

@@ -226,9 +226,7 @@
                                         <option value="11">
                                             10
                                         </option>
-                                        <option value="12">
-                                            Mayor a 10
-                                        </option>
+                                       
                                     </select>
                                
 
@@ -282,40 +280,31 @@
                                             --SELECCIONE NACIONALIDAD --
                                         </option>
                                         <option value="1">
-                                            ARGENTINA
+                                           ECUATORIANA
                                         </option>
                                         <option value="2">
-                                            BOLIVIANA
+                                           CUBANA
                                         </option>
+                                       
                                         <option value="3">
-                                            BRASILENA
-                                        </option>
-                                        <option value="4">
                                             CHILENA
                                         </option>
-                                        <option value="5">
+                                        <option value="4">
                                             COLOMBIANA
                                         </option>
-                                        <option value="6">
-                                            CUBANA
-                                        </option>
-                                        <option value="7">
-                                            ECUATORIANA
-                                        </option>
-                                        <option value="8">
-                                            MEXICANA
-                                        </option>
-                                        <option value="9">
-                                            PARAGUAYA
-                                        </option>
-                                        <option value="10">
+                                        
+                                        <option value="5">
                                             PERUANA
                                         </option>
-                                        <option value="11">
-                                            URUGUAYA
-                                        </option>
-                                        <option value="12">
+                                       
+                                        <option value="6">
                                             VENEZOLANA
+                                        </option>
+                                        <option value="7">
+                                            ESPAÑOLA
+                                        </option>
+                                        <option value="8">
+                                            OTRA NACIONALIDAD
                                         </option>
                                     
    </select>                                                            
@@ -369,7 +358,7 @@
 <div class="row">
     <br>
     <div class="col-md-12 text-center">
-         <button class="btn btn-success" type="submit">
+         <button class="btn btn-primary" type="submit">
                                     Actualizar Datos
                                 </button>
 
@@ -477,16 +466,15 @@
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">
-                                        Facultad Académica en la que labora..
+                                        Facultad Académica
                                     </label>
-                                    <select class="form-control" id="facultad" name="facultad" required="">
-                                        <option value="">
-                                            -- SELECCIONE FACULTAD --
-                                        </option>
-                                        <option value="1">
-                                            Ciencias de la Ingeniería y Aplicadas
-                                        </option>
-                                    </select>
+                                    <input type="hidden"  value="1" id="facultad" name="facultad">
+
+<input class="form-control" readonly=""   required="" type="text" value="Ciencias de la Ingeniería y Aplicadas">
+                                   
+
+
+
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleIngresoUtc">
@@ -498,7 +486,7 @@
                             <!-- /.box-body -->
                             <div class="box-footer text-center">
                                 <button class="btn btn-primary" type="submit">
-                                    Cambiar Datos
+                                    Actualizar Datos
                                 </button>
                             </div>
                 </form>
@@ -540,7 +528,7 @@
                             <!-- /.box-body -->
                             <div class="box-footer text-center">
                                 <button class="btn btn-primary" type="submit">
-                                    Cambiar Datos
+                                    Actualizar Datos
                                 </button>
                             </div>
                 </form>
@@ -565,7 +553,8 @@
   $('#nacionalidad option:eq({{ $usuario->nacionalidad }})').prop('selected',true);
   $('#estado option:eq({{ $usuario->estadoCivil }} )').prop('selected',true);
   $('#cargasFamiliar option:eq({{$usuario->cargaFamiliar}})').prop('selected',true);
-  $('#facultad option:eq({!! $usuario->facultad !!})').prop('selected',true);
+  //$('#facultad option:eq({!! $usuario->facultad !!})').prop('selected',true);
+ // $('#facultad option:eq(1)').prop('selected',true);
   }
 
 

@@ -38,7 +38,7 @@
 <td>{{$user->created_at  }} </td>
 
 <td>
-<a href="{{ url('asignar_rol_usuario/'.$user->id) }}"  title="Editar Rol Usuario"   class="btn btn-default btn-xs"> <i class="fa  fa-edit"></i></a>
+<a href="{{ url('asignar_rol_usuario/'.$user->id) }}"  title="Editar Rol Usuario"   class="btn btn-warning btn-xs"> <i class="fa  fa-edit"></i></a>
 <button title="Eliminar Usuario" onclick="eliminarUsuario('{{$user->id }}')" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></button>
 </td>
 </tr>

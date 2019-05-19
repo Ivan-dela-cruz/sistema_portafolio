@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Periodo;
+use App\TareaPortafolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,43 @@ class PeriodosController extends Controller
 
     }
 
+    public function  habilitarSubidaDocumetos(Request $request){
+        $idTarea = $request->input('id_tarea');
+        $fecha_fin = $request->input('fecha_fin');
+
+         $tareaPorta = TareaPortafolio::find($idTarea);
+         if($tareaPorta){
+             $tareaPorta->fecha_fin = $fecha_fin;
+             $tareaPorta->save();
+             return view("mensajes.msj_correcto")->with("msj", "Tiempo de subida de documentos actualizado correctamente ");
+         } else {
+             return view("mensajes.msj_rechazado")->with("msj", "Hubo un error intente nuevamente ");
+         }
+    }
+    public function listarPeriodoAcademico()
+    {
+
+        $idUsuarioActual = \Auth::user()->id;
+
+        //dd($id);
+        //Consulta todos los periodo en forma decendente
+        $periodo = DB::table('periodo')->orderBy('id', 'desc')->get();
+
+//Consulta el id  mayor en forma decendente
+        $maxIdPeriodo = DB::table('periodo')->max('id');
+
+        $portafolios = DB::table('users')->join('portafolio', 'users.id', '=', 'portafolio.idDoc')->join('carrera', 'carrera.id', '=', 'portafolio.idCar')->join('periodo', 'periodo.id', '=', 'portafolio.idPer')->where('periodo.id', '=', $maxIdPeriodo)->where('users.id', '=', $idUsuarioActual)->select('portafolio.*')
+            ->get();
+
+
+        $contador = count($idUsuarioActual);
+        if ($contador) {
+            return view("Docente.HabilitarTareaPeriodo")->with("periodo", $periodo)->with("portafolios", $portafolios);
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "No existe registrado ningun Período Académico .");
+        }
+
+    }
     public function listaPeriodoRegistradoPortafolio()
     {
 

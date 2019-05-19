@@ -96,7 +96,7 @@ border-bottom-color: #A4C4D0;
 
 
 <div class="row" align="center">
-  <b style="font-size:17px; ">PERÍODO ACADÉMÍCO :</b><span style="font-size:17px;"> {{ $portafolio->desde }}-{!!$portafolio->hasta!!}</span>
+  <b style="font-size:17px; ">PERÍODO ACADÉMICO :</b><span style="font-size:17px;"> {{ $portafolio->desde }}-{!!$portafolio->hasta!!}</span>
   </div>
 
 <br>
@@ -129,7 +129,7 @@ border-bottom-color: #A4C4D0;
  <thead>
       <tr  class="modo1">
         <th>N°</th>      
-        <th>PARÁMETRO PORTAFOLIO</th>
+        <th width="500px">PARÁMETRO PORTAFOLIO</th>
         <th>SI</th>
         <th>NO</th>
       </tr>
@@ -157,7 +157,7 @@ border-bottom-color: #A4C4D0;
  <thead>
       <tr  class="modo1">
         <th>N°</th>      
-        <th>PARÁMETRO ASIGNATURA</th>
+        <th width="500px">PARÁMETRO ASIGNATURA</th>
         <th>SI</th>
         <th>NO</th>
       </tr>
@@ -189,7 +189,7 @@ border-bottom-color: #A4C4D0;
  <thead>
       <tr  class="modo1">
         <th>N°</th>      
-        <th> PARÁMETROS {{$proAca->nombre }}  </th>
+        <th width="500px"> PARÁMETROS {{$proAca->nombre }}  </th>
         <th>SI</th>
         <th>NO</th>
       </tr>

@@ -16,9 +16,11 @@
 			@foreach($docentes as $doc)
 			<tr class="bg-gray">
 				<td>{{$doc->cedula}}</td> <td>{!! $doc->apellido!!}</td> <td>{{ $doc->nombre }}</td> <td>{{ $doc->celular}}</td> <td>{{$doc->direccion  }}</td> <td>{{$doc->created_at}}</td>
-				<td   class="text-center" colspan="2" ><a class="btn btn-info btn-xs" href="{{ URL::to('getPDF').'/'.base64_encode($doc->id)}}" target="black">Perfil Docente</a> 
+				<td   class="text-center" colspan="2" ><a class="btn btn-danger btn-xs" href="{{ URL::to('getPDF').'/'.base64_encode($doc->id)}}" target="black">Perfil Docente</a> 
 
-					<a  class="btn btn-primary btn-xs" href="{{ URL('reporte_cumplimiento/'.$doc->idPor) }}">Reporte Verificación</a> </td>
+					<a  class="btn btn-primary btn-xs" href="{{ URL('reporte_cumplimiento/'.$doc->idPor) }}">Reporte Verificación</a>&nbsp;<a class="btn btn-primary btn-xs" href="{{url('reporte_actividad/'.$doc->idPor)}}">Actividades Docencia</a> 
+
+					</td>
 				</tr>
 
 				@endforeach

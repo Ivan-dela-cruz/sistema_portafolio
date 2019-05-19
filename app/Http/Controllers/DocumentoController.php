@@ -19,18 +19,16 @@ class DocumentoController extends Controller
 
     }
 
-//Subir archivos parametrios Productos
-
-    public function subirArchivoPdf(Request $request)
+//para subir los parametros Pdf Portafolio
+    public function subirArchivoPdfParametroPorta(Request $request)
     {
 
-//Id del documento a editar
         $idDocumento = $request->input("documento");
         $descripcion = $request->input("descripcion");
 
         $archivo = $request->file('file');
         $input   = array('documento' => $archivo);
-        $reglas  = array('documento' => 'required|mimes:pdf|max:1000');
+        $reglas  = array('documento' => 'required|mimes:pdf|max:5120');
 
         $validar = Validator::make($input, $reglas);
 
@@ -42,16 +40,117 @@ class DocumentoController extends Controller
         $nombre_original = $archivo->getClientOriginalName();
         $extension       = $archivo->getClientOriginalExtension();
 
-        $nuevo_nombrePdf = "Parametro-" . $descripcion . "-" . $idDocumento . "." . $extension;
+        $nuevo_nombrePdf = "Parametro-Porta" . "-" . $idDocumento . "." . $extension;
+
+        //Nombre del disco creado en filesSytem
+
+        // $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
+
+        //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+
+        $r1 = Storage::disk('portafolio')->put(utf8_decode($nuevo_nombrePdf), \File::get($archivo));
+
+        $rutaPdf = "storage/portadaGeneral/" . $nuevo_nombrePdf;
+
+        if ($r1) {
+            $documentosPortafolio              = Documento_Portafolio::find($idDocumento);
+            $documentosPortafolio->descripcion = $descripcion;
+
+            $documentosPortafolio->urlArchivo = $rutaPdf;
+
+            $documentosPortafolio->save();
+            return view("mensajes.msj_correcto")->with("msj", "Archivo en formato PDF guardado correctamente");
+
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", " Error vuelva a intentar :");
+        }
+
+    }
+
+// Para subir los archivos Parametros Materia
+
+    public function subirArchivoPdfParametro(Request $request)
+    {
+
+        $idDocumento = $request->input("documento");
+        $descripcion = $request->input("descripcion");
+
+        $archivo = $request->file('file');
+        $input   = array('documento' => $archivo);
+        $reglas  = array('documento' => 'required|mimes:pdf|max:5120');
+
+        $validar = Validator::make($input, $reglas);
+
+        if ($validar->fails()) {
+            return view("mensajes.mensaje_error")->withErrors($validar->errors());
+
+        }
+
+        $nombre_original = $archivo->getClientOriginalName();
+        $extension       = $archivo->getClientOriginalExtension();
+
+        $nuevo_nombrePdf = "Parametro-Asi" . "-" . $idDocumento . "." . $extension;
+
+        //Nombre del disco creado en filesSytem
+        //$r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
+
+        //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
+
+        $r1 = Storage::disk('asignatura')->put(utf8_decode($nuevo_nombrePdf), \File::get($archivo));
+
+        $rutaPdf = "storage/parametroAsignatura/" . $nuevo_nombrePdf;
+
+        if ($r1) {
+            $documentosAsignatura              = Documento_Materia::find($idDocumento);
+            $documentosAsignatura->descripcion = $descripcion;
+
+            $documentosAsignatura->urlArchivo = $rutaPdf;
+
+            $documentosAsignatura->save();
+            return view("mensajes.msj_correcto")->with("msj", "Archivo en formato PDF guardado correctamente");
+
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", " Error vuelva a intentar :");
+        }
+
+    }
+
+//Subir archivos parametrios Productos Academico
+
+    public function subirArchivoPdf(Request $request)
+    {
+
+//Id del documento a editar
+        $idDocumento = $request->input("documento");
+        $descripcion = $request->input("descripcion");
+
+        $archivo = $request->file('file');
+        $input   = array('documento' => $archivo);
+        $reglas  = array('documento' => 'required|mimes:pdf|max:5120');
+
+        $validar = Validator::make($input, $reglas);
+
+        if ($validar->fails()) {
+            return view("mensajes.mensaje_error")->withErrors($validar->errors());
+
+        }
+
+        $nombre_original = $archivo->getClientOriginalName();
+        $extension       = $archivo->getClientOriginalExtension();
+
+        //    $nuevo_nombrePdf = "Parametro-" . $descripcion . "-" . $idDocumento . "." . $extension;
+
+        $nuevo_nombrePdf = "Parametro-Prod-Aca" . "-" . $idDocumento . "." . $extension;
 
         //Nombre del disco creado en filesSytem
         // $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
 
         //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
 
-        $r1 = Storage::disk('archivos')->put($nuevo_nombrePdf, \File::get($archivo));
+//Para corregir error tilde y asi visualizar Pdf
+        $r1 = Storage::disk('producto')->put(utf8_decode($nuevo_nombrePdf), \File::get($archivo));
 
-        $rutaPdf = "storage/archivos/" . $nuevo_nombrePdf;
+        $rutaPdf = "storage/parametroProducto/" . $nuevo_nombrePdf;
 
         if ($r1) {
             $documentos              = Documento::find($idDocumento);
@@ -71,102 +170,6 @@ class DocumentoController extends Controller
         //         $ruta=$carpeta."/".$request->input("id_usuario")."_".$archivo->getClientOriginalName();
         //       $r1=Storage::disk('archivos')->put($ruta,  \File::get($archivo) );
         //     $proyecto->ruta=$ruta;
-
-    }
-
-// Para subir los archivos Parametros Materia
-
-    public function subirArchivoPdfParametro(Request $request)
-    {
-
-        $idDocumento = $request->input("documento");
-        $descripcion = $request->input("descripcion");
-
-        $archivo = $request->file('file');
-        $input   = array('documento' => $archivo);
-        $reglas  = array('documento' => 'required|mimes:pdf|max:1000');
-
-        $validar = Validator::make($input, $reglas);
-
-        if ($validar->fails()) {
-            return view("mensajes.mensaje_error")->withErrors($validar->errors());
-
-        }
-
-        $nombre_original = $archivo->getClientOriginalName();
-        $extension       = $archivo->getClientOriginalExtension();
-
-        $nuevo_nombrePdf = "ParametroAsignatura-" . $descripcion . "-" . $idDocumento . "." . $extension;
-
-        //Nombre del disco creado en filesSytem
-        //$r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
-
-        //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
-
-        $r1 = Storage::disk('archivos')->put($nuevo_nombrePdf, \File::get($archivo));
-
-        $rutaPdf = "storage/archivos/" . $nuevo_nombrePdf;
-
-        if ($r1) {
-            $documentosAsignatura              = Documento_Materia::find($idDocumento);
-            $documentosAsignatura->descripcion = $descripcion;
-
-            $documentosAsignatura->urlArchivo = $rutaPdf;
-
-            $documentosAsignatura->save();
-            return view("mensajes.msj_correcto")->with("msj", "Archivo en formato PDF guardado correctamente");
-
-        } else {
-            return view("mensajes.msj_rechazado")->with("msj", " Error vuelva a intentar :");
-        }
-
-    }
-
-//para subir los parametros Pdf Portafolio
-    public function subirArchivoPdfParametroPorta(Request $request)
-    {
-
-        $idDocumento = $request->input("documento");
-        $descripcion = $request->input("descripcion");
-
-        $archivo = $request->file('file');
-        $input   = array('documento' => $archivo);
-        $reglas  = array('documento' => 'required|mimes:pdf|max:1000');
-
-        $validar = Validator::make($input, $reglas);
-
-        if ($validar->fails()) {
-            return view("mensajes.mensaje_error")->withErrors($validar->errors());
-
-        }
-
-        $nombre_original = $archivo->getClientOriginalName();
-        $extension       = $archivo->getClientOriginalExtension();
-
-        $nuevo_nombrePdf = "ParametroPortafolio-" . $descripcion . "-" . $idDocumento . "." . $extension;
-
-        //Nombre del disco creado en filesSytem
-
-        // $r1 = Storage::disk('archivo')->put($nuevo_nombrePdf, \File::get($archivo));
-
-        //$rutaPdf = "storage/archivo/" . $nuevo_nombrePdf;
-
-        $r1 = Storage::disk('archivos')->put($nuevo_nombrePdf, \File::get($archivo));
-
-        $rutaPdf = "storage/archivos/" . $nuevo_nombrePdf;
-
-        if ($r1) {
-            $documentosPortafolio              = Documento_Portafolio::find($idDocumento);
-            $documentosPortafolio->descripcion = $descripcion;
-
-            $documentosPortafolio->urlArchivo = $rutaPdf;
-
-            $documentosPortafolio->save();
-            return view("mensajes.msj_correcto")->with("msj", "Archivo en formato PDF guardado correctamente");
-
-        } else {
-            return view("mensajes.msj_rechazado")->with("msj", " Error vuelva a intentar :");
-        }
 
     }
 
@@ -206,15 +209,22 @@ class DocumentoController extends Controller
     {
         $documento = Documento::find($idDocu);
         $rutaPdf   = $documento->urlArchivo;
-        return response()->download($rutaPdf);
+        //Para consultar el nombre del parametro
+        $parametro = DB::table("parametro")->join("documento", "parametro.id", "=", "documento.idPar")->where("documento.id", "=", $idDocu)->select("parametro.nombre as nombrePar")->first();
+//Nombre del parametro producto
+        return response()->download($rutaPdf, $parametro->nombrePar . ".pdf");
     }
 
 //Descargar Parametris Pdf Asignatura
     public function descargarPdfParametroMat($idDocu)
     {
+
         $documento = Documento_Materia::find($idDocu);
         $rutaPdf   = $documento->urlArchivo;
-        return response()->download($rutaPdf);
+        //Para consultar el nombre del parametro Asignatura
+        $parametro = DB::table("parametro")->join("documento_materia", "parametro.id", "=", "documento_materia.idPar")->where("documento_materia.id", $idDocu)->select("parametro.nombre as nombrePar")->first();
+
+        return response()->download($rutaPdf, $parametro->nombrePar . ".pdf");
     }
 
 //Descargar archovos PDF  ParametTROS del portafolios
@@ -222,14 +232,14 @@ class DocumentoController extends Controller
     {
         $documento = Documento_Portafolio::find($idDocu);
         $rutaPdf   = $documento->urlArchivo;
-        return response()->download($rutaPdf);
+        $parametro = DB::table("parametro")->join("documento_portafolio", "parametro.id", "=", "documento_portafolio.idPar")->where("documento_portafolio.id", "=", $idDocu)->select("parametro.nombre as nombrePar")->first();
+        return response()->download($rutaPdf, $parametro->nombrePar . ".pdf");
     }
 
     public function actualizarParametroPorta($idPorta)
     {
 
         $parametroPortafolio = DB::table("portafolio")->join("documento_portafolio", "portafolio.id", "=", "documento_portafolio.idPor")->join("parametro", "parametro.id", "=", "documento_portafolio.idPar")->where("documento_portafolio.idPor", "=", $idPorta)->select("documento_portafolio.*", "parametro.nombre as parametro")->get();
-
         return view("Docente.mostrarParametroPortafolio")->with("parametrosPorta", $parametroPortafolio);
 
     }

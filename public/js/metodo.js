@@ -11,7 +11,7 @@ function getpdf() {
 }
 //Verificar estudios y titulos obtenidos
 function estudiosRealizados() {
-    var url = "/actualizar_estudios_docente";
+    var url = "actualizar_estudios_docente";
     $("#ventanaModificarEstudioDoc").html($("#cargando").html());
     $.get(url, function(rs) {
         $("#ventanaModificarEstudioDoc").html(rs);
@@ -54,7 +54,7 @@ function buscarPortafolio() {
 //Elimina el titulo del docente logeado
 function borrarTitulo(idTit) {
     swal({
-        title: "Estás Seguro?",
+        title: "Esta Seguro?",
         text: "Desea eliminar Título.!",
         type: "warning",
         showCancelButton: true,
@@ -98,7 +98,7 @@ function editParametro(idParametro, nombre) {
 function borrarParametro(idPar) {
     // alert("dentro metodo");
     swal({
-        title: "Estás Seguro?",
+        title: "Esta Seguro?",
         text: "Desea eliminar Parámetro.!",
         type: "warning",
         showCancelButton: true,
@@ -146,9 +146,9 @@ function mostrarseccion(num) {
 $(document).on("submit", ".form_entrada", function(e) {
     //funcion para atrapar los formularios y enviar los datos
     e.preventDefault();
-    $('html, body').animate({
-        scrollTop: '0px'
-    }, 200);
+    //$('html, body').animate({
+    //  scrollTop: '0px'
+    //}, 200);
     var formu = $(this);
     var quien = $(this).attr("id");
     var id = $(this).attr("id");
@@ -156,16 +156,12 @@ $(document).on("submit", ".form_entrada", function(e) {
     var res = false;
     var cual = 0;
     //No estoy utilizando
-    if (quien == "frm_editar_docente") {
-        var varurl = "editar_docente";
-        var divresul = "notificacion";
-    }
     if (quien == "frm_cambiar_clave") {
         var varurl = "cambiar_clave";
         var divresul = "notificacion_cambiarClave";
     }
     if (quien == "f_editar_acceso") {
-        var varurl = "/editar_acceso";
+        var varurl = "../editar_acceso";
         var divresul = "notificacion_editar_acceso";
     }
     if (quien == "frm_agregar_titulo") {
@@ -179,12 +175,43 @@ $(document).on("submit", ".form_entrada", function(e) {
         var divresul = "notificacion_cambiarHistorial";
     }
     if (quien == "frm_crear_portafolio") {
-        var varurl = "crear_portafolio";
-        var divresul = "notificacion_crear_portafolio";
-        res = true;
+        swal({
+            title: "Esta Seguro?",
+            text: "Desea crear el Portafolio Académico.!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-info",
+            confirmButtonText: "Si, Crear!",
+            cancelButtonText: "No, Cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                var varurl = "crear_portafolio";
+                var divresul = "notificacion_crear_portafolio";
+                res = true;
+                //    $("#" + divresul + "").html($("#cargando").html());
+                $.ajax({
+                    type: "POST",
+                    url: varurl,
+                    datatype: 'json',
+                    data: formu.serialize(),
+                    success: function(resul) {
+                        $("#" + divresul + "").html(resul);
+                        if (res) {
+                            // $('#' + quien + '').trigger("reset");
+                            buscarPortafolio();
+                        }
+                    }
+                });
+                swal("Creado!", "Portafolio Docente creado exitosamente.", "success");
+            } else {
+                swal("Cancelado!", "Desea cancelar la operacion", "error");
+            }
+        });
     }
     if (quien == "frm_agregar_materia_portafolio") {
-        var varurl = "/agregar_materia_portafolio";
+        var varurl = "../agregar_materia_portafolio";
         var divresul = "notificacionAgregarMateria";
         cual = 10;
     }
@@ -194,7 +221,7 @@ $(document).on("submit", ".form_entrada", function(e) {
         cual = 6;
     }
     if (quien == "frm_crear_periodo") {
-        var varurl = "/crear_periodo";
+        var varurl = "crear_periodo";
         var divresul = "notificacion_crear_parametro";
         cual = 2;
     }
@@ -204,13 +231,14 @@ $(document).on("submit", ".form_entrada", function(e) {
         cual = 3;
     }
     if (quien == "frm_parametro") {
-        var varurl = "/actualizar_parametro";
+        var varurl = "actualizar_parametro";
         var divresul = "notaParametro";
         cual = 4;
     }
     //Editar carrera director
     if (quien == "f_asignar_director_carrera") {
-        var varurl = "/asignar_director_carrera";
+        alert("hola");
+        var varurl = "../asignar_director_carrera";
         var divresul = "rsCarreraDirector";
     }
     $("#" + divresul + "").html($("#cargando").html());
@@ -258,7 +286,7 @@ $(document).on("submit", ".form_entrada_validacion", function(e) {
         var divresul = "notificacion";
     }
     if (quien == "frm_agregar_titulo") {
-        var varurl = "/agregar_titulo";
+        var varurl = "agregar_titulo";
         var divresul = "notaEstudio";
         cual = 1;
     }
@@ -274,6 +302,7 @@ $(document).on("submit", ".form_entrada_validacion", function(e) {
         dataType: "html",
         success: function(resul) {
             $("#" + divresul + "").html(resul);
+            irarriba();
             // $("#capa_formularios").html(resul);
             if (cual == 1) {
                 //Para actualizar los estudios realizado
@@ -307,20 +336,25 @@ $(document).on("submit", ".formarchivo", function(e) {
     }
     //Para subir archivos parametros
     if (nombreform == "frm_subir_archivoPdf") {
-        var miurl = "/subir_archivoPdf";
+        var miurl = "../subir_archivoPdf";
         var divresul = "notaPdf";
         rs = "subir";
     }
     if (nombreform == "frm_subir_ParametroMat") {
-        var miurl = "/subir_ParametroMat";
+        var miurl = "../subir_ParametroMat";
         var divresul = "notaSubirParametroMat";
         // alert("Aquie estoz");
         rs = "subir2";
     }
     if (nombreform == "frm_subir_ParametroPorta") {
-        var miurl = "/subir_ParametroPorta";
+        var miurl = "../subir_ParametroPorta";
         var divresul = "notaSubirParametroPorta";
         rs = "subir3";
+    }
+    if (nombreform == "frm_subir_actividad") {
+        var miurl = "../subir_archivo_actividad";
+        var divresul = "notaSubirActividad";
+        rs = "subir4";
     }
     //Para obtener la informacion del archivo..
     //$("#"+divresul+"").html($("#cargando").html());
@@ -358,6 +392,11 @@ $(document).on("submit", ".formarchivo", function(e) {
                 //Actualizar el parametro de los portafolio cuando se guarda  un nuevo  archivo pdf
                 actualizarParametroPorta();
             }
+            if (rs == "subir4") {
+                $("#" + divresul + "").html(rs2);
+                //Actualizar las actividades cuando se guarda  un nuevo  archivo pdf
+                mostrarArchivo();
+            }
         },
         error: function(xhr, status) {
             $("#" + divresul + "").html("<div class='alert alert-danger'><strong>Ha ocurrido un error!</strong> archivo demasiado Grande o Protegido.</div>");
@@ -370,7 +409,7 @@ function asignar_rol(idusu) {
     var idrol = $("#rol1").val();
     //  var urlraiz = $("#url_raiz_proyecto").val();
     $("#zona_etiquetas_roles").html($("#cargando").html());
-    var miurl = "/asignar_rol/" + idusu + "/" + idrol + "";
+    var miurl = "../asignar_rol/" + idusu + "/" + idrol + "";
     $.ajax({
         url: miurl
     }).done(function(resul) {
@@ -389,7 +428,7 @@ function quitar_rol(idusu) {
     var idrol = $("#rol2").val();
     // var urlraiz = $("#url_raiz_proyecto").val();
     $("#zona_etiquetas_roles").html($("#cargando").html());
-    var miurl = "/quitar_rol/" + idusu + "/" + idrol + "";
+    var miurl = "../quitar_rol/" + idusu + "/" + idrol + "";
     $.ajax({
         url: miurl
     }).done(function(resul) {

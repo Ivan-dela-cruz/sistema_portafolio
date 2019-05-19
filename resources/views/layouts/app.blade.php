@@ -11,7 +11,8 @@
     <title>Sistema | Portafolio Docente</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link href='imagenes/iconoutc.ico' rel='icon' type='image/x-icon' />
 
     <!-- Scripts -->
     <script>
@@ -92,6 +93,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>

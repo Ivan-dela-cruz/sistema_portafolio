@@ -95,7 +95,7 @@
 
                             </div>
                             <div class="box-footer text-center">
-                                <button class="btn btn-success" type="submit">
+                                <button class="btn btn-primary" type="submit">
                                     Actualizar Títulos
                                 </button>
                             </div>

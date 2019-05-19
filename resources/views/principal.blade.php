@@ -10,6 +10,7 @@
             <link href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
                 <!-- Font Awesome -->
                 <link href="{{ asset('css/font-awesome.min.css')}}" rel="stylesheet">
+                <link href='imagenes/iconoutc.ico' rel='icon' type='image/x-icon' />
                     <!-- Para los mensales de  bien y mal-->
                     <link href="{{ asset('css/mensajes.css')}}" rel="stylesheet">
                         <!-- Ionicons -->

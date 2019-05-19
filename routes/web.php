@@ -25,13 +25,21 @@ Route::group(['middleware' => 'auth'], function () {
 //Ruta para consultar el formulario que servira para la actualizacion de sus datos
     Route::get('editar_perfil_docente', 'UsuarioController@editarPerfilDocente');
 
+
+    //Controlador para habilitar el tiempo de subida de los documentos
+    Route::post('habilitar_subida_documentos', 'PeriodosController@habilitarSubidaDocumetos')->middleware("roleshinobi:docente");
+
+    //Ruta para consultar el formulario de habilitar el tiempo de subida de los documentos
+
+    Route::get('modificar_subida_documentos', 'PeriodosController@listarPeriodoAcademico')->middleware("roleshinobi:docente");
+
 //Ruta para consultar el formulario de portafolio
 
     Route::get('consultar_portafolio', 'PortafoliosController@consultarPortafolio')->middleware("roleshinobi:docente");
 
 //Ruta para consultar el formulario de parametro
 
-    Route::get('gestion_parametro', 'ParametroController@consultarParametro')->middleware("roleshinobi:decano");
+    Route::get('gestion_parametro', 'ParametroController@consultarParametro')->middleware("roleshinobi:vicedecano");
 
 //Ruta editar educacion Docentes
     Route::get('estudios_docente', 'TitulosController@estudiosDocente');
@@ -41,7 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('actualizar_estudios_docente', 'TitulosController@actualizarEstudiosDocente');
 
 //Ruta para actualizar parametro que óseen en P.A. Silabo
-    Route::post('actualizar_parametro', 'ParametroController@update')->middleware("roleshinobi:decano");
+    Route::post('actualizar_parametro', 'ParametroController@update')->middleware("roleshinobi:vicedecano");
 
 //Ruta para procesar el actualizado de los datos
 
@@ -57,11 +65,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('cambiar_clave', 'UsuarioController@cambiarClave');
 
-    Route::post('agregar_titulo', 'TitulosController@agregarTitulo');
+    Route::post('/agregar_titulo', 'TitulosController@agregarTitulo');
 
     Route::get('borrar_titulo/{id}', 'TitulosController@eliminarTitulo');
 
-    Route::get('borrar_parametro/{id}', 'ParametroController@delete')->middleware("roleshinobi:decano");
+    Route::get('borrar_parametro/{id}', 'ParametroController@delete')->middleware("roleshinobi:vicedecano");
 
 //Controlador permite buscar portafolios de acuerdo al periodo academico
 
@@ -71,7 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('crear_portafolio', 'PortafoliosController@crearPortafolio')->middleware("roleshinobi:docente");
 
 //Controlador para Crear PARAMETRO
-    Route::post('crear_parametro', 'ParametroController@crearParametro')->middleware("roleshinobi:decano");
+    Route::post('crear_parametro', 'ParametroController@crearParametro')->middleware("roleshinobi:vicedecano");
 
 //Controlador sirve para registrar materias en el portafolio
     Route::get('/materias_portafolio/{idPor}', 'PortafoliosController@materiasPortafolio')->middleware("roleshinobi:docente");
@@ -87,7 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('materia_registrada_portafolio/{idPor}', 'PortafoliosController@materiaRegistradaPortafolio')->middleware("roleshinobi:docente");
 
 //Para mostrar los parametros que poseen el portafolio
-    Route::get('/listado_parametro', 'ParametroController@parametroRegistradaPortafolio')->middleware("roleshinobi:decano");
+    Route::get('/listado_parametro', 'ParametroController@parametroRegistradaPortafolio')->middleware("roleshinobi:vicedecano");
 
 //Para visualzar los parametros que contienen cada una de las materias
     Route::get('parametros_asignatura/{idMatPor}', 'PortafoliosController@parametrosAsignatura')->middleware("roleshinobi:docente");
@@ -118,6 +126,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Permite descargar los arcchivos PDF  de los parametros Portafolio
     Route::get("descargar_pdf_Porta/{idDoc}", "DocumentoController@descargarPdfParametroPorta");
+
+//Descarga el pedf de las actividades
+    Route::get("descargar_pdf_actividad/{idDocu}", "ActividadController@descargarPdfActividad");
 
 //Route::get('reportes', 'PDFController@index');
 
@@ -150,22 +161,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('actualizar_parametro_porta/{idPorta}', 'DocumentoController@actualizarParametroPorta')->middleware("roleshinobi:docente");
 
 //Ruta para consultar el formulario de periodo
-    Route::get('gestion_periodo', 'PeriodosController@index')->middleware("roleshinobi:decano");
+    Route::get('gestion_periodo', 'PeriodosController@index')->middleware("roleshinobi:vicedecano");
 
 //Para mostrar los periodoos que poseen el portafolio
-    Route::get('/periodo', 'PeriodosController@listaPeriodoRegistradoPortafolio')->middleware("roleshinobi:decano");
+    Route::get('/periodo', 'PeriodosController@listaPeriodoRegistradoPortafolio')->middleware("roleshinobi:vicedecano");
 
 //Ruta para actulizar periodo Academicos
-    Route::Post('actualizar_periodo', 'PeriodosController@actualizarPeriodo')->middleware("roleshinobi:decano");
+    Route::Post('actualizar_periodo', 'PeriodosController@actualizarPeriodo')->middleware("roleshinobi:vicedecano");
 
 //Controlador para Crear Periodo
-    Route::post('crear_periodo', 'PeriodosController@crearPeriodo')->middleware("roleshinobi:decano");
+    Route::post('crear_periodo', 'PeriodosController@crearPeriodo')->middleware("roleshinobi:vicedecano");
 //Permite verficar los documentos subidos por el docente
 
     Route::get('reporte_verificacion/{idPorta}/{idPorMat}', 'PDFController@reporteVerificacion')->middleware("roleshinobi:director");
 
 //Eliminar archivo  paramemteros producuto  del servidor
-    Route::get('/eliminar_Pdf/{idArchivo}', 'PDFController@eliminarPdf')->middleware("roleshinobi:director");
+    Route::get('/eliminar_Pdf/{idArchivo}', 'PDFController@eliminarPdfProducto')->middleware("roleshinobi:director");
+
+    //Elimina archivos Pdf de los parametros portafolio del servidro
+    Route::get("/eliminar_Pdf_portafolioDocente/{idArchivo}", "PortafoliosController@eliminarPdfParametroPortaDocente")->middleware("roleshinobi:docente");
 
 //Elimina archivos Pdf de los parametros portafolio del servidro
     Route::get("/eliminar_Pdf_portafolio/{idArchivo}", "PDFController@eliminarPdfParametroPorta")->middleware("roleshinobi:director");
@@ -173,28 +187,49 @@ Route::group(['middleware' => 'auth'], function () {
 //Eliminar Pdf de los parameros Asignaturas
     Route::get("/eliminar_Pdf_materia/{idArchivo}", "PDFController@eliminarPdfParametroMate")->middleware("roleshinobi:director");
 
-    Route::get("listado_usuario", "UsuarioController@listadoUsuario")->middleware("roleshinobi:decano");
+//Eliminar Pdf actividades
+
+    Route::get("/eliminar_pdf_actividad/{idArchivo}", "PDFController@eliminarPdfActividad")->middleware("roleshinobi:director");
+
+    Route::get("listado_usuario", "UsuarioController@listadoUsuario")->middleware("roleshinobi:vicedecano");
 //Ver lista de rol
-    Route::get("asignar_rol_usuario/{idUser}", "UsuarioController@rolUsuario")->middleware("roleshinobi:decano");
+    Route::get("asignar_rol_usuario/{idUser}", "UsuarioController@rolUsuario")->middleware("roleshinobi:vicedecano");
 //Asignar rol al usuario
-    Route::get("asignar_rol/{idusu}/{idrol}", "UsuarioController@asignarRolUsuario")->middleware("roleshinobi:decano");
+    Route::get("asignar_rol/{idusu}/{idrol}", "UsuarioController@asignarRolUsuario")->middleware("roleshinobi:vicedecano");
 //para quitar el rol que esta asignado el usurio
 
-    Route::get('quitar_rol/{idusu}/{idrol}', 'UsuarioController@quitar_rol')->middleware("roleshinobi:decano");
+    Route::get('quitar_rol/{idusu}/{idrol}', 'UsuarioController@quitar_rol')->middleware("roleshinobi:vicedecano");
 
 //para editar acceso usuario
-    Route::post('editar_acceso', 'UsuarioController@editarAcceso')->middleware("roleshinobi:decano");
+    Route::post('editar_acceso', 'UsuarioController@editarAcceso')->middleware("roleshinobi:vicedecano");
 
-    Route::post('asignar_director_carrera', 'UsuarioController@asignarDirectorCarrera')->middleware("roleshinobi:decano");
+    Route::post('asignar_director_carrera', 'UsuarioController@asignarDirectorCarrera')->middleware("roleshinobi:vicedecano");
 
 //para buscar usuarios de acuerdo a su rol o a un datos
 
-    Route::get('buscar_usuario_rol/{idRol}/{dato?}', 'UsuarioController@buscarUsuarioRol')->middleware("roleshinobi:decano");
+    Route::get('buscar_usuario_rol/{idRol}/{dato?}', 'UsuarioController@buscarUsuarioRol')->middleware("roleshinobi:vicedecano");
 
-    Route::get('buscar_usuario_invitado/{dato?}', 'UsuarioController@buscarUsuarioInvitado')->middleware("roleshinobi:decano");
+    Route::get('buscar_usuario_invitado/{idRol}/{dato?}', 'UsuarioController@buscarUsuarioInvitado')->middleware("roleshinobi:vicedecano");
 
-    Route::get('eliminar_usuario/{idUsu}', 'UsuarioController@eliminarUsuario')->middleware("roleshinobi:decano");
+    Route::get('eliminar_usuario/{idUsu}', 'UsuarioController@eliminarUsuario')->middleware("roleshinobi:vicedecano");
 
-    Route::get('otras_actividades', 'PortafoliosController@viewactividades')->middleware("roleshinobi:docente");
+    Route::get('otras_actividades', 'ActividadController@otrasActividades')->middleware("roleshinobi:docente");
+    //Buscar actividad
+    Route::get('buscar_actividad/{idPeriodo}/{idCarrera}', 'ActividadController@buscarActividad')->middleware("roleshinobi:docente");
+
+    //VISUALIRAR LOS ARCCIVOS DE LOS PORTAFOLIOS
+    Route::get('archivo_actividad/{idPor}', 'ActividadController@archivoActividad')->middleware("roleshinobi:docente");
+//Mostrar archivo docente
+    Route::get("mostrar_archivo_actividad/{idPorta}/{idCat}", "ActividadController@mostrarArchivoActividad")->middleware("roleshinobi:docente");
+
+//Mostrar archivo director
+
+    Route::get("mostrar_archivo_actividad_director/{idPorta}/{idCat}", "ActividadController@mostrarArchivoActividadDirector")->middleware("roleshinobi:director");
+
+    Route::post("subir_archivo_actividad", "ActividadController@subirArchivoActividad")->middleware("roleshinobi:docente");
+//Visualizar los archivos y reportes actividad
+    Route::get("reporte_actividad/{idPorta}", "ActividadController@actividadReporteDocente")->middleware("roleshinobi:director");
+
+    Route::get("generar_reporte_actividad/{idPorta}", "ActividadController@generarReporteActividad")->middleware("roleshinobi:director");
 
 });

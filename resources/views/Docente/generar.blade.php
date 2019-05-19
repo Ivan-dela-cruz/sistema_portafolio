@@ -136,7 +136,7 @@ function agregarParametro($this,$archivo){
          $pdf->SetFont('Arial','I',40);
          // Movernos a la derecha
          $pdf->Cell(15);
-         $pdf->Cell(0,70,$archivo,1,1,'C');    
+         $pdf->Cell(0,70,utf8_decode($archivo),1,1,'C');    
 }
 
 
@@ -149,10 +149,10 @@ function agregarPortadaProducto($this,$producto){
          $pdf->Ln(90);
          //Negro
         $pdf->SetTextColor(0, 0, 0);
-         $pdf->SetFont('Arial','I',38);
+         $pdf->SetFont('Arial','I',35);
          // Movernos a la derecha
-         $pdf->Cell(15);
-         $pdf->Cell(0,70,$producto,0,1,'C');    
+         $pdf->Cell(5);
+         $pdf->Cell(0,70,utf8_decode($producto),0,1,'C');    
 }
 
 
@@ -183,35 +183,35 @@ $pdf->SetFont('Arial','B',15);
 $pdf->Cell(0,10,"CARRERA:",0,1,'C');
 $pdf->Ln(0);
 $pdf->SetFont('Arial','I',15);
-$pdf->Cell(190,15,$portada->nombre,0,1,'C');
+$pdf->Cell(190,15,utf8_decode($portada->nombre),0,1,'C');
 $pdf->Ln(2);
 
 $pdf->SetFont('Arial','B',15);
 $pdf->Cell(0,10,"CICLO:",0,1,'C');
 $pdf->Ln(0);
 $pdf->SetFont('Arial','I',15);
-$pdf->Cell(190,15,$asignatura->ciclo."  '".$asignatura->paralelo ."'" ,0,1,'C');
+$pdf->Cell(190,15,utf8_decode($asignatura->ciclo)."  '".$asignatura->paralelo ."'" ,0,1,'C');
 
 $pdf->Ln(2);
 $pdf->SetFont('Arial','B',15);
 $pdf->Cell(0,10,"ASIGNATURA:",0,1,'C');
 $pdf->Ln(0);
 $pdf->SetFont('Arial','I',15);
-$pdf->Cell(190,15,$asignatura->materia,0,1,'C');
+$pdf->Cell(190,15,utf8_decode($asignatura->materia),0,1,'C');
 $pdf->Ln(2);
 
 $pdf->SetFont('Arial','B',15);
 $pdf->Cell(0,10,"DOCENTE:",0,1,'C');
 $pdf->Ln(0);
 $pdf->SetFont('Arial','I',15);
-$pdf->Cell(0,15,$portada->nomDoc." ".$portada->apeDoc,0,1,'C');
+$pdf->Cell(0,15,$portada->nomDoc." ".utf8_decode($portada->apeDoc),0,1,'C');
 
 $pdf->Ln(2);
 $pdf->SetFont('Arial','B',15);
 $pdf->Cell(0,10,"PERIODO ACADEMICO:",0,1,'C');
 $pdf->Ln(0);
 $pdf->SetFont('Arial','I',15);
-$pdf->Cell(190,15,$portada->desde.' - '. $portada->hasta ,0,1,'C');
+$pdf->Cell(190,15,utf8_decode($portada->desde).' - '. utf8_decode($portada->hasta) ,0,1,'C');
 
 
 //pARA LOS PARAMETROS DE LOS PRODUCTOS

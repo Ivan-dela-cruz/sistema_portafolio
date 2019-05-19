@@ -209,7 +209,7 @@
                   </div>
        
 
-                <form   action="{{ url('editar_acceso') }}"  method="post" id="f_editar_acceso"  class="form_entrada""  >
+                <form   action="{{ url('editar_acceso') }}"  method="post" id="f_editar_acceso"  class="form_entrada"  >
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"> 
                 <input type="hidden" name="idUsu" value="{{ $usuario->id }}"> 
 
@@ -249,7 +249,6 @@
                     </div><!-- /.form-group -->
 
                   </div><!-- /.col -->
-
 
                     <div class=" col-xs-12 box-gris text-center ">
                                         <button type="submit" class="btn btn-primary">Actualizar Acceso</button>

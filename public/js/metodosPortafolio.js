@@ -3,7 +3,7 @@ function cargarMateria(idCic) {
     if (idCic == "") {
         idCic = 0;
     }
-    var url = "/cargar_materia/" + idCic + "/" + idCarrera;
+    var url = "../cargar_materia/" + idCic + "/" + idCarrera;
     $("#resultadoMateria").html($("#cargando").html());
     $.get(url, function(result) {
         $("#resultadoMateria").html(result);
@@ -12,7 +12,7 @@ function cargarMateria(idCic) {
 
 function materiasCreadas() {
     var idPortafolio = $("#portafolio").val();
-    var url = "/materia_registrada_portafolio/" + idPortafolio;
+    var url = "../materia_registrada_portafolio/" + idPortafolio;
     $("#rsMateriaRegistrada").html($("#cargando").html());
     $.get(url, function(result) {
         $("#rsMateriaRegistrada").html(result);
@@ -20,7 +20,7 @@ function materiasCreadas() {
 }
 
 function parametrosCreados() {
-    var url = "/listado_parametro";
+    var url = "listado_parametro";
     $("#rsListaParametro").html($("#cargando").html());
     $.get(url, function(result) {
         $("#rsListaParametro").html(result);
@@ -28,7 +28,7 @@ function parametrosCreados() {
 }
 
 function periodosCreados() {
-    var url = "/periodo";
+    var url = "periodo";
     $("#rsPeriodoAcademicoAll").html($("#cargando").html());
     $.get(url, function(result) {
         $("#rsPeriodoAcademicoAll").html(result);
@@ -46,7 +46,7 @@ function periodosCreados() {
 function actualizarParametro() {
     // window.location = "/parametros_asignatura/" + idMatPorta;
     var idPorMat = document.getElementById("idPorMat").value;
-    var url = "/actualizar_parametro/" + idPorMat;
+    var url = "../actualizar_parametro/" + idPorMat;
     $("#contenido_principal").html($("#cargando").html());
     $.get(url, function(resul) {
         //alert("cccc");
@@ -58,7 +58,7 @@ function actualizarParametroPorta() {
     // window.location = "/parametros_asignatura/" + idMatPorta;
     //ID DEL PORTAFOLIO
     var idPorta = document.getElementById("idPorta").value;
-    var url = "/actualizar_parametro_porta/" + idPorta;
+    var url = "../actualizar_parametro_porta/" + idPorta;
     $("#rsParametroPorta").html($("#cargando").html());
     $.get(url, function(resul) {
         //alert("cccc");
@@ -80,10 +80,16 @@ function getIdParametro3(idParametro, nombre) {
     document.getElementById("documento2").value = idParametro;
     document.getElementById("descripcion2").value = nombre;
 }
+//Para guardr las actividades
+function getIdActividad(idAct, nombre) {
+    document.getElementById("idActividad").value = idAct;
+    document.getElementById("actividad").value = nombre;
+}
 //Eliminar archivos parametros productos academico
 function eliminarArchivo(idArchivo) {
+    
     swal({
-        title: "Estás Seguro?",
+        title: "Esta Seguro?",
         text: "Desea eliminar archivo.!",
         type: "warning",
         showCancelButton: true,
@@ -94,7 +100,7 @@ function eliminarArchivo(idArchivo) {
         closeOnCancel: false
     }, function(isConfirm) {
         if (isConfirm) {
-            var url = "/eliminar_Pdf/" + idArchivo;
+            var url = "../../eliminar_Pdf/" + idArchivo;
             $("#rsParametro").html($("#cargando").html());
             $.get(url, function(result) {
                 $("#rsParametro").html(result);
@@ -108,7 +114,7 @@ function eliminarArchivo(idArchivo) {
 //Eliminar archivo parametros portafolio
 function eliminarArchivoParametroPorta(idArchivo) {
     swal({
-        title: "Estás Seguro?",
+        title: "Esta Seguro?",
         text: "Desea eliminar archivo.!",
         type: "warning",
         showCancelButton: true,
@@ -119,7 +125,7 @@ function eliminarArchivoParametroPorta(idArchivo) {
         closeOnCancel: false
     }, function(isConfirm) {
         if (isConfirm) {
-            var url = "/eliminar_Pdf_portafolio/" + idArchivo;
+            var url = "../eliminar_Pdf_portafolio/" + idArchivo;
             $("#rsParametroPorta").html($("#cargando").html());
             $.get(url, function(result) {
                 $("#rsParametroPorta").html(result);
@@ -129,11 +135,13 @@ function eliminarArchivoParametroPorta(idArchivo) {
             swal("Cancelado!", "Desea cancelar la operacion", "error");
         }
     });
+
 }
-//Eliminar archivos patametros materia
-function eliminarArchivoParametroMat(idArchivo) {
+
+//Eliminar archivo parametros portafolio para el docente
+function eliminarArchivoParametroPortaDocente(idArchivo) {
     swal({
-        title: "Estás Seguro?",
+        title: "Esta Seguro?",
         text: "Desea eliminar archivo.!",
         type: "warning",
         showCancelButton: true,
@@ -144,7 +152,59 @@ function eliminarArchivoParametroMat(idArchivo) {
         closeOnCancel: false
     }, function(isConfirm) {
         if (isConfirm) {
-            var url = "/eliminar_Pdf_materia/" + idArchivo;
+            var url = "../eliminar_Pdf_portafolioDocente/" + idArchivo;
+            $("#rsParametroPorta").html($("#cargando").html());
+            $.get(url, function(result) {
+                $("#rsParametroPorta").html(result);
+            });
+            swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
+        } else {
+            swal("Cancelado!", "Desea cancelar la operacion", "error");
+        }
+    });
+
+}
+//Eliminar archivo pdfActividad
+function eliminarArchivoActividad(idArchivo) {
+    swal({
+        title: "Esta Seguro?",
+        text: "Desea eliminar archivo.!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Si, Borrar!",
+        cancelButtonText: "No, Cancelar!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }, function(isConfirm) {
+        if (isConfirm) {
+            var url = "../eliminar_pdf_actividad/" + idArchivo;
+            $("#rsArchivoActividad").html($("#cargando").html());
+            $.get(url, function(result) {
+                $("#rsArchivoActividad").html(result);
+            });
+            mostrarArchivoDirector();
+            swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
+        } else {
+            swal("Cancelado!", "Desea cancelar la operacion", "error");
+        }
+    });
+}
+//Eliminar archivos patametros materia
+function eliminarArchivoParametroMat(idArchivo) {
+    swal({
+        title: "Esta Seguro?",
+        text: "Desea eliminar archivo.!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Si, Borrar!",
+        cancelButtonText: "No, Cancelar!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }, function(isConfirm) {
+        if (isConfirm) {
+            var url = "../../eliminar_Pdf_materia/" + idArchivo;
             $("#rsParametroMat").html($("#cargando").html());
             $.get(url, function(result) {
                 $("#rsParametroMat").html(result);
@@ -160,14 +220,14 @@ function rolAndTexto() {
     var url = "";
     var codRol = document.getElementById("rol").value;
     var texto = document.getElementById("dato_buscado").value;
-    //alert(codCarrera+texto);
+    // alert("holadeddddxddddddd");
     if (codRol == 0) {
-        url = "/buscar_usuario_invitado/" + texto + "";
+        url = "buscar_usuario_invitado/0" + texto + "";
     } else {
         if (texto == "") {
-            url = "/buscar_usuario_rol/" + codRol;
+            url = "buscar_usuario_rol/" + codRol;
         } else {
-            url = "/buscar_usuario_rol/" + codRol + "/" + texto + "";
+            url = "buscar_usuario_rol/" + codRol + "/" + texto + "";
         }
     }
     $("#rsMostrarUsuarioRol").html($("#cargando").html());
@@ -187,7 +247,7 @@ function rolAndTexto() {
 
 function eliminarUsuario(idUsu) {
     swal({
-        title: "Estás Seguro?",
+        title: "Esta Seguro?",
         text: "Desea eliminar usuario del sistema.!",
         type: "warning",
         showCancelButton: true,
@@ -198,7 +258,7 @@ function eliminarUsuario(idUsu) {
         closeOnCancel: false
     }, function(isConfirm) {
         if (isConfirm) {
-            var url = "/eliminar_usuario/" + idUsu;
+            var url = "eliminar_usuario/" + idUsu;
             $("#rsMostrarUsuarioRol").html($("#cargando").html());
             $.get(url, function(result) {
                 $("#rsMostrarUsuarioRol").html(result);
@@ -208,5 +268,35 @@ function eliminarUsuario(idUsu) {
         } else {
             swal("Cancelado!", "Desea cancelar la operacion", "error");
         }
+    });
+}
+
+function buscarActividad() {
+    var periodo = document.getElementById('periodo').value;
+    var carrera = document.getElementById('carrera').value;
+    var url = "buscar_actividad/" + periodo + "/" + carrera;
+    $("#rsActividad").html($("#cargando").html());
+    $.get(url, function(result) {
+        $("#rsActividad").html(result);
+    });
+}
+
+function mostrarArchivo() {
+    var idCate = document.getElementById("categoria").value;
+    var idPorta = document.getElementById("portafolio").value;;
+    var url = "../mostrar_archivo_actividad/" + idPorta + "/" + idCate;
+    $("#rsArchivoActividad").html($("#cargando").html());
+    $.get(url, function(result) {
+        $("#rsArchivoActividad").html(result);
+    });
+}
+
+function mostrarArchivoDirector() {
+    var idCate = document.getElementById("categoria").value;
+    var idPorta = document.getElementById("portafolio").value;
+    var url = "../mostrar_archivo_actividad_director/" + idPorta + "/" + idCate;
+    $("#rsArchivoActividad").html($("#cargando").html());
+    $.get(url, function(result) {
+        $("#rsArchivoActividad").html(result);
     });
 }

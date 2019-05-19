@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Documento;
+use App\Documento_Actividad;
 use App\Documento_Materia;
 use App\Documento_Portafolio;
 use App\Nivel;
@@ -103,6 +104,8 @@ class PDFController extends Controller
     {
 
         //Para el membrete
+        
+
         $materiasCreadas = DB::table('portafolio')->join('portafolio_materia', 'portafolio.id', '=', 'portafolio_materia.idPor')->join('paralelo', 'paralelo.id', '=', 'portafolio_materia.idPar')->join('materia', 'materia.id', '=', 'portafolio_materia.idMat')->join('carrera_ciclo', 'carrera_ciclo.id', '=', 'materia.idCarCic')->join('ciclo', 'ciclo.id', '=', 'carrera_ciclo.idCic')->where('portafolio_materia.id', '=', $idPorMat)->select('portafolio_materia.idPor as idPortafolio', 'portafolio_materia.id as idPorMat', 'ciclo.nombre as ciclo', 'paralelo.nombre as paralelo', 'materia.nombre as materia')->first();
 
 //Consultar todos los paramtros que poseen la materia
@@ -140,9 +143,9 @@ class PDFController extends Controller
     }
 
 //Eliminar los archivos Pdf de tipo producto
-    public function eliminarPdf($idArchivo)
+    public function eliminarPdfProducto($idArchivo)
     {
-
+        
         //Consultar los parametros portafolio
         $productoAcademico = Producto_Academico::all();
 
@@ -174,9 +177,11 @@ class PDFController extends Controller
         //     dd("No hay");
         //   }
 
-        //  dd($result);
+        //  
 
     }
+
+
 
 //Eliminar los pdf de los oaramtros de tipo parametro portafolio
     public function eliminarPdfParametroPorta($idArchivo)
@@ -222,7 +227,7 @@ class PDFController extends Controller
     public function eliminarPdfParametroMate($idArchivo)
     {
 
-        $documento = documento_materia::find($idArchivo);
+        $documento = Documento_Materia::find($idArchivo);
 
         //Para consultar el id del portafolio_m<teria pra consultar nuevamente los parameros de la asignatura
         $idPorMat = $documento->idPorMat;
@@ -254,6 +259,30 @@ class PDFController extends Controller
         //   }
 
         //  dd($result);
+
+    }
+
+    public function eliminarPdfActividad($idArchivo)
+    {
+        $documento = Documento_Actividad::find($idArchivo);
+
+        //Para consultar el id del portafolio_m<teria pra consultar nuevamente los parameros de la asignatura
+        $idPorMat = $documento->idPorMat;
+        //Ruta del archivo
+        $archivo = $documento->urlArchivo;
+        //Eliminar archivo;
+
+        $rs = File::delete($archivo);
+
+        if ($rs) {
+            $documento->urlArchivo = "";
+            $documento->save();
+
+            return view("mensajes.msj_correcto")->with("msj", "Archivo PDF eliminado exitosamente ");
+
+        } else {
+            return view("mensajes.msj_rechazado")->with("msj", "Error archivo no existe intente nuevamente :");
+        }
 
     }
 

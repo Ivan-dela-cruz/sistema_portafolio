@@ -13,7 +13,7 @@
                 <i class="fa fa-folder-open"></i> <span>OTRAS ACTIVIDADES</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li class="active"><a href="{{url('otras_actividades')}}" ><i class="fa fa-circle-o"></i>Evidenciar</a></li>
+                <li class="active"><a href="{{url('otras_actividades')}}" ><i class="fa fa-circle-o"></i>Actividades Docencia</a></li>
               </ul>
             </li> 
             

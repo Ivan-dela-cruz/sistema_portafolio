@@ -26,13 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('editar_perfil_docente', 'UsuarioController@editarPerfilDocente');
 
 
-    //Controlador para habilitar el tiempo de subida de los documentos
-    Route::post('habilitar_subida_documentos', 'PeriodosController@habilitarSubidaDocumetos')->middleware("roleshinobi:docente");
-
-    //Ruta para consultar el formulario de habilitar el tiempo de subida de los documentos
-
-    Route::get('modificar_subida_documentos', 'PeriodosController@listarPeriodoAcademico')->middleware("roleshinobi:docente");
-
 //Ruta para consultar el formulario de portafolio
 
     Route::get('consultar_portafolio', 'PortafoliosController@consultarPortafolio')->middleware("roleshinobi:docente");
@@ -231,5 +224,36 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("reporte_actividad/{idPorta}", "ActividadController@actividadReporteDocente")->middleware("roleshinobi:director");
 
     Route::get("generar_reporte_actividad/{idPorta}", "ActividadController@generarReporteActividad")->middleware("roleshinobi:director");
+
+
+    //Ruta para consultar el formulario de portafolio
+
+    Route::get('crear_materia', 'MateriaController@create')->middleware("roleshinobi:director");
+
+    //PERMITE AGREAGAR MATERIA AL PORTAFOLIO
+
+    Route::post('/agregar_nueva_materia_portafolio', 'MateriaController@store')->middleware("roleshinobi:director");
+
+
+    //Controlador para habilitar el tiempo de subida de los documentos
+    Route::post('habilitar_subida_documentos', 'PeriodosController@habilitarSubidaDocumetos')->middleware("roleshinobi:docente");
+
+    //Ruta para consultar el formulario de habilitar el tiempo de subida de los documentos
+
+    Route::get('modificar_subida_documentos', 'PeriodosController@listarPeriodoAcademico')->middleware("roleshinobi:docente");
+
+    //Route::get('modificar_materia', 'MateriaController@edit')->middleware("roleshinobi:director");
+    Route::get('modificar_materia/{id}', 'MateriaController@edit')->middleware("roleshinobi:director");
+    Route::resource('materiasLista', 'MateriaController');
+    Route::post('cambiar_datos_materia', 'MateriaController@updateMateria')->middleware("roleshinobi:docente");
+
+
+    ///ruta para gestionar los tiempos de y fechas de las portada y los parametros academicos
+    Route::get('busqueda-tiempo/{id}', 'PeriodosController@getTiempoFechaPeriodo')->middleware('roleshinobi:docente');
+    //Eliminar Pdf de los parameros Asignaturas vista docente
+    Route::get("/eliminar_Pdf_asignatura/{idArchivo}", "PDFController@eliminarPdfParametroAsignaturaDocente")->middleware("roleshinobi:docente");
+    //Eliminar archivo  paramemteros producuto  del servidor mediante el rol de docente
+    Route::get('/eliminar_Pdf_producto/{idArchivo}', 'PDFController@eliminarPdfProductoDocente')->middleware("roleshinobi:docente");
+
 
 });

@@ -6,6 +6,8 @@ use App\Documento;
 use App\Documento_Materia;
 use App\Documento_Portafolio;
 use App\Producto_Academico;
+use App\TareaPortafolio;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -27,8 +29,8 @@ class DocumentoController extends Controller
         $descripcion = $request->input("descripcion");
 
         $archivo = $request->file('file');
-        $input   = array('documento' => $archivo);
-        $reglas  = array('documento' => 'required|mimes:pdf|max:5120');
+        $input = array('documento' => $archivo);
+        $reglas = array('documento' => 'required|mimes:pdf|max:5120');
 
         $validar = Validator::make($input, $reglas);
 
@@ -38,7 +40,7 @@ class DocumentoController extends Controller
         }
 
         $nombre_original = $archivo->getClientOriginalName();
-        $extension       = $archivo->getClientOriginalExtension();
+        $extension = $archivo->getClientOriginalExtension();
 
         $nuevo_nombrePdf = "Parametro-Porta" . "-" . $idDocumento . "." . $extension;
 
@@ -53,7 +55,7 @@ class DocumentoController extends Controller
         $rutaPdf = "storage/portadaGeneral/" . $nuevo_nombrePdf;
 
         if ($r1) {
-            $documentosPortafolio              = Documento_Portafolio::find($idDocumento);
+            $documentosPortafolio = Documento_Portafolio::find($idDocumento);
             $documentosPortafolio->descripcion = $descripcion;
 
             $documentosPortafolio->urlArchivo = $rutaPdf;
@@ -76,8 +78,8 @@ class DocumentoController extends Controller
         $descripcion = $request->input("descripcion");
 
         $archivo = $request->file('file');
-        $input   = array('documento' => $archivo);
-        $reglas  = array('documento' => 'required|mimes:pdf|max:5120');
+        $input = array('documento' => $archivo);
+        $reglas = array('documento' => 'required|mimes:pdf|max:5120');
 
         $validar = Validator::make($input, $reglas);
 
@@ -87,7 +89,7 @@ class DocumentoController extends Controller
         }
 
         $nombre_original = $archivo->getClientOriginalName();
-        $extension       = $archivo->getClientOriginalExtension();
+        $extension = $archivo->getClientOriginalExtension();
 
         $nuevo_nombrePdf = "Parametro-Asi" . "-" . $idDocumento . "." . $extension;
 
@@ -101,7 +103,7 @@ class DocumentoController extends Controller
         $rutaPdf = "storage/parametroAsignatura/" . $nuevo_nombrePdf;
 
         if ($r1) {
-            $documentosAsignatura              = Documento_Materia::find($idDocumento);
+            $documentosAsignatura = Documento_Materia::find($idDocumento);
             $documentosAsignatura->descripcion = $descripcion;
 
             $documentosAsignatura->urlArchivo = $rutaPdf;
@@ -125,8 +127,8 @@ class DocumentoController extends Controller
         $descripcion = $request->input("descripcion");
 
         $archivo = $request->file('file');
-        $input   = array('documento' => $archivo);
-        $reglas  = array('documento' => 'required|mimes:pdf|max:5120');
+        $input = array('documento' => $archivo);
+        $reglas = array('documento' => 'required|mimes:pdf|max:5120');
 
         $validar = Validator::make($input, $reglas);
 
@@ -136,7 +138,7 @@ class DocumentoController extends Controller
         }
 
         $nombre_original = $archivo->getClientOriginalName();
-        $extension       = $archivo->getClientOriginalExtension();
+        $extension = $archivo->getClientOriginalExtension();
 
         //    $nuevo_nombrePdf = "Parametro-" . $descripcion . "-" . $idDocumento . "." . $extension;
 
@@ -153,7 +155,7 @@ class DocumentoController extends Controller
         $rutaPdf = "storage/parametroProducto/" . $nuevo_nombrePdf;
 
         if ($r1) {
-            $documentos              = Documento::find($idDocumento);
+            $documentos = Documento::find($idDocumento);
             $documentos->descripcion = $descripcion;
 
             $documentos->urlArchivo = $rutaPdf;
@@ -208,7 +210,7 @@ class DocumentoController extends Controller
     public function descargarPdf($idDocu)
     {
         $documento = Documento::find($idDocu);
-        $rutaPdf   = $documento->urlArchivo;
+        $rutaPdf = $documento->urlArchivo;
         //Para consultar el nombre del parametro
         $parametro = DB::table("parametro")->join("documento", "parametro.id", "=", "documento.idPar")->where("documento.id", "=", $idDocu)->select("parametro.nombre as nombrePar")->first();
 //Nombre del parametro producto
@@ -220,7 +222,7 @@ class DocumentoController extends Controller
     {
 
         $documento = Documento_Materia::find($idDocu);
-        $rutaPdf   = $documento->urlArchivo;
+        $rutaPdf = $documento->urlArchivo;
         //Para consultar el nombre del parametro Asignatura
         $parametro = DB::table("parametro")->join("documento_materia", "parametro.id", "=", "documento_materia.idPar")->where("documento_materia.id", $idDocu)->select("parametro.nombre as nombrePar")->first();
 
@@ -231,16 +233,22 @@ class DocumentoController extends Controller
     public function descargarPdfParametroPorta($idDocu)
     {
         $documento = Documento_Portafolio::find($idDocu);
-        $rutaPdf   = $documento->urlArchivo;
+        $rutaPdf = $documento->urlArchivo;
         $parametro = DB::table("parametro")->join("documento_portafolio", "parametro.id", "=", "documento_portafolio.idPar")->where("documento_portafolio.id", "=", $idDocu)->select("parametro.nombre as nombrePar")->first();
         return response()->download($rutaPdf, $parametro->nombrePar . ".pdf");
     }
 
     public function actualizarParametroPorta($idPorta)
     {
+        //Nombre del periodo actual segun el id portafolio
+        $periodoActual = DB::table("periodo")->join("portafolio", "periodo.id", "=", "portafolio.idPer")->where("portafolio.id", "=", $idPorta)->select("periodo.*")->first();
+        // para consultar el tiempo de subida de tarea
+        $tiempoTares = TareaPortafolio::find($periodoActual->id);
+
+        $hoy = Carbon::now();
 
         $parametroPortafolio = DB::table("portafolio")->join("documento_portafolio", "portafolio.id", "=", "documento_portafolio.idPor")->join("parametro", "parametro.id", "=", "documento_portafolio.idPar")->where("documento_portafolio.idPor", "=", $idPorta)->select("documento_portafolio.*", "parametro.nombre as parametro")->get();
-        return view("Docente.mostrarParametroPortafolio")->with("parametrosPorta", $parametroPortafolio);
+        return view("Docente.mostrarParametroPortafolio")->with("parametrosPorta", $parametroPortafolio)->with("tiempoTares", $tiempoTares)->with("hoy", $hoy);
 
     }
 

@@ -15,7 +15,9 @@ use App\Portafolio;
 use App\Portafolio_Materia;
 use App\Producto_Academico;
 use App\TareaPortafolio;
+use App\TiempoSubidaDocPorta;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use File;
@@ -31,7 +33,6 @@ class PortafoliosController extends Controller
         $this->middleware('auth');
 
     }
-
 
 
     public function consultarPortafolio()
@@ -108,7 +109,14 @@ class PortafoliosController extends Controller
         $idCarrera = $request->input('carrera');
         $idPeriodo = $request->input('periodo');
 
-        $verificarExistenPortafolio = DB::table('portafolio')->join('users', 'users.id', '=', 'portafolio.idDoc')->join('carrera', 'carrera.id', '=', 'portafolio.idCar')->join('periodo', 'periodo.id', '=', 'portafolio.idPer')->where('carrera.id', '=', $idCarrera)->where('periodo.id', '=', $idPeriodo)->where('users.id', '=', $idDoc)->select('portafolio.*')->get();
+        $verificarExistenPortafolio = DB::table('portafolio')
+            ->join('users', 'users.id', '=', 'portafolio.idDoc')
+            ->join('carrera', 'carrera.id', '=', 'portafolio.idCar')
+            ->join('periodo', 'periodo.id', '=', 'portafolio.idPer')
+            ->where('carrera.id', '=', $idCarrera)
+            ->where('periodo.id', '=', $idPeriodo)
+            ->where('users.id', '=', $idDoc)
+            ->select('portafolio.*')->get();
 
 //Si no existe se crea el portafolio
         if (!count($verificarExistenPortafolio)) {
@@ -122,6 +130,7 @@ class PortafoliosController extends Controller
             $maxIdPoratafolio = DB::table('portafolio')->max('id');
             $this->registrarDocumentosActividades($maxIdPoratafolio, "", "", "");
 
+
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "Portafolio ya se encuentra creado para el Período Académico Seleccionado ..");
         }
@@ -133,6 +142,7 @@ class PortafoliosController extends Controller
         }
 
     }
+
 
     public function registrarDocumentosActividades($idPorta, $descripcion, $urlArchivo, $tip)
     {
@@ -229,6 +239,10 @@ class PortafoliosController extends Controller
         $carreraActual = DB::table("carrera")->join("portafolio", "carrera.id", "=", "portafolio.idCar")->where("portafolio.id", "=", $idPor)->select("carrera.*")->first();
 //Nombre del periodo actual segun el id portafolio
         $periodoActual = DB::table("periodo")->join("portafolio", "periodo.id", "=", "portafolio.idPer")->where("portafolio.id", "=", $idPor)->select("periodo.*")->first();
+// para consultar el tiempo de subida de tarea
+        $tiempoTares = TareaPortafolio::find($periodoActual->id);
+
+        $hoy = Carbon::now();
 
         //para consultar los parametros del prtafolioacademico docente
 
@@ -259,7 +273,7 @@ class PortafoliosController extends Controller
         //dd($parametroPortafolio);
 
         $paralelo = DB::table('paralelo')->orderBy('nombre', 'asc')->get();
-        return view("Docente.materiasPortafolio")->with("carreraActual", $carreraActual)->with("periodoActual", $periodoActual)->with("idPortafolioActual", $idPor)->with('paralelo', $paralelo)->with("nombrePortafolio", $portafolio->nombre)->with("parametrosPorta", $parametroPortafolio);
+        return view("Docente.materiasPortafolio")->with("tiempoTares", $tiempoTares)->with("hoy", $hoy)->with("carreraActual", $carreraActual)->with("periodoActual", $periodoActual)->with("idPortafolioActual", $idPor)->with('paralelo', $paralelo)->with("nombrePortafolio", $portafolio->nombre)->with("parametrosPorta", $parametroPortafolio);
 
     }
 
@@ -1640,6 +1654,13 @@ class PortafoliosController extends Controller
 
     public function parametrosAsignatura($idPorMat)
     {
+        $portafolio_materia = Portafolio_Materia::find($idPorMat);
+
+        //Nombre del periodo actual segun el id portafolio
+        $periodoActual = DB::table("periodo")->join("portafolio", "periodo.id", "=", "portafolio.idPer")->where("portafolio.id", "=", $portafolio_materia->idPor)->select("periodo.*")->first();
+        // para consultar el tiempo de subida de tarea
+        $tiempoTares = TareaPortafolio::find($periodoActual->id);
+
 //dd("Codigo materia Portafolio".$idMatPor)
         //Consultar todos los parametro para  registrarles con la materia correspondiente
         // $parametros = Parametro::all();
@@ -1728,8 +1749,21 @@ class PortafoliosController extends Controller
 
         //  dd($portaDatos->desde . "-" . $portaDatos->hasta . "-" . $portaDatos->carrera);
 
+        //fecha y hora del servidor
+        $hoy = Carbon::now();
+
+        //tiempo de eliminacion de los documentos
+
         if (count($parametroProducto)) {
-            return view("Docente.parametrosAsignatura")->with("idPorMat", $idPorMat)->with("parametrosProducto", $parametroProducto)->with("parametrosMateria", $parametroMateria)->with("membrete", $materiasCreadas)->with("portafolio", $portaDatos)->with("productosAll", $productosAca);
+            return view("Docente.parametrosAsignatura")
+                ->with("idPorMat", $idPorMat)
+                ->with("parametrosProducto", $parametroProducto)
+                ->with("parametrosMateria", $parametroMateria)
+                ->with("membrete", $materiasCreadas)
+                ->with("portafolio", $portaDatos)
+                ->with("productosAll", $productosAca)
+                ->with("tiempoTares", $tiempoTares)
+                ->with("hoy", $hoy);
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "No existen ningun parámetro registrado :");
         }
@@ -1738,6 +1772,17 @@ class PortafoliosController extends Controller
     public function actualizarParametro($idPorMat)
     {
 
+        $portafolio_materia = Portafolio_Materia::find($idPorMat);
+        //Nombre del periodo actual segun el id portafolio
+        $periodoActual = DB::table("periodo")->join("portafolio", "periodo.id", "=", "portafolio.idPer")
+            ->where("portafolio.id", "=", $portafolio_materia->idPor)
+            ->select("periodo.*")->first();
+        // para consultar el tiempo de subida de tarea
+        $tiempoTares = TareaPortafolio::find($periodoActual->id);
+
+
+        //fecha y hora del servidor
+        $hoy = Carbon::now();
         //dd("Codigo materia Portafolio".$idMatPor)
         //Consultar todos los parametro para  registrarles con la materia correspondiente
         // $parametros = Parametro::all();
@@ -1768,14 +1813,23 @@ class PortafoliosController extends Controller
 
 //Consultar todos los paramtros que poseen las Asignatura
 
-        $parametroMateria = DB::table("portafolio_materia")->join("documento_materia", "portafolio_materia.id", "=", "documento_materia.idPorMat")->join("parametro", "parametro.id", "=", "documento_materia.idPar")->where("documento_materia.idPorMat", "=", $idPorMat)->select("documento_materia.*", "parametro.nombre")->get();
+        $parametroMateria = DB::table("portafolio_materia")
+            ->join("documento_materia", "portafolio_materia.id", "=", "documento_materia.idPorMat")
+            ->join("parametro", "parametro.id", "=", "documento_materia.idPar")
+            ->where("documento_materia.idPorMat", "=", $idPorMat)
+            ->select("documento_materia.*", "parametro.nombre")
+            ->get();
 
         //dd($parametroMateria);
 
         // dd($actualizarParametroMate);
 
         //El parametro tipo 3 que es solo parametros productos
-        $parametrosProd = DB::table("tipo_parametro")->join("parametro", "tipo_parametro.id", "=", "parametro.idTipPar")->where("parametro.idTipPar", "=", 3)->select("parametro.id as idPar")->get();
+        $parametrosProd = DB::table("tipo_parametro")
+            ->join("parametro", "tipo_parametro.id", "=", "parametro.idTipPar")
+            ->where("parametro.idTipPar", "=", 3)
+            ->select("parametro.id as idPar")
+            ->get();
 
         $productosAca = Producto_Academico::all();
 
@@ -1791,7 +1845,16 @@ class PortafoliosController extends Controller
 //id del parametro
                 $idPar = $par->idPar;
                 //Verifica  que todos los productos tenga todos los parametros  se actualizan automaticamente los parametros
-                $actualizarParametro = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->join("tipo_parametro", "tipo_parametro.id", "=", "parametro.idTipPar")->join("producto_academico", "producto_academico.id", "=", "documento.idProAca")->where("documento.idPar", "=", $idPar)->where("documento.idProAca", "=", $idProdAca)->select("documento.*")->get();
+                $actualizarParametro = DB::table("portafolio_materia")
+                    ->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")
+                    ->join("parametro", "parametro.id", "=", "documento.idPar")
+                    ->where("documento.idPorMat", "=", $idPorMat)
+                    ->join("tipo_parametro", "tipo_parametro.id", "=", "parametro.idTipPar")
+                    ->join("producto_academico", "producto_academico.id", "=", "documento.idProAca")
+                    ->where("documento.idPar", "=", $idPar)
+                    ->where("documento.idProAca", "=", $idProdAca)
+                    ->select("documento.*")
+                    ->get();
 
                 if (!count($actualizarParametro)) {
                     $documento = new Documento;
@@ -1809,11 +1872,23 @@ class PortafoliosController extends Controller
 
 //Consultar todos los paramtros que poseen los productos
 
-        $parametroProducto = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->select("documento.*", "parametro.nombre")->get();
+        $parametroProducto = DB::table("portafolio_materia")
+            ->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")
+            ->join("parametro", "parametro.id", "=", "documento.idPar")
+            ->where("documento.idPorMat", "=", $idPorMat)
+            ->select("documento.*", "parametro.nombre")->get();
 
 //Para el membrete
 
-        $materiasCreadas = DB::table('portafolio')->join('portafolio_materia', 'portafolio.id', '=', 'portafolio_materia.idPor')->join('paralelo', 'paralelo.id', '=', 'portafolio_materia.idPar')->join('materia', 'materia.id', '=', 'portafolio_materia.idMat')->join('carrera_ciclo', 'carrera_ciclo.id', '=', 'materia.idCarCic')->join('ciclo', 'ciclo.id', '=', 'carrera_ciclo.idCic')->where('portafolio_materia.id', '=', $idPorMat)->select('portafolio_materia.idPor as idPortafolio', 'portafolio_materia.id as idPorMat', 'ciclo.nombre as ciclo', 'paralelo.nombre as paralelo', 'materia.nombre as materia')->first();
+        $materiasCreadas = DB::table('portafolio')
+            ->join('portafolio_materia', 'portafolio.id', '=', 'portafolio_materia.idPor')
+            ->join('paralelo', 'paralelo.id', '=', 'portafolio_materia.idPar')
+            ->join('materia', 'materia.id', '=', 'portafolio_materia.idMat')
+            ->join('carrera_ciclo', 'carrera_ciclo.id', '=', 'materia.idCarCic')
+            ->join('ciclo', 'ciclo.id', '=', 'carrera_ciclo.idCic')
+            ->where('portafolio_materia.id', '=', $idPorMat)
+            ->select('portafolio_materia.idPor as idPortafolio', 'portafolio_materia.id as idPorMat', 'ciclo.nombre as ciclo', 'paralelo.nombre as paralelo', 'materia.nombre as materia')
+            ->first();
 
 //Tambien ontenemos el id del portafolio
 
@@ -1822,12 +1897,25 @@ class PortafoliosController extends Controller
         // dd($materiasCreadas->idPortafolio);
         //Para obtener el periodo y carrera del portafolio
 
-        $portaDatos = DB::table("portafolio")->join("carrera", "carrera.id", "=", "portafolio.idCar")->join("periodo", "periodo.id", "=", "portafolio.idPer")->where("portafolio.id", "=", $materiasCreadas->idPortafolio)->select("periodo.desde as desde", "periodo.hasta as hasta", "carrera.nombre as carrera")->first();
+        $portaDatos = DB::table("portafolio")
+            ->join("carrera", "carrera.id", "=", "portafolio.idCar")
+            ->join("periodo", "periodo.id", "=", "portafolio.idPer")
+            ->where("portafolio.id", "=", $materiasCreadas->idPortafolio)
+            ->select("periodo.desde as desde", "periodo.hasta as hasta", "carrera.nombre as carrera")
+            ->first();
 
         //  dd($portaDatos->desde . "-" . $portaDatos->hasta . "-" . $portaDatos->carrera);
 
         if (count($parametroProducto)) {
-            return view("Docente.actualizarParametro")->with("idPorMat", $idPorMat)->with("parametrosProducto", $parametroProducto)->with("parametrosMateria", $parametroMateria)->with("membrete", $materiasCreadas)->with("portafolio", $portaDatos)->with("productosAll", $productosAca);
+            return view("Docente.actualizarParametro")
+                ->with("idPorMat", $idPorMat)
+                ->with("parametrosProducto", $parametroProducto)
+                ->with("parametrosMateria", $parametroMateria)
+                ->with("membrete", $materiasCreadas)
+                ->with("portafolio", $portaDatos)
+                ->with("productosAll", $productosAca)
+                ->with("tiempoTares", $tiempoTares)
+                ->with("hoy", $hoy);
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "No existen ningun parámetro:");
         }
@@ -1843,7 +1931,7 @@ class PortafoliosController extends Controller
 //$materiasCreadasPortafolio=DB::table("portafolio")->join("portafolio_materia","portafolio.id","=","portafolio_materia.idPor")->join('paralelo','paralelo.id','=','portafolio_materia.idPar')->join('materia','materia.id','=','portafolio_materia.idMat')->join('carrera_ciclo','carrera_ciclo.id','=','materia.idCarCic')->join('ciclo','ciclo.id','=','carrera_ciclo.idCic')->where("portafolio_materia.idPor","=",$idPor)->select('portafolio_materia.*', 'portafolio_materia.id as idMatPor','paralelo.nombre as paralelo','ciclo.nombre as ciclo','ciclo.id')->orderBy('ciclo.id','asc')->get();
         //Para las asignatura ciclo y paralelo
 
-//Parametros Portafolio
+        //Parametros Portafolio
 
         $parametroPortafolio = DB::table("portafolio")->join("documento_portafolio", "portafolio.id", "=", "documento_portafolio.idPor")->join("parametro", "parametro.id", "=", "documento_portafolio.idPar")->join("tipo_parametro", "tipo_parametro.id", "=", "parametro.idTipPar")->where("documento_portafolio.idPor", "=", $idPor)->select("documento_portafolio.*", "parametro.nombre as parametro")->get();
 
@@ -1855,10 +1943,9 @@ class PortafoliosController extends Controller
 
     public function reportes()
     {
-
         // $parametros = Ciclo::all();
         // return view('Coordinador.reportes')->with('parametro', $parametros);
-
     }
+
 
 }

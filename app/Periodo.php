@@ -10,7 +10,6 @@ class Periodo extends Model
 
 
     public function tareas(){
-
-        $this->hasOne('App\TareaPortafolio');
+       return $this->hasOne('App\TareaPortafolio');
     }
 }

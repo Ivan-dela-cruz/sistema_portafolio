@@ -8,8 +8,11 @@ use App\Documento_Materia;
 use App\Documento_Portafolio;
 use App\Nivel;
 use App\Parametro;
+use App\Portafolio_Materia;
 use App\Producto_Academico;
+use App\TareaPortafolio;
 use App\User;
+use Carbon\Carbon;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +31,7 @@ class PDFController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function get($id)
     {
 
@@ -35,7 +39,7 @@ class PDFController extends Controller
 
         $idDoc = base64_decode($id);
 
-        $users  = User::find($idDoc);
+        $users = User::find($idDoc);
         $nivels = Nivel::all();
         $titulo = $users->titulos();
 
@@ -52,10 +56,10 @@ class PDFController extends Controller
 
         $idDoc = base64_decode($id);
 
-        $users  = User::find($idDoc);
+        $users = User::find($idDoc);
         $nivels = Nivel::all();
         $titulo = $users->titulos();
-        $pdf    = PDF::loadView('pdf.perfil', ['users' => $users, 'nivel' => $nivels, 'titulo' => $titulo]);
+        $pdf = PDF::loadView('pdf.perfil', ['users' => $users, 'nivel' => $nivels, 'titulo' => $titulo]);
         //Nombre del pDf
         return $pdf->download('perfil.pdf');
     }
@@ -85,7 +89,7 @@ class PDFController extends Controller
         //Para consultar los parametros producto
         $parametroProducto = DB::table('portafolio_materia')->join('documento', 'portafolio_materia.id', '=', 'documento.idPorMat')->join('parametro', 'parametro.id', '=', 'documento.idPar')->where('portafolio_materia.id', '=', $idPorMat)->select('documento.idProAca as idProAca', 'parametro.nombre as nombrePar', 'documento.urlArchivo as url')->get();
 
-        $parametro         = Parametro::all();
+        $parametro = Parametro::all();
         $productoAcademico = Producto_Academico::all();
 
         $pdf = PDF::loadView('Coordinador.generarReporteCumplimiento', ['portafolio' => $portafolio, 'asignaturas' => $materiasCreadas, 'parametroPorta' => $parametroPortafolio, 'parametroMat' => $parametroMateria, 'parametroPro' => $parametroProducto, 'parametro' => $parametro, 'productoAcademicoALL' => $productoAcademico]);
@@ -104,7 +108,7 @@ class PDFController extends Controller
     {
 
         //Para el membrete
-        
+
 
         $materiasCreadas = DB::table('portafolio')->join('portafolio_materia', 'portafolio.id', '=', 'portafolio_materia.idPor')->join('paralelo', 'paralelo.id', '=', 'portafolio_materia.idPar')->join('materia', 'materia.id', '=', 'portafolio_materia.idMat')->join('carrera_ciclo', 'carrera_ciclo.id', '=', 'materia.idCarCic')->join('ciclo', 'ciclo.id', '=', 'carrera_ciclo.idCic')->where('portafolio_materia.id', '=', $idPorMat)->select('portafolio_materia.idPor as idPortafolio', 'portafolio_materia.id as idPorMat', 'ciclo.nombre as ciclo', 'paralelo.nombre as paralelo', 'materia.nombre as materia')->first();
 
@@ -145,7 +149,7 @@ class PDFController extends Controller
 //Eliminar los archivos Pdf de tipo producto
     public function eliminarPdfProducto($idArchivo)
     {
-        
+
         //Consultar los parametros portafolio
         $productoAcademico = Producto_Academico::all();
 
@@ -164,23 +168,15 @@ class PDFController extends Controller
 
             $parametroProduc = DB::table("portafolio_materia")->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")->join("parametro", "parametro.id", "=", "documento.idPar")->where("documento.idPorMat", "=", $idPorMat)->select("documento.*", "parametro.nombre")->get();
 
-            return view("Coordinador.actualizarArchivoVerificacion")->with("productosAcademico", $productoAcademico)->with("parametrosProducto", $parametroProduc);
+            return view("Coordinador.actualizarArchivoVerificacion")
+                ->with("productosAcademico", $productoAcademico)
+                ->with("parametrosProducto", $parametroProduc);
 
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "Error archivo no existe intente nuevamente :");
         }
 
-//Eliminar archivo PDF en php normal
-        //  if (unlink($archivo)) {
-        //     dd("Eliminado");
-        //} else {
-        //     dd("No hay");
-        //   }
-
-        //  
-
     }
-
 
 
 //Eliminar los pdf de los oaramtros de tipo parametro portafolio
@@ -241,7 +237,7 @@ class PDFController extends Controller
             $documento->urlArchivo = "";
             $documento->save();
 
-//Para consultar los parametros  de la materia
+            //Para consultar los parametros  de la materia
 
             $parametroMateria = DB::table("portafolio_materia")->join("documento_materia", "portafolio_materia.id", "=", "documento_materia.idPorMat")->join("parametro", "parametro.id", "=", "documento_materia.idPar")->where("documento_materia.idPorMat", "=", $idPorMat)->select("documento_materia.*", "parametro.nombre as parametro")->get();
 
@@ -251,14 +247,6 @@ class PDFController extends Controller
             return view("mensajes.msj_rechazado")->with("msj", "Error archivo no existe intente nuevamente :");
         }
 
-//Eliminar archivo PDF en php normal
-        //  if (unlink($archivo)) {
-        //     dd("Eliminado");
-        //} else {
-        //     dd("No hay");
-        //   }
-
-        //  dd($result);
 
     }
 
@@ -286,69 +274,174 @@ class PDFController extends Controller
 
     }
 
-/**
- * Show the form for creating a new resource.
- *
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         //
     }
 
-/**
- * Store a newly created resource in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         //
     }
 
-/**
- * Display the specified resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
         //
     }
 
-/**
- * Show the form for editing the specified resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         //
     }
 
-/**
- * Update the specified resource in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         //
     }
 
-/**
- * Remove the specified resource from storage.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         //
+    }
+
+    //Eliminar los pdf de los parametros Materias
+    public function eliminarPdfParametroAsignaturaDocente($idArchivo)
+    {
+
+        $documento = Documento_Materia::find($idArchivo);
+
+        //Para consultar el id del portafolio_m<teria pra consultar nuevamente los parameros de la asignatura
+        $idPorMat = $documento->idPorMat;
+        //Ruta del archivo
+        $archivo = $documento->urlArchivo;
+        //Eliminar archivo;
+
+        $rs = File::delete($archivo);
+
+        if ($rs) {
+            $documento->urlArchivo = "";
+            $documento->save();
+
+
+            // $parametroMateria = DB::table("portafolio_materia")->join("documento_materia", "portafolio_materia.id", "=", "documento_materia.idPorMat")->join("parametro", "parametro.id", "=", "documento_materia.idPar")->where("documento_materia.idPorMat", "=", $idPorMat)->select("documento_materia.*", "parametro.nombre as parametro")->get();
+            $parametroMateria = DB::table("portafolio_materia")
+                ->join("documento_materia", "portafolio_materia.id", "=", "documento_materia.idPorMat")
+                ->join("parametro", "parametro.id", "=", "documento_materia.idPar")
+                ->where("documento_materia.idPorMat", "=", $documento->idPorMat)
+                ->select("documento_materia.*", "parametro.nombre")->get();
+
+            $portafolio_materia = Portafolio_Materia::find($documento->idPorMat);
+            //Nombre del periodo actual segun el id portafolio
+            $periodoActual = DB::table("periodo")->join("portafolio", "periodo.id", "=", "portafolio.idPer")
+                ->where("portafolio.id", "=", $portafolio_materia->idPor)
+                ->select("periodo.*")->first();
+            // para consultar el tiempo de subida de tarea
+            $tiempoTares = TareaPortafolio::find($periodoActual->id);
+            //fecha y hora del servidor
+            $hoy = Carbon::now();
+
+
+            return view("Docente.actualizarSeccionPortada")
+                ->with("idPorMat", $idPorMat)
+                ->with("parametrosMateria", $parametroMateria)
+                ->with("tiempoTares", $tiempoTares)
+                ->with("hoy", $hoy);
+
+        } else {
+            return $documento;
+        }
+
+
+    }
+
+    //Eliminar los archivos Pdf de tipo producto
+    public function eliminarPdfProductoDocente($idArchivo)
+    {
+
+        //Consultar los parametros portafolio
+        $productoAcademico = Producto_Academico::all();
+
+        $documento = Documento::find($idArchivo);
+        //Para consultar nuevamente los parametros de los productos
+        $idPorMat = $documento->idPorMat;
+        //Ruta del archivo
+        $archivo = $documento->urlArchivo;
+        //Eliminar archivo;
+
+        $rs = File::delete($archivo);
+
+        if ($rs) {
+            $documento->urlArchivo = "";
+            $documento->save();
+
+            $productosAca = Producto_Academico::all();
+
+
+            $parametroProducto = DB::table("portafolio_materia")
+                ->join("documento", "portafolio_materia.id", "=", "documento.idPorMat")
+                ->join("parametro", "parametro.id", "=", "documento.idPar")
+                ->where("documento.idPorMat", "=", $idPorMat)
+                ->select("documento.*", "parametro.nombre")
+                ->get();
+            $portafolio_materia = Portafolio_Materia::find($documento->idPorMat);
+            //Nombre del periodo actual segun el id portafolio
+            $periodoActual = DB::table("periodo")->join("portafolio", "periodo.id", "=", "portafolio.idPer")
+                ->where("portafolio.id", "=", $portafolio_materia->idPor)
+                ->select("periodo.*")->first();
+            // para consultar el tiempo de subida de tarea
+            $tiempoTares = TareaPortafolio::find($periodoActual->id);
+
+
+            //fecha y hora del servidor
+            $hoy = Carbon::now();
+
+            return view("Docente.actualizarSeccionAsignatura")
+                ->with("idPorMat", $idPorMat)
+                ->with("parametrosProducto", $parametroProducto)
+                ->with("productosAll", $productosAca)
+                ->with("tiempoTares", $tiempoTares)
+                ->with("hoy", $hoy);
+
+        } else {
+            ///return view("mensajes.msj_rechazado")
+            ///   ->with("msj", "Error archivo no existe intente nuevamente :");
+        }
+
     }
 }

@@ -199,7 +199,6 @@
 
         <div class="box box-info" id="rsParametro">
 
-
             @foreach($productosAcademico as $prodAca)
 
                 <div class="box-header text-center">

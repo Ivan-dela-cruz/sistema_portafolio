@@ -5,7 +5,7 @@ function cargarMateria(idCic) {
     }
     var url = "../cargar_materia/" + idCic + "/" + idCarrera;
     $("#resultadoMateria").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#resultadoMateria").html(result);
     });
 }
@@ -14,7 +14,7 @@ function materiasCreadas() {
     var idPortafolio = $("#portafolio").val();
     var url = "../materia_registrada_portafolio/" + idPortafolio;
     $("#rsMateriaRegistrada").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#rsMateriaRegistrada").html(result);
     });
 }
@@ -22,7 +22,7 @@ function materiasCreadas() {
 function parametrosCreados() {
     var url = "listado_parametro";
     $("#rsListaParametro").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#rsListaParametro").html(result);
     });
 }
@@ -30,10 +30,11 @@ function parametrosCreados() {
 function periodosCreados() {
     var url = "periodo";
     $("#rsPeriodoAcademicoAll").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#rsPeriodoAcademicoAll").html(result);
     });
 }
+
 //Rediccionzar automaticamente  en 5 segundo a otra direccion comprobado  pegar en la vista al inicio
 //<head>
 //<script>
@@ -48,11 +49,12 @@ function actualizarParametro() {
     var idPorMat = document.getElementById("idPorMat").value;
     var url = "../actualizar_parametro/" + idPorMat;
     $("#contenido_principal").html($("#cargando").html());
-    $.get(url, function(resul) {
+    $.get(url, function (resul) {
         //alert("cccc");
         $("#contenido_principal").html(resul);
     })
 }
+
 //Para actualizar los para metros de los portafolios cuando subo un archivo Pdf
 function actualizarParametroPorta() {
     // window.location = "/parametros_asignatura/" + idMatPorta;
@@ -60,34 +62,39 @@ function actualizarParametroPorta() {
     var idPorta = document.getElementById("idPorta").value;
     var url = "../actualizar_parametro_porta/" + idPorta;
     $("#rsParametroPorta").html($("#cargando").html());
-    $.get(url, function(resul) {
+    $.get(url, function (resul) {
         //alert("cccc");
         $("#rsParametroPorta").html(resul);
     })
 }
+
 //Para asiganar el id del parametro para subir el archivo parametros Productos
 function getIdParametro(idParametro, nombre) {
     document.getElementById("documento").value = idParametro;
     document.getElementById("descripcion").value = nombre;
 }
+
 //Para guardar los parametros de la asignaturas
 function getIdParametro2(idParametro, nombre) {
     document.getElementById("documento2").value = idParametro;
     document.getElementById("descripcion2").value = nombre;
 }
+
 //Para guardar los parametros del portafolio
 function getIdParametro3(idParametro, nombre) {
     document.getElementById("documento2").value = idParametro;
     document.getElementById("descripcion2").value = nombre;
 }
+
 //Para guardr las actividades
 function getIdActividad(idAct, nombre) {
     document.getElementById("idActividad").value = idAct;
     document.getElementById("actividad").value = nombre;
 }
+
 //Eliminar archivos parametros productos academico
 function eliminarArchivo(idArchivo) {
-    
+
     swal({
         title: "Esta Seguro?",
         text: "Desea eliminar archivo.!",
@@ -98,11 +105,11 @@ function eliminarArchivo(idArchivo) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "../../eliminar_Pdf/" + idArchivo;
             $("#rsParametro").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#rsParametro").html(result);
             });
             swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
@@ -111,6 +118,7 @@ function eliminarArchivo(idArchivo) {
         }
     });
 }
+
 //Eliminar archivo parametros portafolio
 function eliminarArchivoParametroPorta(idArchivo) {
     swal({
@@ -123,11 +131,11 @@ function eliminarArchivoParametroPorta(idArchivo) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "../eliminar_Pdf_portafolio/" + idArchivo;
             $("#rsParametroPorta").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#rsParametroPorta").html(result);
             });
             swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
@@ -150,11 +158,11 @@ function eliminarArchivoParametroPortaDocente(idArchivo) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "../eliminar_Pdf_portafolioDocente/" + idArchivo;
             $("#rsParametroPorta").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#rsParametroPorta").html(result);
             });
             swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
@@ -164,6 +172,7 @@ function eliminarArchivoParametroPortaDocente(idArchivo) {
     });
 
 }
+
 //Eliminar archivo pdfActividad
 function eliminarArchivoActividad(idArchivo) {
     swal({
@@ -176,11 +185,11 @@ function eliminarArchivoActividad(idArchivo) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "../eliminar_pdf_actividad/" + idArchivo;
             $("#rsArchivoActividad").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#rsArchivoActividad").html(result);
             });
             mostrarArchivoDirector();
@@ -190,6 +199,7 @@ function eliminarArchivoActividad(idArchivo) {
         }
     });
 }
+
 //Eliminar archivos patametros materia
 function eliminarArchivoParametroMat(idArchivo) {
     swal({
@@ -202,11 +212,11 @@ function eliminarArchivoParametroMat(idArchivo) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "../../eliminar_Pdf_materia/" + idArchivo;
             $("#rsParametroMat").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#rsParametroMat").html(result);
             });
             swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
@@ -231,15 +241,15 @@ function rolAndTexto() {
         }
     }
     $("#rsMostrarUsuarioRol").html($("#cargando").html());
-    $.get(url, function(rs) {
+    $.get(url, function (rs) {
         $("#rsMostrarUsuarioRol").html(rs);
     })
-    $(document).on("click", ".pagination li a", function(e) {
+    $(document).on("click", ".pagination li a", function (e) {
         //Para q no se vaya a la otra vista al hacer click no salga de la pagina
         e.preventDefault();
         var url = $(this).attr("href");
         $("#rsMostrarUsuarioRol").html($("#cargando").html());
-        $.get(url, function(result) {
+        $.get(url, function (result) {
             $("#rsMostrarUsuarioRol").html(result);
         });
     });
@@ -256,11 +266,11 @@ function eliminarUsuario(idUsu) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "eliminar_usuario/" + idUsu;
             $("#rsMostrarUsuarioRol").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#rsMostrarUsuarioRol").html(result);
                 rolAndTexto();
             });
@@ -276,17 +286,18 @@ function buscarActividad() {
     var carrera = document.getElementById('carrera').value;
     var url = "buscar_actividad/" + periodo + "/" + carrera;
     $("#rsActividad").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#rsActividad").html(result);
     });
 }
 
 function mostrarArchivo() {
     var idCate = document.getElementById("categoria").value;
-    var idPorta = document.getElementById("portafolio").value;;
+    var idPorta = document.getElementById("portafolio").value;
+    ;
     var url = "../mostrar_archivo_actividad/" + idPorta + "/" + idCate;
     $("#rsArchivoActividad").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#rsArchivoActividad").html(result);
     });
 }
@@ -296,7 +307,59 @@ function mostrarArchivoDirector() {
     var idPorta = document.getElementById("portafolio").value;
     var url = "../mostrar_archivo_actividad_director/" + idPorta + "/" + idCate;
     $("#rsArchivoActividad").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#rsArchivoActividad").html(result);
+    });
+}
+
+///funcion para eliminar la aliminacion de los archivos por parte del docente
+function eliminarArchivoParametroAsignatura(idArchivo) {
+    swal({
+        title: "Esta Seguro?",
+        text: "Desea eliminar archivo.!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Si, Borrar!",
+        cancelButtonText: "No, Cancelar!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }, function (isConfirm) {
+        if (isConfirm) {
+            var url = "../../eliminar_Pdf_asignatura/" + idArchivo;
+            $("#seccion-portada").html($("#cargando").html());
+            $.get(url, function (result) {
+                $("#seccion-portada").html(result);
+            });
+            swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
+        } else {
+            swal("Cancelado!", "Desea cancelar la operacion", "error");
+        }
+    });
+}
+
+function eliminarArchivoProducto(idArchivo) {
+
+    swal({
+        title: "Esta Seguro?",
+        text: "Desea eliminar archivo del producto.!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Si, Borrar!",
+        cancelButtonText: "No, Cancelar!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }, function (isConfirm) {
+        if (isConfirm) {
+            var url = "../../eliminar_Pdf_producto/" + idArchivo;
+            $("#seccion-asignaturas").html($("#cargando").html());
+            $.get(url, function (result) {
+                $("#seccion-asignaturas").html(result);
+            });
+            swal("Eliminado!", "Archivo se ha eliminado correctamente.", "success");
+        } else {
+            swal("Cancelado!", "Desea cancelar la operacion", "error");
+        }
     });
 }

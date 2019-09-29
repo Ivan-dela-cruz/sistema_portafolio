@@ -142,6 +142,7 @@ class UsuarioController extends Controller
 
         $dato                     = $request->all();
         $idDoc                    = $dato['idDocente'];
+
         $usuario                  = User::find($idDoc);
         $usuario->nombre          = $dato["nombre"];
         $usuario->apellido        = $dato["apellido"];

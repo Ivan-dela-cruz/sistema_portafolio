@@ -65,7 +65,7 @@
                                 <label for="apellido">
                                     Archivo a subir (Formato: PDF)
                                 </label>
-                                <p style="color:orange" class="help-block"> Máximo 2MB <span
+                                <p style="color:orange" class="help-block"> Máximo 5MB <span
                                             class="fa fa-exclamation-triangle">
                                                
                                             </span></p>

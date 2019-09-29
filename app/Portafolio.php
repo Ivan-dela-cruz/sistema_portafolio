@@ -8,4 +8,5 @@ class Portafolio extends Model
 {
     protected $table = 'portafolio';
 
+
 }

@@ -229,16 +229,25 @@
                                                            href="{{url($paraPorta->urlArchivo)}}" target="_blank"> <img
                                                 src="{{url('imagenes/pdf2.png')}}" style="width:50px; height:50px;"></a>
                                     <br>
+                                    @if($tiempoTares->fecha_fin_portada >= $hoy->toDateString() && $tiempoTares->hora_fin_portada >= $hoy->toTimeString())
 
-                                    <a href="javascript:void(0);"
-                                       onclick="eliminarArchivoParametroPortaDocente('{{$paraPorta->id }}')"
-                                       title="Eliminar Archivo " class="btn btn-danger"><span
-                                                class="fa fa-trash"></span></a>
 
-                                    <a class="btn btn-success" title="Descargar Archivo"
-                                       href="{{ url('descargar_pdf_Porta/'.$paraPorta->id) }}"><span
-                                                class="glyphicon glyphicon-save"> </span></a>
+                                        <a href="javascript:void(0);"
+                                           onclick="eliminarArchivoParametroPortaDocente('{{$paraPorta->id }}')"
+                                           title="Eliminar Archivo " class="btn btn-danger"><span
+                                                    class="fa fa-trash"></span></a>
+
+                                        <a class="btn btn-success" title="Descargar Archivo"
+                                           href="{{ url('descargar_pdf_Porta/'.$paraPorta->id) }}"><span
+                                                    class="glyphicon glyphicon-save"> </span></a>
+
+                                    @else
+                                        <a class="btn btn-success" title="Descargar Archivo"
+                                           href="{{ url('descargar_pdf_Porta/'.$paraPorta->id) }}"><span
+                                                    class="glyphicon glyphicon-save"> </span></a>
+                                    @endif
                                 </td>
+
                             @else
                                 <td class="text-center">
                                     <a title="No existe Archivo" href="javascript:void(0);"><img

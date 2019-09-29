@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class TareaPortafolio extends Model
 {
-    protected $table="tarea_portafolios";
+    protected $table = "tarea_portafolios";
 
 
-    public function periodo(){
-        $this->belongsTo('App\Periodo','id');
+    public function periodo()
+    {
+        return $this->belongsTo('App\Periodo', 'id');
     }
 }

@@ -9,14 +9,16 @@ function getpdf() {
     //alert(url);
     actualizarPagina(url);
 }
+
 //Verificar estudios y titulos obtenidos
 function estudiosRealizados() {
     var url = "actualizar_estudios_docente";
     $("#ventanaModificarEstudioDoc").html($("#cargando").html());
-    $.get(url, function(rs) {
+    $.get(url, function (rs) {
         $("#ventanaModificarEstudioDoc").html(rs);
     });
 }
+
 //function get(listado) {
 //funcion para cargar los diferentes  en general
 //  if (listado == 3) {
@@ -37,20 +39,22 @@ function actualizarPagina(vUrl) {
     var url = vUrl + "/" + idDoc;
     //alert (url);
     $("#contenido_principal").html($("#cargando").html());
-    $.get(url, function(result) {
+    $.get(url, function (result) {
         $("#contenido_principal").html(result);
     });
 }
+
 //Buscar portafolios Academico docentes
 function buscarPortafolio() {
     var periodo = $("#periodoBuscar").val();
     // alert("hola"+periodo);
     var url = "buscar_portafolio_docente/" + periodo + "";
     $("#rsPortafolio").html($("#cargando").html());
-    $.get(url, function(resul) {
+    $.get(url, function (resul) {
         $("#rsPortafolio").html(resul);
     })
 }
+
 //Elimina el titulo del docente logeado
 function borrarTitulo(idTit) {
     swal({
@@ -63,12 +67,12 @@ function borrarTitulo(idTit) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "borrar_titulo/" + idTit;
             var nota = "notaBorrar";
             $("#" + nota + "").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#" + nota + "").html(result);
                 //Se carga la pagina en un tiempo
                 //setTimeout( "estudiosRealizados()",1000);
@@ -107,12 +111,12 @@ function borrarParametro(idPar) {
         cancelButtonText: "No, Cancelar!",
         closeOnConfirm: false,
         closeOnCancel: false
-    }, function(isConfirm) {
+    }, function (isConfirm) {
         if (isConfirm) {
             var url = "borrar_parametro/" + idPar;
             var nota = "rsListaParametro";
             $("#" + nota + "").html($("#cargando").html());
-            $.get(url, function(result) {
+            $.get(url, function (result) {
                 $("#" + nota + "").html(result);
                 //Se carga la pagina en un tiempo
                 //setTimeout( "estudiosRealizados()",1000);
@@ -138,12 +142,13 @@ function mostrarseccion(num) {
         var url = "form_publicaciones_usuario/" + id_usuario + "";
     } //leccion 11
     $("#contenido_capa_edicion").html($("#cargando").html());
-    $.get(url, function(resul) {
+    $.get(url, function (resul) {
         $("#contenido_capa_edicion").html(resul);
     })
 }
+
 //Actulizar perfil docente
-$(document).on("submit", ".form_entrada", function(e) {
+$(document).on("submit", ".form_entrada", function (e) {
     //funcion para atrapar los formularios y enviar los datos
     e.preventDefault();
     //$('html, body').animate({
@@ -174,6 +179,7 @@ $(document).on("submit", ".form_entrada", function(e) {
         var varurl = "cambiar_historial";
         var divresul = "notificacion_cambiarHistorial";
     }
+
     if (quien == "frm_crear_portafolio") {
         swal({
             title: "Esta Seguro?",
@@ -185,7 +191,7 @@ $(document).on("submit", ".form_entrada", function(e) {
             cancelButtonText: "No, Cancelar!",
             closeOnConfirm: false,
             closeOnCancel: false
-        }, function(isConfirm) {
+        }, function (isConfirm) {
             if (isConfirm) {
                 var varurl = "crear_portafolio";
                 var divresul = "notificacion_crear_portafolio";
@@ -196,7 +202,7 @@ $(document).on("submit", ".form_entrada", function(e) {
                     url: varurl,
                     datatype: 'json',
                     data: formu.serialize(),
-                    success: function(resul) {
+                    success: function (resul) {
                         $("#" + divresul + "").html(resul);
                         if (res) {
                             // $('#' + quien + '').trigger("reset");
@@ -247,7 +253,7 @@ $(document).on("submit", ".form_entrada", function(e) {
         url: varurl,
         datatype: 'json',
         data: formu.serialize(),
-        success: function(resul) {
+        success: function (resul) {
             $("#" + divresul + "").html(resul);
             if (res) {
                 $('#' + quien + '').trigger("reset");
@@ -275,7 +281,7 @@ $(document).on("submit", ".form_entrada", function(e) {
     });
 });
 //Para validar campos   perfil usuario
-$(document).on("submit", ".form_entrada_validacion", function(e) {
+$(document).on("submit", ".form_entrada_validacion", function (e) {
     e.preventDefault();
     var quien = $(this).attr("id");
     var formu = $(this);
@@ -300,7 +306,7 @@ $(document).on("submit", ".form_entrada_validacion", function(e) {
         data: formu.serialize(),
         type: 'POST',
         dataType: "html",
-        success: function(resul) {
+        success: function (resul) {
             $("#" + divresul + "").html(resul);
             irarriba();
             // $("#capa_formularios").html(resul);
@@ -309,10 +315,10 @@ $(document).on("submit", ".form_entrada_validacion", function(e) {
                 estudiosRealizados();
             }
         },
-        error: function(data) {
+        error: function (data) {
             var lb = "";
             var errors = $.parseJSON(data.responseText);
-            $.each(errors, function(key, value) {
+            $.each(errors, function (key, value) {
                 $("#" + key + "_group").addClass("has-error");
                 $("#" + key + "_span").text(value);
             });
@@ -320,10 +326,14 @@ $(document).on("submit", ".form_entrada_validacion", function(e) {
         }
     });
 })
+
+
+
+
 //Subir imagen docente
 //y
 //Subir archivo
-$(document).on("submit", ".formarchivo", function(e) {
+$(document).on("submit", ".formarchivo", function (e) {
     e.preventDefault();
     var formu = $(this);
     var nombreform = $(this).attr("id");
@@ -369,10 +379,10 @@ $(document).on("submit", ".formarchivo", function(e) {
         contentType: false,
         processData: false,
         datatype: 'html',
-        beforeSend: function() {
+        beforeSend: function () {
             $("#" + divresul + "").html($("#cargando").html());
         },
-        success: function(rs2) {
+        success: function (rs2) {
             if (rs == "foto") {
                 $("#fotografia_usuario").attr('src', $("#fotografia_usuario").attr('src') + '?' + Math.random());
                 $("#" + divresul + "").html(rs2);
@@ -398,12 +408,13 @@ $(document).on("submit", ".formarchivo", function(e) {
                 mostrarArchivo();
             }
         },
-        error: function(xhr, status) {
+        error: function (xhr, status) {
             $("#" + divresul + "").html("<div class='alert alert-danger'><strong>Ha ocurrido un error!</strong> archivo demasiado Grande o Protegido.</div>");
         }
     });
     irarriba();
 });
+
 //Asignar rol
 function asignar_rol(idusu) {
     var idrol = $("#rol1").val();
@@ -412,17 +423,18 @@ function asignar_rol(idusu) {
     var miurl = "../asignar_rol/" + idusu + "/" + idrol + "";
     $.ajax({
         url: miurl
-    }).done(function(resul) {
+    }).done(function (resul) {
         var etiquetas = "";
         var roles = $.parseJSON(resul);
-        $.each(roles, function(index, value) {
+        $.each(roles, function (index, value) {
             etiquetas += '<span class="label label-success">' + value + '</span> ';
         })
         $("#zona_etiquetas_roles").html(etiquetas);
-    }).fail(function() {
+    }).fail(function () {
         $("#zona_etiquetas_roles").html('<span style="color:red;">...Error: Aun no ha agregado roles o revise su conexion...</span>');
     });
 }
+
 //Quitar rol
 function quitar_rol(idusu) {
     var idrol = $("#rol2").val();
@@ -431,14 +443,17 @@ function quitar_rol(idusu) {
     var miurl = "../quitar_rol/" + idusu + "/" + idrol + "";
     $.ajax({
         url: miurl
-    }).done(function(resul) {
+    }).done(function (resul) {
         var etiquetas = "";
         var roles = $.parseJSON(resul);
-        $.each(roles, function(index, value) {
+        $.each(roles, function (index, value) {
             etiquetas += '<span class="label label-success" style="margin-left:10px;" >' + value + '</span> ';
         })
         $("#zona_etiquetas_roles").html(etiquetas);
-    }).fail(function() {
+    }).fail(function () {
         $("#zona_etiquetas_roles").html('<span style="color:red;">...Error: Aun no ha agregado roles  o revise su conexion...</span>');
     });
 }
+
+//mODIFICAR TIEMPOS DE SUBIDA DEL ARCHIVO
+

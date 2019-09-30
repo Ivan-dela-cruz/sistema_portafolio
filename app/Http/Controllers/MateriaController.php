@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Carrera;
 use App\Carrera_Ciclo;
+use App\Ciclo;
 use App\Materia;
 use http\Url;
 use Illuminate\Http\Request;
@@ -34,8 +35,11 @@ class MateriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+
+        $selecCiclo = $request->selecCiclo;
+        $selecCarrera = $request->selecCarrera;
         $idUsuarioActual = \Auth::user()->id;
         //Verifica Si existe carrera
         $verificaCarrera = Carrera::all();
@@ -49,23 +53,131 @@ class MateriaController extends Controller
         }
 
         $carrera = Carrera::all();
-        $materias = DB::table("carrera")->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
-            ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
-            ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
-            ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
-            ->paginate(8);
+        $ciclos = Ciclo::all();
+
+        if ($selecCarrera != 'CARRERA') {
+            if ($selecCiclo != 'CICLO') {
+                $materias = DB::table("carrera")
+                    ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                    ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                    ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                    ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                    ->where('carrera.id', 'like', '%' . $selecCarrera . '%')
+                    ->where('carrera_ciclo.idCic', 'like', '%' . $selecCiclo . '%')
+                    ->paginate(12);
+            } else {
+                $materias = DB::table("carrera")
+                    ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                    ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                    ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                    ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                    ->where('carrera.id', 'like', '%' . $selecCarrera . '%')
+                    ->paginate(12);
+                $selecCiclo = '';
+            }
+        } else {
+            if ($selecCiclo != 'CICLO') {
+                $materias = DB::table("carrera")
+                    ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                    ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                    ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                    ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                    ->where('carrera_ciclo.idCic', 'like', '%' . $selecCiclo . '%')
+                    ->paginate(12);
+            } else {
+                $materias = DB::table("carrera")
+                    ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                    ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                    ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                    ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                    ->paginate(12);
+                $selecCiclo = '';
+            }
+            $selecCarrera = '';
+        }
+
 
         // $materias =  Materia::orderBy('id', 'ASC')->paginate(5);;
 
+        $total = count($materias);
         $contador = count($idUsuarioActual);
         if ($contador) {
-            return view("Docente.RegistrarMateriasPortafolio")->with("carrera", $carrera)->with("materias", $materias);
+            return view("Docente.RegistrarMateriasPortafolio")
+                ->with("carrera", $carrera)
+                ->with('ciclos', $ciclos)
+                ->with('total', $total)
+                ->with("materias", $materias)
+                ->with('selecCarrera', $selecCarrera)
+                ->with('selecCiclo', $selecCiclo);
+
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "No existe registrado ningun Período Académico .");
         }
 
 
     }
+
+    public function paginacionMateria(Request $request)
+    {
+        if ($request->ajax()) {
+
+
+            $selecCiclo = $request->selecCiclo;
+            $selecCarrera = $request->selecCarrera;
+
+
+            if ($selecCarrera != 'CARRERA') {
+                if ($selecCiclo != 'CICLO') {
+                    $materias = DB::table("carrera")
+                        ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                        ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                        ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                        ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                        ->where('carrera.id', 'like', '%' . $selecCarrera . '%')
+                        ->where('carrera_ciclo.idCic', 'like', '%' . $selecCiclo . '%')
+                        ->paginate(12);
+                } else {
+                    $materias = DB::table("carrera")
+                        ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                        ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                        ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                        ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                        ->where('carrera.id', 'like', '%' . $selecCarrera . '%')
+                        ->paginate(12);
+                    $selecCiclo = '';
+                }
+            } else {
+                if ($selecCiclo != 'CICLO') {
+                    $materias = DB::table("carrera")
+                        ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                        ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                        ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                        ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                        ->where('carrera_ciclo.idCic', 'like', '%' . $selecCiclo . '%')
+                        ->paginate(12);
+                } else {
+                    $materias = DB::table("carrera")
+                        ->join("carrera_ciclo", "carrera.id", "=", "carrera_ciclo.idCar")
+                        ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
+                        ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
+                        ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
+                        ->paginate(12);
+                    $selecCiclo = '';
+                }
+                $selecCarrera = '';
+            }
+
+
+            // $materias =  Materia::orderBy('id', 'ASC')->paginate(5);;
+
+            $total = count($materias);
+
+
+            return view('Docente.tablaMaterias',
+                compact('materias', 'total', 'selecCiclo', 'selecCarrera'))->render();
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -110,10 +222,10 @@ class MateriaController extends Controller
             $materia->nombre = $nombre;
             $materia->save();
 
-            return redirect()->route('materiasLista.index')->with('succes', 'Nueva asignatura agregada exitosamente');
+            return redirect()->route('crear_materia')->with('succes', 'Nueva asignatura agregada exitosamente');
 
         } else {
-            return redirect()->route('materiasLista.index')->with('error', 'La asignatura ya existe');
+            return redirect()->route('crear_materia')->with('error', 'La asignatura ya existe');
 
 
         }
@@ -181,17 +293,16 @@ class MateriaController extends Controller
             //id del parametro
             $idParMat = $parMat->idjoin;
         }
-        if($idParMat>0){
+        if ($idParMat > 0) {
             $materia = Materia::find($id);
             $materia->idCarCic = $idParMat;
             $materia->nombre = $nombre;
             $materia->save();
-            return redirect()->route('materiasLista.index')->with('succes', 'Asignatura actualizada exitosamente');
+            // return redirect()->url()->previous()->with('succes', 'Asignatura actualizada exitosamente');
+            return redirect()->route('crear_materia')->with('succes', 'Asignatura actualizada exitosamente');
+        } else {
+            return redirect()->route('crear_materia')->with('error', 'Error al actualizar registro');
         }
-        else{
-            return redirect()->route('materiasLista.index')->with('error', 'Error al actualizar registro');
-        }
-
 
 
     }
@@ -202,8 +313,19 @@ class MateriaController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $materia = Materia::find($request->id);
+
+
+            if ($materia->delete()) {
+                return response()->json(['mensaje' => 'Registro eliminado satisfactoriamente']);
+            } else {
+                return response()->json(['mensaje' => 'Error al eliminar el registro']);
+            }
+
+        }
+
     }
 }

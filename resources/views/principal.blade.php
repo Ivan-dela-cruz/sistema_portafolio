@@ -5,6 +5,7 @@
         @yield('title','Default')| Portafolio Docente
     </title>
     @yield('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">

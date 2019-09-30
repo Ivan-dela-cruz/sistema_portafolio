@@ -226,13 +226,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("generar_reporte_actividad/{idPorta}", "ActividadController@generarReporteActividad")->middleware("roleshinobi:director");
 
 
-    //Ruta para consultar el formulario de portafolio
-
-    Route::get('crear_materia', 'MateriaController@create')->middleware("roleshinobi:director");
-
-    //PERMITE AGREAGAR MATERIA AL PORTAFOLIO
-
-    Route::post('/agregar_nueva_materia_portafolio', 'MateriaController@store')->middleware("roleshinobi:director");
 
 
     //Controlador para habilitar el tiempo de subida de los documentos
@@ -242,10 +235,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('modificar_subida_documentos', 'PeriodosController@listarPeriodoAcademico')->middleware("roleshinobi:docente");
 
-    //Route::get('modificar_materia', 'MateriaController@edit')->middleware("roleshinobi:director");
-    Route::get('modificar_materia/{id}', 'MateriaController@edit')->middleware("roleshinobi:director");
-    Route::resource('materiasLista', 'MateriaController');
-    Route::post('cambiar_datos_materia', 'MateriaController@updateMateria')->middleware("roleshinobi:docente");
 
 
     ///ruta para gestionar los tiempos de y fechas de las portada y los parametros academicos
@@ -256,4 +245,21 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/eliminar_Pdf_producto/{idArchivo}', 'PDFController@eliminarPdfProductoDocente')->middleware("roleshinobi:docente");
 
 
+    //Ruta para consultar el formulario de portafolio
+
+    Route::get('crear_materia', 'MateriaController@create')->name('crear_materia')->middleware("roleshinobi:director");
+
+    //PERMITE AGREAGAR MATERIA AL PORTAFOLIO
+
+    Route::post('/agregar_nueva_materia_portafolio', 'MateriaController@store')->middleware("roleshinobi:director");
+
+    //Ruta para paginar mediante ajax la vista de las materias
+
+    Route::get('pagina-materias', 'MateriaController@paginacionMateria')->middleware("roleshinobi:director");
+
+    //Route::get('modificar_materia', 'MateriaController@edit')->middleware("roleshinobi:director");
+    Route::get('modificar_materia/{id}', 'MateriaController@edit')->middleware("roleshinobi:director");
+    Route::resource('materiasLista', 'MateriaController');
+    Route::post('cambiar_datos_materia', 'MateriaController@updateMateria')->middleware("roleshinobi:director");
+    Route::delete('eliminar-materia', 'MateriaController@destroy')->name('eliminar-materia')->middleware("roleshinobi:director");
 });

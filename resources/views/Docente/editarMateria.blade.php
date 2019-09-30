@@ -132,7 +132,7 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
                                 <div class="form-group text-center">
-                                    <input type="text" class="form-control" id="idMate" name="idMate"
+                                    <input  type="hidden" class="form-control" id="idMate" name="idMate"
                                            value="{!! $materia->id !!}">
                                     <input type="text" class="form-control" id="nombre" name="nombre"
                                            value="{!! $materia->nombre !!}">

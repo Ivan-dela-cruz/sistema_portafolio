@@ -170,52 +170,52 @@
                     <div class="form-group text-center">
                         <div class="row">
                             <div class="col-md-1"></div>
+
                             <div class="col-md-10">
-                                <table class="table">
-                                    <thead class="bg-primary">
-                                    <tr>
-                                        <th scope="col">COD</th>
-                                        <th class="text-center" scope="col">CARRERA</th>
-                                        <th class="text-center" scope="col">CICLO</th>
-                                        <th class="text-center" scope="col">NOMBRE</th>
+                                <div id="notificacion-delete"></div>
+                                <form method="GET" action="crear_materia" role="search">
+                                    <div class="input-group">
 
-                                        <th scope="col">ACCIONES</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+                                        <select class="form-control input-lg"
+                                                name="selecCarrera" id="selecCarrera">
+                                            <option>CARRERA</option>
+                                            @foreach($carrera as $car)
+                                                <option
+                                                        @if ($car->id==$selecCarrera)
+                                                        selected
+                                                        @endif
+                                                        value="{!! $car->id !!}">
+                                                    {!! $car->nombre!!}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <span class="input-group-btn">
+                                             <select style="width: 130px;" class="form-control input-lg"
+                                                     name="selecCiclo" id="selecCiclo">
+                                                <option value="">CICLO</option>
+                                                 @foreach($ciclos as $ciclo)
+
+                                                     <option
+                                                             @if ($ciclo->id==$selecCiclo)
+                                                             selected
+                                                             @endif
+
+                                                             value="{{$ciclo->id}}">
+                                                   {{$ciclo->nombre}}
+                                                </option>
+                                                 @endforeach
+                                             </select>
+                                          </span>
+                                        <span class="input-group-btn">
+                                                <input class="btn btn-primary btn-lg" value="Buscar" type="submit"/>
+                                          </span>
+                                    </div>
+                                </form>
 
 
-                                    @if(count($materias))
-
-                                        @foreach($materias as $materia)
-                                            <tr>
-                                                <td>{!! $materia->id !!}</td>
-                                                <td>{!! strtoupper($materia->carrera)!!}</td>
-                                                <td>{!! strtoupper($materia->ciclo)!!}</td>
-                                                <td class="text-left">{!!strtoupper( $materia->nombre)!!}</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-warning"
-                                                       href="{{ url('modificar_materia/'.$materia->id) }}">
-                                                        Editar →
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                        @endforeach
-
-
-                                    @else
-                                        <!--Si no existe periodo academico registrado-->
-
-                                        <h4 value="">
-                                            No existe Período Académico Registrado
-                                        </h4>
-
-
-                                    @endif
-                                    {{$materias->render()}}
-                                    </tbody>
-                                </table>
+                                <div id="id-tab-mat">
+                                    @include('Docente.tablaMaterias')
+                                </div>
 
                             </div><!--Cierre del col-10-->
                             <div class="col-md-1"></div>
@@ -229,7 +229,6 @@
 
 
                 <div class="box-footer">
-
                 </div><!--Cierre box footer-->
 
             </div><!--Cierre del segundo box primary-->
@@ -242,23 +241,132 @@
 @endsection
 @section('javascript')
     <script type="text/javascript">
+
+        $(document).on('click', '.pagination a', function (event) {
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            ///url = pagina-materias
+            var pathname = window.location.search;
+            if (pathname != '') {
+                // alert(pathname);
+                var url = '/pagina-materias' + pathname + '&page=';
+                fetch_data(page, url);
+            }
+            else {
+                // alert('vacio');
+                var url = '/pagina-materias?page=';
+                fetch_data(page, url);
+            }
+        });
+
+        function fetch_data(page, url) {
+            var url = url + page;
+            $.get(url, function (result) {
+                $(".id-tab").remove();
+                $(".btn-delete").removeData('id-mat');
+
+                $("#id-tab-mat").html(result);
+                // $('#id-tab-mat').empty().append($(result));
+            });
+
+        }
+
+        function actualizarTabla(url) {
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    $('#id-tab-mat').empty();
+                    $('#id-tab-mat').html(data);
+                }
+            });
+        }
+
         function ShowSelectedCarrera() {
             /* Para obtener el valor */
             var cod = document.getElementById("selecCarrera").value;
-
             document.getElementById("idCarrera").value = cod;
-
-
         }
 
         function ShowSelectedCiclo() {
-            /* Para obtener el valor */
             var cod = document.getElementById("selectCiclo").value;
-
             document.getElementById("idCiclos").value = cod;
 
-
         }
+
+        $('#selecCarrera').change(function () {
+            $('#selecCiclo').val('4');
+        });
+
+        $(document).on('click', '.btn-delete', function (e) {
+            var idmat = $(this).data('id-mat');
+            swal({
+                title: "Esta Seguro?",
+                text: "Desea eliminar este registro.!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-info",
+                confirmButtonText: "Si, Eliminar!",
+                cancelButtonText: "No, Cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    var varurl = "{{route('eliminar-materia')}}";
+                    var pathname = window.location.search;
+                    //    $("#" + divresul + "").html($("#cargando").html());
+                    $.ajax({
+                        // la URL para la petición
+                        url: varurl,
+                        type: 'delete',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            id: idmat,
+                            _token: "{{csrf_token()}}",
+                            _method: "delete",
+                        },
+                        success: function (data) {
+                            if (data.mensaje != 'Error al eliminar el registro') {
+                                $('#notificacion-delete').html('<div class="alert alert-success"><h4>' + data.mensaje + ' </h4></div>');
+                                $('.col-mat' + idmat).remove();
+                                $("html, body").animate({
+                                    scrollTop: $('#notificacion-delete').offset().top
+                                });
+
+                                if (pathname != '') {
+                                    // alert(pathname);
+                                    var url = '/pagina-materias' + pathname + '&page=';
+
+                                    actualizarTabla(url);
+                                }
+                                else {
+                                    // alert('vacio');
+                                    var url = '/pagina-materias?page=';
+                                    actualizarTabla(url);
+                                }
+
+                            } else {
+                                $('#notificacion-delete').html('<div class="alert alert-danger"><h4>' + data.mensaje + ' </h4></div>');
+
+                            }
+
+                        },
+                        error: function (data) {
+
+                            if (data.mensaje == 'Error al eliminar el registro') {
+                                $('#notificacion-delete').html('<div class="alert alert-danger"><h4>' + data.mensaje + ' </h4></div>');
+
+                            }
+                        }
+                    });
+                    swal("Creado!", "Registro eliminado exitosamente.", "success");
+                } else {
+                    swal("Cancelado!", "Desea cancelar la operacion", "error");
+                }
+            });
+        });
+
     </script>
 @endsection
 

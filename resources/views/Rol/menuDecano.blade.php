@@ -21,6 +21,10 @@
         <li class="active"><a href="{{url('modificar_subida_documentos')}}"><i class="fa fa-circle-o"></i>Tiempo de eliminación</a>
         </li>
     </ul>
+    <ul class="treeview-menu">
+        <li class="active"><a href="{{url('productos-academicos')}}"><i class="fa fa-circle-o"></i>Productos académicos</a>
+        </li>
+    </ul>
 
 
 </li>

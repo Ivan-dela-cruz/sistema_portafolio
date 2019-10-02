@@ -226,15 +226,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("generar_reporte_actividad/{idPorta}", "ActividadController@generarReporteActividad")->middleware("roleshinobi:director");
 
 
-
-
     //Controlador para habilitar el tiempo de subida de los documentos
     Route::post('habilitar_subida_documentos', 'PeriodosController@habilitarSubidaDocumetos')->middleware("roleshinobi:docente");
 
     //Ruta para consultar el formulario de habilitar el tiempo de subida de los documentos
 
     Route::get('modificar_subida_documentos', 'PeriodosController@listarPeriodoAcademico')->middleware("roleshinobi:docente");
-
 
 
     ///ruta para gestionar los tiempos de y fechas de las portada y los parametros academicos
@@ -262,4 +259,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('materiasLista', 'MateriaController');
     Route::post('cambiar_datos_materia', 'MateriaController@updateMateria')->middleware("roleshinobi:director");
     Route::delete('eliminar-materia', 'MateriaController@destroy')->name('eliminar-materia')->middleware("roleshinobi:director");
+
+
+    Route::get('refrescar-tabla-productos', 'Producto_AcademicoController@refreshTable')->name('refrescar-tabla-productos')->middleware('roleshinobi:director');
+
+    Route::get('productos-academicos', 'Producto_AcademicoController@index')->name('productos-academicos')->middleware('roleshinobi:director');
+
+    Route::post('producto-store', 'Producto_AcademicoController@store')->name('producto-store')->middleware('roleshinobi:director');
+    Route::put('producto-update', 'Producto_AcademicoController@update')->name('producto-update')->middleware('roleshinobi:director');
+    Route::delete('producto-destroy', 'Producto_AcademicoController@destroy')->name('producto-destroy')->middleware('roleshinobi:director');
 });

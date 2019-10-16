@@ -57,6 +57,18 @@ return [
             'driver' => 'local',
             'root'   => public_path('storage/portadaGeneral'),
         ],
+        'insumosdoc' => [
+            'driver' => 'local',
+            'root'   => public_path('storage/insumosDocentes/doc'),
+        ],
+        'insumosxls' => [
+            'driver' => 'local',
+            'root'   => public_path('storage/insumosDocentes/xls'),
+        ],
+        'insumospdf' => [
+            'driver' => 'local',
+            'root'   => public_path('storage/insumosDocentes/pdf'),
+        ],
 
         'asignatura' => [
             'driver' => 'local',

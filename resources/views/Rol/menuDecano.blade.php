@@ -18,15 +18,30 @@
         </li>
     </ul>
     <ul class="treeview-menu">
-        <li class="active"><a href="{{url('modificar_subida_documentos')}}"><i class="fa fa-circle-o"></i>Tiempo de eliminación</a>
+        <li class="active"><a href="{{url('modificar_subida_documentos')}}"><i class="fa fa-circle-o"></i>Tiempo de
+                eliminación</a>
         </li>
     </ul>
     <ul class="treeview-menu">
         <li class="active"><a href="{{url('productos-academicos')}}"><i class="fa fa-circle-o"></i>Productos académicos</a>
         </li>
     </ul>
+    <ul class="treeview-menu">
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-fw fa-archive"></i> <span>Insumos docentes</span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li class="active"><a href="{{url('crear-insumos')}}"><i class="fa fa-circle-o"></i>Nuevo insumo</a>
+                </li>
+            </ul>
+            <ul class="treeview-menu">
+                <li class="active"><a href="{{url('index-insumos')}}"><i class="fa fa-circle-o"></i>Insumos docentes</a>
+                </li>
+            </ul>
+        </li>
 
-
+    </ul>
 </li>
 
           

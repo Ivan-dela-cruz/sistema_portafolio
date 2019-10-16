@@ -326,7 +326,7 @@ function eliminarArchivoParametroAsignatura(idArchivo) {
         closeOnCancel: false
     }, function (isConfirm) {
         if (isConfirm) {
-            var url = "../../eliminar_Pdf_asignatura/" + idArchivo;
+            var url = "../eliminar_Pdf_asignatura/" + idArchivo;
             $("#seccion-portada").html($("#cargando").html());
             $.get(url, function (result) {
                 $("#seccion-portada").html(result);
@@ -352,7 +352,7 @@ function eliminarArchivoProducto(idArchivo) {
         closeOnCancel: false
     }, function (isConfirm) {
         if (isConfirm) {
-            var url = "../../eliminar_Pdf_producto/" + idArchivo;
+            var url = "../eliminar_Pdf_producto/" + idArchivo;
             $("#seccion-asignaturas").html($("#cargando").html());
             $.get(url, function (result) {
                 $("#seccion-asignaturas").html(result);

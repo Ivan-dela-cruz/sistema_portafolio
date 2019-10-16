@@ -12,4 +12,7 @@ class Periodo extends Model
     public function tareas(){
        return $this->hasOne('App\TareaPortafolio');
     }
+    public function insumos(){
+        return $this->hasMany('App\Insumos','id_periodo');
+    }
 }

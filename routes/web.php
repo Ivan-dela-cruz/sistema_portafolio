@@ -268,4 +268,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('producto-store', 'Producto_AcademicoController@store')->name('producto-store')->middleware('roleshinobi:director');
     Route::put('producto-update', 'Producto_AcademicoController@update')->name('producto-update')->middleware('roleshinobi:director');
     Route::delete('producto-destroy', 'Producto_AcademicoController@destroy')->name('producto-destroy')->middleware('roleshinobi:director');
+
+
+    ///RUTAS PARA LOS INSUMOS
+    Route::get('insumos-docentes', 'InsumosController@vistaDocentes')->name('insumos-docentes')->middleware('roleshinobi:docente');
+    //--------CONTOLADOR DE RECURSOS DE LOS INSUMOS PARA EL ADMINISTRADOR O ROL DIRECTOR------------
+    Route::get('crear-insumos', 'InsumosController@create')->name('crear-insumos')->middleware('roleshinobi:director');
+    Route::post('guardar-insumos', 'InsumosController@store')->name('guardar-insumos')->middleware('roleshinobi:director');
+    Route::get('index-insumos','InsumosController@index')->name('index-insumos')->middleware('roleshinobi:director');
+    Route::get('insumos','InsumosController@insumosDocentes')->name('insumos')->middleware('roleshinobi:docente');
 });

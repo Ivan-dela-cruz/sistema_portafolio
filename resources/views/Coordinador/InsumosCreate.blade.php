@@ -88,10 +88,33 @@
                                         @if($errors->has('titulo'))
                                             <label class="text-danger">{{$errors->first('titulo')}} </label>
                                         @endif
+
                                     </div><!--Cierre del col-10-->
                                     <div class="col-md-1"></div>
                                 </div>
                             </div>
+
+                            <div class="col-md-1"></div>
+                            <div class="form-group text-left">
+                                <b> <span style="font-size:18px;">Descripción del insumo*</span></b>
+                            </div><!--Cierre del 2 group-->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" name="descripcion" id="desc" cols="30" rows="4" placeholder="Escribir aquí">
+                                                {{old('descripcion')}}
+                                        </textarea>
+
+                                        @if($errors->has('titulo'))
+                                            <label class="text-danger">{{$errors->first('titulo')}} </label>
+                                        @endif
+
+                                    </div><!--Cierre del col-10-->
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+
 
                             <div class="col-md-1"></div>
                             <div class="form-group text-left">

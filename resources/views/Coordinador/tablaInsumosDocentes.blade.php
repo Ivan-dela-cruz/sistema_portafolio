@@ -15,6 +15,7 @@
                     {{$insumo->updated_at->formatLocalized('%A %d %B %Y')}} ]
 
                 </p>
+                <p>{{$insumo->descripcion}}</p>
                 <p>Archivos adjuntos:</p>
             </div>
             @if ($insumo->url_pdf!='')
@@ -27,6 +28,11 @@
                         <span>
                             <a title="Eliminar documento" class="btn btn-danger" href="">
                                 <i class="fa fa-trash"></i>
+                            </a>
+                        </span>
+                        <span>
+                            <a title="Descargar documento" class="btn btn-primary" href="{{url('descarga-insumo-pdf/'.$insumo->id)}}">
+                                <i class="fa fa-download"></i>
                             </a>
                         </span>
                     </p>
@@ -58,6 +64,11 @@
                                 <i class="fa fa-trash"></i>
                             </a>
                         </span>
+                        <span>
+                            <a title="Descargar documento" class="btn btn-primary" href="{{url('descarga-insumo-doc/'.$insumo->id)}}">
+                                <i class="fa fa-download"></i>
+                            </a>
+                        </span>
                     </p>
                 </div>
             @else
@@ -85,6 +96,11 @@
                         <span>
                             <a title="Eliminar documento" class="btn btn-danger" href="">
                                 <i class="fa fa-trash"></i>
+                            </a>
+                        </span>
+                        <span>
+                           <a title="Descargar documento" class="btn btn-primary" href="{{url('descarga-insumo-xls/'.$insumo->id)}}">
+                                <i class="fa fa-download"></i>
                             </a>
                         </span>
                     </p>

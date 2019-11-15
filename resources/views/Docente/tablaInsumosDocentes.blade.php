@@ -12,6 +12,7 @@
                     {{$insumo->updated_at->formatLocalized('%A %d %B %Y')}} ]
 
                 </p>
+                <p>{{$insumo->descripcion}}</p>
                 <p>Archivos adjuntos:</p>
             </div>
             @if ($insumo->url_pdf!='')

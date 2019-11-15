@@ -15,7 +15,7 @@ class MateriaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return ->paginate(8)\Illuminate\Http\Response
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class MateriaController extends Controller
             ->join("ciclo", "ciclo.id", "=", "carrera_ciclo.idCic")
             ->join("materia", "carrera_ciclo.id", "=", "materia.idCarCic")
             ->select("materia.*", 'carrera.nombre as carrera', 'ciclo.nombre as ciclo')
-            ->paginate(8);
+            ;
 
         return view("Docente.RegistrarMateriasPortafolio")->with("carrera", $carrera)->with("materias", $materias);
 

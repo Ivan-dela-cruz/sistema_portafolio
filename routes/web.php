@@ -277,4 +277,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('guardar-insumos', 'InsumosController@store')->name('guardar-insumos')->middleware('roleshinobi:director');
     Route::get('index-insumos','InsumosController@index')->name('index-insumos')->middleware('roleshinobi:director');
     Route::get('insumos','InsumosController@insumosDocentes')->name('insumos')->middleware('roleshinobi:docente');
+    Route::get('descarga-insumo-pdf/{id}','InsumosController@descargarPdfInsumo')->middleware('roleshinobi:docente');
+    Route::get('descarga-insumo-doc/{id}','InsumosController@descargarDocInsumo')->middleware('roleshinobi:docente');
+    Route::get('descarga-insumo-xls/{id}','InsumosController@descargarXlsInsumo')->middleware('roleshinobi:docente');
+
+
 });

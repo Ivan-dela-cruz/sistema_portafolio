@@ -20,16 +20,18 @@ class InsumosController extends Controller
      */
     public function index()
     {
-        $insumos = Insumo::all();
+        $periodos = Periodo::all();
+        $insumos = Insumo::orderBy('created_at', 'ASC')->paginate(8);
 
-        return view('Coordinador.InsumosIndex',compact('insumos'));
+        return view('Coordinador.InsumosIndex', compact('insumos', 'periodos'));
 
     }
 
-    public function insumosDocentes(){
+    public function insumosDocentes()
+    {
         $insumos = Insumo::all();
 
-        return view('Docente.InsumosIndexDocente',compact('insumos'));
+        return view('Docente.InsumosIndexDocente', compact('insumos'));
     }
 
     /**
@@ -47,7 +49,7 @@ class InsumosController extends Controller
         $insumos = Insumo::whereDate('created_at', $fechaHoy)->get();
 
         if (count($periodos) >= 1) {
-            return view('Coordinador.InsumosCreate', compact('periodos','insumos'));
+            return view('Coordinador.InsumosCreate', compact('periodos', 'insumos'));
         } else {
             return view("mensajes.msj_rechazado")->with("msj", "No existe registrado ningun Período Académico .");
         }
@@ -67,6 +69,7 @@ class InsumosController extends Controller
             'url_doc' => 'mimes:docx,doc,txt,xps,xml',
             'url_xls' => 'mimes:xlsx,xls,csv,xla',
             'url_pdf' => 'mimes:pdf',
+            'descripcion' => 'string'
 
         ]);
 
@@ -79,6 +82,7 @@ class InsumosController extends Controller
         $insumo = new Insumo();
         $insumo->titulo = $request->titulo;
         $insumo->id_periodo = $request->id_periodo;
+        $insumo->descripcion = $request->descripcion;
         $insumo->save();
 
         //OBTENEMOS EL NOMBRE QUE LLEVARA LOS ARCHIVOS  EN BASE AL TITULO DEL INSUMO PERO SIN ESPACIOS
@@ -90,7 +94,7 @@ class InsumosController extends Controller
             //OBTENEMOS LA EXTENSION DEL ARCHIVO
             $extension_doc = $doc->getClientOriginalExtension();
             //CREAMOS UNA CADENA QUE REPRESENTARA EL NOMBRE DEL ARCHIVO
-            $nombre_doc = 'insumo-' . $nombreArchivos . '.' . $extension_doc;
+            $nombre_doc = $nombreArchivos . '.' . $extension_doc;
             //GUARDAMOS LOS ARCHIVOS EN LA RUTA DEL STORAGE
             $r1 = Storage::disk('insumosdoc')->put(utf8_decode($nombre_doc), \File::get($doc));
             //GENERAMOS LA RUTA DEL ARCHIVO
@@ -99,7 +103,7 @@ class InsumosController extends Controller
         if ($request->file('url_pdf')) {
             $pdf = $request->file('url_pdf');
             $extension_pdf = $pdf->getClientOriginalExtension();
-            $nombre_pdf = 'insumo-' . $nombreArchivos . '.' . $extension_pdf;
+            $nombre_pdf = $nombreArchivos . '.' . $extension_pdf;
             $r2 = Storage::disk('insumospdf')->put(utf8_decode($nombre_pdf), \File::get($pdf));
             $rutaPdf = "storage/insumosDocentes/pdf/" . $nombre_pdf;
         }
@@ -107,7 +111,7 @@ class InsumosController extends Controller
         if ($request->file('url_xls')) {
             $xls = $request->file('url_xls');
             $extension_xls = $xls->getClientOriginalExtension();
-            $nombre_xls = 'insumo-' . $nombreArchivos . '.' . $extension_xls;
+            $nombre_xls = $nombreArchivos . '.' . $extension_xls;
             $r3 = Storage::disk('insumosxls')->put(utf8_decode($nombre_xls), \File::get($xls));
             $rutaXls = "storage/insumosDocentes/xls/" . $nombre_xls;
         }
@@ -168,5 +172,44 @@ class InsumosController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //eliminar pdf
+    public function eliminarPdfInsumo($idDocu)
+    {
+        $insumo = Insumo::find($idDocu);
+        $url_pdf = $insumo->url_pdf;
+        $rs = File::delete($url_pdf);
+
+        if($rs){
+            return $insumo;
+        }else{
+            return 'no funciona';
+        }
+    }
+
+
+    //Descargar insumos pdf
+    public function descargarPdfInsumo($idDocu)
+    {
+        $insumo = Insumo::find($idDocu);
+        $rutaPdf = $insumo->url_pdf;
+        return response()->download($rutaPdf, $insumo->titulo . ".pdf");
+    }
+
+    //Descargar insumos tipo word
+    public function descargarDocInsumo($idDocu)
+    {
+        $insumo = Insumo::find($idDocu);
+        $rutaPdf = $insumo->url_doc;
+        return response()->download($rutaPdf, $insumo->titulo . ".doc");
+    }
+
+    //Descargar insumos tipo excel
+    public function descargarXlsInsumo($idDocu)
+    {
+        $insumo = Insumo::find($idDocu);
+        $rutaPdf = $insumo->url_xls;
+        return response()->download($rutaPdf, $insumo->titulo . ".xlsx");
     }
 }

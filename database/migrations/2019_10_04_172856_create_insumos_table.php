@@ -17,6 +17,7 @@ class CreateInsumosTable extends Migration
             $table->increments('id');
             $table->integer('id_periodo')->unsigned();
             $table->string('titulo');
+            $table->mediumText('descripcion')->nullable();
             $table->string('url_pdf')->nullable();
             $table->string('url_doc')->nullable();
             $table->string('url_xls')->nullable();
